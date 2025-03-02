@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Giriş Yap</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .login-container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            width: 300px;
+            text-align: center;
+        }
+
+        .login-container h2 {
+            margin-bottom: 15px;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .register-link {
+            margin-top: 10px;
+            display: block;
+        }
+    </style>
+</head>
+<body>
+
+<div class="login-container">
+    <h2>Giriş Yap</h2>
+    <form onsubmit="return login(event)">
+        <input type="text" id="username" placeholder="Kullanıcı Adı" required>
+        <input type="password" id="password" placeholder="Şifre" required>
+        <button type="submit">Giriş Yap</button>
+    </form>
+    <a href="register.html" class="register-link">Hesabın yok mu? Kayıt ol</a>
+</div>
+
+<script>
+    function login(event) {
+        event.preventDefault();
+        
+        let username = document.getElementById("username").value;
+        let password = document.getElementById("password").value;
+        
+        let storedUser = localStorage.getItem("username");
+        let storedPass = localStorage.getItem("password");
+
+        if (username === storedUser && password === storedPass) {
+            alert("Giriş başarılı!");
+            localStorage.setItem("loggedIn", "true");
+            window.location.href = "index.html"; // Ana sayfaya yönlendir
+        } else {
+            alert("Hatalı kullanıcı adı veya şifre!");
+        }
+    }
+</script>
+
+</body>
+</html>
