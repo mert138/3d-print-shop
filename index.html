@@ -77,6 +77,11 @@
             background-color: #0056b3;
         }
 
+        .auth {
+            text-align: center;
+            margin-top: 20px;
+        }
+
         footer {
             text-align: center;
             padding: 20px;
@@ -94,13 +99,20 @@
 </header>
 
 <div class="container">
+    <div class="auth">
+        <input type="text" id="username" placeholder="Kullanıcı Adı">
+        <input type="password" id="password" placeholder="Şifre">
+        <button onclick="register()">Kayıt Ol</button>
+        <button onclick="login()">Giriş Yap</button>
+    </div>
+
     <section class="product-list">
         <div class="product">
             <img src="product1.jpg" alt="Ürün 1">
             <h3>3D Baskı Tasarımı 1</h3>
             <p>Yüksek kaliteli 3D baskı ile yapılmış tasarım.</p>
             <p class="price">₺150</p>
-            <button>Satın Al</button>
+            <button onclick="addToCart('3D Baskı Tasarımı 1', 150)">Sepete Ekle</button>
         </div>
 
         <div class="product">
@@ -108,23 +120,57 @@
             <h3>3D Baskı Tasarımı 2</h3>
             <p>Şık ve dayanıklı bir 3D baskı tasarımı.</p>
             <p class="price">₺200</p>
-            <button>Satın Al</button>
-        </div>
-
-        <div class="product">
-            <img src="product3.jpg" alt="Ürün 3">
-            <h3>3D Baskı Tasarımı 3</h3>
-            <p>Modern ve estetik bir ürün tasarımı.</p>
-            <p class="price">₺180</p>
-            <button>Satın Al</button>
+            <button onclick="addToCart('3D Baskı Tasarımı 2', 200)">Sepete Ekle</button>
         </div>
     </section>
+
+    <h2>Sepet</h2>
+    <ul id="cart"></ul>
 </div>
 
 <footer>
     <p>&copy; 2025 3D Baskı Mağazası. Tüm hakları saklıdır.</p>
 </footer>
 
+<script>
+    let cart = [];
+
+    function addToCart(product, price) {
+        cart.push({ product, price });
+        updateCart();
+    }
+
+    function updateCart() {
+        let cartList = document.getElementById('cart');
+        cartList.innerHTML = '';
+        cart.forEach(item => {
+            let li = document.createElement('li');
+            li.textContent = `${item.product} - ₺${item.price}`;
+            cartList.appendChild(li);
+        });
+    }
+
+    function register() {
+        let username = document.getElementById('username').value;
+        let password = document.getElementById('password').value;
+        if (username && password) {
+            localStorage.setItem(username, password);
+            alert('Kayıt başarılı!');
+        } else {
+            alert('Lütfen tüm alanları doldurun.');
+        }
+    }
+
+    function login() {
+        let username = document.getElementById('username').value;
+        let password = document.getElementById('password').value;
+        let storedPassword = localStorage.getItem(username);
+        if (storedPassword === password) {
+            alert('Giriş başarılı!');
+        } else {
+            alert('Hatalı kullanıcı adı veya şifre!');
+        }
+    }
+</script>
 </body>
 </html>
-
