@@ -77,23 +77,24 @@
             background-color: #0056b3;
         }
 
-        .cart {
+        .cart-buttons {
+            display: flex;
+            justify-content: space-between;
             margin-top: 20px;
+        }
+
+        .cart-buttons button {
+            background-color: #dc3545;
+            color: white;
             padding: 10px;
-            background-color: white;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            display: none;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
         }
 
-        .cart ul {
-            list-style: none;
-            padding: 0;
-        }
-
-        .cart ul li {
-            padding: 5px;
-            border-bottom: 1px solid #ddd;
+        .cart-buttons button:hover {
+            background-color: #c82333;
         }
 
         footer {
@@ -110,88 +111,57 @@
 <header>
     <h1>3D Baskı Ürünlerim</h1>
     <p>Yüksek kaliteli 3D baskı ürünlerini keşfedin!</p>
-    <button onclick="toggleCart()">Sepeti Görüntüle</button>
+    <button onclick="logout()">Çıkış Yap</button>
 </header>
 
 <div class="container">
     <section class="product-list">
-        <div class="product">
-            <img src="product1.jpg" alt="Ürün 1">
-            <h3>3D Baskı Tasarımı 1</h3>
-            <p>Yüksek kaliteli 3D baskı ile yapılmış tasarım.</p>
-            <p class="price">₺150</p>
-            <button onclick="addToCart('3D Baskı Tasarımı 1', 150)">Sepete Ekle</button>
-        </div>
-    </section>
+        <script>
+            const products = [
+                {name: "3D Baskı Tasarımı 1", price: "₺150", img: "product1.jpg"},
+                {name: "3D Baskı Tasarımı 2", price: "₺200", img: "product2.jpg"},
+                {name: "3D Baskı Tasarımı 3", price: "₺180", img: "product3.jpg"},
+                {name: "3D Baskı Tasarımı 4", price: "₺220", img: "product4.jpg"},
+                {name: "3D Baskı Tasarımı 5", price: "₺250", img: "product5.jpg"},
+                {name: "3D Baskı Tasarımı 6", price: "₺170", img: "product6.jpg"},
+                {name: "3D Baskı Tasarımı 7", price: "₺300", img: "product7.jpg"},
+                {name: "3D Baskı Tasarımı 8", price: "₺280", img: "product8.jpg"},
+                {name: "3D Baskı Tasarımı 9", price: "₺260", img: "product9.jpg"}
+            ];
 
-    <div class="cart" id="cart">
-        <h2>Sepetiniz</h2>
-        <ul id="cart-items"></ul>
-        <p><strong>Toplam: </strong><span id="cart-total">₺0</span></p>
-        <button onclick="checkout()">Sipariş Ver</button>
-        <button onclick="clearCart()">Sepeti Temizle</button>
-    </div>
+            function renderProducts() {
+                const productList = document.querySelector(".product-list");
+                productList.innerHTML = "";
+                products.forEach((product, index) => {
+                    productList.innerHTML += `
+                        <div class="product">
+                            <img src="${product.img}" alt="${product.name}">
+                            <h3>${product.name}</h3>
+                            <p>Yüksek kaliteli 3D baskı ile yapılmış tasarım.</p>
+                            <p class="price">${product.price}</p>
+                            <button onclick="addToCart(${index})">Sepete Ekle</button>
+                        </div>
+                    `;
+                });
+            }
+
+            function addToCart(index) {
+                alert(`${products[index].name} sepete eklendi!`);
+            }
+
+            function logout() {
+                alert("Başarıyla çıkış yaptınız!");
+                window.location.href = "login.html";
+            }
+
+            document.addEventListener("DOMContentLoaded", renderProducts);
+        </script>
+    </section>
 </div>
 
 <footer>
     <p>&copy; 2025 3D Baskı Mağazası. Tüm hakları saklıdır.</p>
 </footer>
 
-<script>
-    let cart = [];
-    let isLoggedIn = true; 
-
-    function addToCart(name, price) {
-        cart.push({ name, price });
-        updateCart();
-    }
-
-    function updateCart() {
-        let cartItems = document.getElementById("cart-items");
-        let cartTotal = document.getElementById("cart-total");
-        cartItems.innerHTML = "";
-        let total = 0;
-        cart.forEach((item, index) => {
-            total += item.price;
-            let li = document.createElement("li");
-            li.textContent = `${item.name} - ₺${item.price}`;
-            let removeBtn = document.createElement("button");
-            removeBtn.textContent = "Çıkar";
-            removeBtn.onclick = function () { removeFromCart(index); };
-            li.appendChild(removeBtn);
-            cartItems.appendChild(li);
-        });
-        cartTotal.textContent = `₺${total}`;
-        document.getElementById("cart").style.display = cart.length > 0 ? "block" : "none";
-    }
-
-    function removeFromCart(index) {
-        cart.splice(index, 1);
-        updateCart();
-    }
-
-    function clearCart() {
-        cart = [];
-        updateCart();
-    }
-
-    function toggleCart() {
-        if (!isLoggedIn) {
-            alert("Lütfen giriş yapın!");
-            return;
-        }
-        let cartDiv = document.getElementById("cart");
-        cartDiv.style.display = cartDiv.style.display === "block" ? "none" : "block";
-    }
-
-    function checkout() {
-        if (!isLoggedIn) {
-            alert("Sipariş vermek için giriş yapmalısınız!");
-            return;
-        }
-        alert("Siparişiniz alındı!");
-        clearCart();
-    }
-</script>
 </body>
 </html>
