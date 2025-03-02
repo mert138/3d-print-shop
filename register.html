@@ -53,6 +53,12 @@
             margin-top: 10px;
             display: block;
         }
+
+        .counter {
+            margin-top: 15px;
+            font-size: 16px;
+            color: #333;
+        }
     </style>
 </head>
 <body>
@@ -67,9 +73,21 @@
         <button type="submit">Kayıt Ol</button>
     </form>
     <a href="login.html" class="login-link">Zaten hesabınız var mı? Giriş yap</a>
+
+    <!-- Üye sayısını gösterecek sayaç -->
+    <div class="counter">
+        <p>Toplam Üye Sayısı: <span id="userCount">0</span></p>
+    </div>
 </div>
 
 <script>
+    // Sayaç değeri, localStorage'da "userCount" olarak saklanacak
+    function updateUserCount() {
+        let userCount = localStorage.getItem("userCount") || 0; // Eğer daha önce saklanmış bir değer varsa, yoksa 0 olacak
+        document.getElementById("userCount").innerText = userCount;
+    }
+
+    // Kayıt işlemi
     function register(event) {
         event.preventDefault();
         
@@ -83,15 +101,25 @@
             return;
         }
 
-        // Kullanıcı adı ve şifreyi localStorage'a kaydediyoruz
+        // Kullanıcıyı localStorage'a kaydediyoruz
         localStorage.setItem("username", username);
         localStorage.setItem("email", email);
         localStorage.setItem("password", password);
 
+        // Toplam kullanıcı sayısını güncelleme
+        let userCount = localStorage.getItem("userCount") || 0;
+        userCount = parseInt(userCount) + 1;  // Üye sayısını bir artır
+        localStorage.setItem("userCount", userCount); // Güncellenmiş kullanıcı sayısını sakla
+
         alert("Kayıt başarılı!");
+        updateUserCount();  // Sayaç güncelle
         window.location.href = "login.html"; // Kayıt sonrası giriş sayfasına yönlendir
     }
+
+    // Sayfa yüklendiğinde sayaç değeri güncellenir
+    window.onload = updateUserCount;
 </script>
 
 </body>
 </html>
+
