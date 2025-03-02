@@ -59,6 +59,11 @@
             font-size: 16px;
             color: #333;
         }
+
+        .error {
+            color: red;
+            font-size: 14px;
+        }
     </style>
 </head>
 <body>
@@ -78,6 +83,9 @@
     <div class="counter">
         <p>Toplam Üye Sayısı: <span id="userCount">0</span></p>
     </div>
+
+    <!-- Hata mesajı -->
+    <div class="error" id="error-message"></div>
 </div>
 
 <script>
@@ -85,6 +93,14 @@
     function updateUserCount() {
         let userCount = localStorage.getItem("userCount") || 0; // Eğer daha önce saklanmış bir değer varsa, yoksa 0 olacak
         document.getElementById("userCount").innerText = userCount;
+    }
+
+    // Kullanıcı adı ve e-posta kontrol fonksiyonu
+    function isUsernameOrEmailTaken(username, email) {
+        let users = JSON.parse(localStorage.getItem("users")) || []; // Daha önce kaydedilmiş kullanıcılar
+
+        // Kullanıcı adı veya e-posta adresi daha önce kaydedildiyse, true döner
+        return users.some(user => user.username === username || user.email === email);
     }
 
     // Kayıt işlemi
@@ -96,15 +112,29 @@
         let password = document.getElementById("password").value;
         let confirmPassword = document.getElementById("confirm-password").value;
         
+        // Şifreler uyuşmazsa
         if (password !== confirmPassword) {
             alert("Şifreler uyuşmuyor!");
             return;
         }
 
-        // Kullanıcıyı localStorage'a kaydediyoruz
-        localStorage.setItem("username", username);
-        localStorage.setItem("email", email);
-        localStorage.setItem("password", password);
+        // Kullanıcı adı veya e-posta daha önce alınmışsa
+        if (isUsernameOrEmailTaken(username, email)) {
+            document.getElementById("error-message").innerText = "Bu kullanıcı adı veya e-posta adresi zaten alınmış!";
+            return;
+        }
+
+        // Kullanıcıyı kaydetmek için bir kullanıcı nesnesi oluştur
+        let user = {
+            username: username,
+            email: email,
+            password: password
+        };
+
+        // Kullanıcıları localStorage'a kaydediyoruz
+        let users = JSON.parse(localStorage.getItem("users")) || [];
+        users.push(user);
+        localStorage.setItem("users", JSON.stringify(users));
 
         // Toplam kullanıcı sayısını güncelleme
         let userCount = localStorage.getItem("userCount") || 0;
@@ -122,4 +152,3 @@
 
 </body>
 </html>
-
