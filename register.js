@@ -1,19 +1,19 @@
-      document.getElementById('registerForm').addEventListener('submit', function (event) {
-    event.preventDefault(); // Formun sayfayı yenilemesini engeller.
+// Daha önce kayıtlı kullanıcıları al (eğer yoksa boş bir dizi başlat)
+let users = JSON.parse(localStorage.getItem("users")) || [];
 
-    const username = document.getElementById('username').value;
-    const email = document.getElementById('email').value;
-    const password = document.getElementById('password').value;
-    const confirmPassword = document.getElementById('confirm-password').value;
+document.getElementById("registerForm").addEventListener("submit", function(event) {
+    event.preventDefault();
 
-    if (password !== confirmPassword) {
-        alert('Şifreler uyuşmuyor!');
-        return;
-    }
+    let email = document.getElementById("email").value;
+    let username = document.getElementById("username").value;
+    let password = document.getElementById("password").value;
 
-    // Kullanıcıyı kaydetme işlemi buraya gelecek.
-    // Örneğin, API'ye istek gönderebilirsiniz.
+    // Kullanıcıyı listeye ekle
+    users.push({ email, username, password });
 
-    alert('Kayıt başarılı! Lütfen giriş yapın.');
-    window.location.href = 'login.html'; // Kayıt olduktan sonra giriş sayfasına yönlendirir.
+    // Listeyi localStorage’a kaydet (kalıcı olsun diye)
+    localStorage.setItem("users", JSON.stringify(users));
+
+    alert("Kayıt başarılı!");
+    window.location.href = "register-data.html"; // Kayıtlı kullanıcıları görme sayfasına yönlendir
 });
