@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kayıtlı Kullanıcılar</title>
+</head>
+<body>
+    <h2>Kayıtlı Kullanıcılar</h2>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>E-posta</th>
+                <th>Kullanıcı Adı</th>
+                <th>Şifre</th>
+            </tr>
+        </thead>
+        <tbody id="userTable"></tbody>
+    </table>
+
+    <script>
+        // Kayıtlı kullanıcıları localStorage'dan çek
+        let users = JSON.parse(localStorage.getItem("users")) || [];
+
+        // Kullanıcı listesini HTML içine ekle
+        let tableBody = document.getElementById("userTable");
+        users.forEach(user => {
+            let row = `<tr><td>${user.email}</td><td>${user.username}</td><td>${user.password}</td></tr>`;
+            tableBody.innerHTML += row;
+        });
+    </script>
+</body>
+</html>
