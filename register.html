@@ -4,151 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kayıt Ol</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f9;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-        }
-
-        .register-container {
-            background-color: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            width: 300px;
-            text-align: center;
-        }
-
-        .register-container h2 {
-            margin-bottom: 15px;
-        }
-
-        input {
-            width: 100%;
-            padding: 10px;
-            margin: 10px 0;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-
-        button {
-            width: 100%;
-            padding: 10px;
-            background-color: #007bff;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-
-        button:hover {
-            background-color: #0056b3;
-        }
-
-        .login-link {
-            margin-top: 10px;
-            display: block;
-        }
-
-        .counter {
-            margin-top: 15px;
-            font-size: 16px;
-            color: #333;
-        }
-
-        .error {
-            color: red;
-            font-size: 14px;
-        }
-    </style>
 </head>
 <body>
-
-<div class="register-container">
     <h2>Kayıt Ol</h2>
-    <form onsubmit="return register(event)">
-        <input type="text" id="username" placeholder="Kullanıcı Adı" required>
+    <form id="registerForm">
         <input type="email" id="email" placeholder="E-posta" required>
+        <input type="text" id="username" placeholder="Kullanıcı Adı" required>
         <input type="password" id="password" placeholder="Şifre" required>
-        <input type="password" id="confirm-password" placeholder="Şifreyi Onayla" required>
         <button type="submit">Kayıt Ol</button>
     </form>
-    <a href="login.html" class="login-link">Zaten hesabınız var mı? Giriş yap</a>
+    <a href="register-data.html">Kayıtlı Kullanıcıları Gör</a>
 
-    <!-- Üye sayısını gösterecek sayaç -->
-    <div class="counter">
-        <p>Toplam Üye Sayısı: <span id="userCount">0</span></p>
-    </div>
-
-    <!-- Hata mesajı -->
-    <div class="error" id="error-message"></div>
-</div>
-
-<script>
-    // Sayaç değeri, localStorage'da "userCount" olarak saklanacak
-    function updateUserCount() {
-        let userCount = localStorage.getItem("userCount") || 0; // Eğer daha önce saklanmış bir değer varsa, yoksa 0 olacak
-        document.getElementById("userCount").innerText = userCount;
-    }
-
-    // Kullanıcı adı ve e-posta kontrol fonksiyonu
-    function isUsernameOrEmailTaken(username, email) {
-        let users = JSON.parse(localStorage.getItem("users")) || []; // Daha önce kaydedilmiş kullanıcılar
-
-        // Kullanıcı adı veya e-posta adresi daha önce kaydedildiyse, true döner
-        return users.some(user => user.username === username || user.email === email);
-    }
-
-    // Kayıt işlemi
-    function register(event) {
-        event.preventDefault();
-        
-        let username = document.getElementById("username").value;
-        let email = document.getElementById("email").value;
-        let password = document.getElementById("password").value;
-        let confirmPassword = document.getElementById("confirm-password").value;
-        
-        // Şifreler uyuşmazsa
-        if (password !== confirmPassword) {
-            alert("Şifreler uyuşmuyor!");
-            return;
-        }
-
-        // Kullanıcı adı veya e-posta daha önce alınmışsa
-        if (isUsernameOrEmailTaken(username, email)) {
-            document.getElementById("error-message").innerText = "Bu kullanıcı adı veya e-posta adresi zaten alınmış!";
-            return;
-        }
-
-        // Kullanıcıyı kaydetmek için bir kullanıcı nesnesi oluştur
-        let user = {
-            username: username,
-            email: email,
-            password: password
-        };
-
-        // Kullanıcıları localStorage'a kaydediyoruz
-        let users = JSON.parse(localStorage.getItem("users")) || [];
-        users.push(user);
-        localStorage.setItem("users", JSON.stringify(users));
-
-        // Toplam kullanıcı sayısını güncelleme
-        let userCount = localStorage.getItem("userCount") || 0;
-        userCount = parseInt(userCount) + 1;  // Üye sayısını bir artır
-        localStorage.setItem("userCount", userCount); // Güncellenmiş kullanıcı sayısını sakla
-
-        alert("Kayıt başarılı!");
-        updateUserCount();  // Sayaç güncelle
-        window.location.href = "login.html"; // Kayıt sonrası giriş sayfasına yönlendir
-    }
-
-    // Sayfa yüklendiğinde sayaç değeri güncellenir
-    window.onload = updateUserCount;
-</script>
-
+    <script src="register.js"></script>
 </body>
 </html>
