@@ -1,18 +1,21 @@
-    document.getElementById('loginForm').addEventListener('submit', function (event) {
-    event.preventDefault(); // Formun sayfayı yenilemesini engeller.
+document.getElementById("loginForm").addEventListener("submit", function(event) {
+    event.preventDefault(); // Sayfanın yenilenmesini engeller
 
-    const username = document.getElementById('username').value;
-    const password = document.getElementById('password').value;
+    // Form verilerini al
+    let username = document.getElementById("loginUsername").value;
+    let password = document.getElementById("loginPassword").value;
 
-    // Burada backend'den gelen doğrulama işlemi yapılacak.
-    // Örnek olarak sabit bir kullanıcı adı ve şifre kontrolü ekliyoruz.
-    const storedUsername = 'kullaniciadi'; // Backend'den alınacak değer
-    const storedPassword = 'sifre123'; // Backend'den alınacak değer
+    // LocalStorage'dan kullanıcıları al
+    let users = JSON.parse(localStorage.getItem("users")) || [];
 
-    if (username === storedUsername && password === storedPassword) {
-        alert('Giriş başarılı!');
-        window.location.href = 'index.html'; // Ana sayfaya yönlendir
+    // Kullanıcıyı bul
+    let user = users.find(u => u.username === username && u.password === password);
+
+    // Eğer kullanıcı bulunduysa yönlendirme yap
+    if (user) {
+        window.location.href = "index.html"; // Başarılı girişte index.html'e yönlendir
     } else {
-        alert('Hatalı kullanıcı adı veya şifre!');
+        // Hatalı giriş durumunda hata mesajı göster
+        document.getElementById("errorMessage").textContent = "Kullanıcı adı veya şifre hatalı!";
     }
 });
