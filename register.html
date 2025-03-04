@@ -4,86 +4,71 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kayıt Ol</title>
+    <script defer src="register.js"></script> <!-- JS'yi defer ile yükledik -->
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: Arial, sans-serif;
-        }
-
         body {
-            background: linear-gradient(135deg, #4A90E2, #9013FE);
+            font-family: Arial, sans-serif;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
+            background-color: #f4f4f4;
+            margin: 0;
         }
-
         .container {
             background: white;
-            padding: 30px;
+            padding: 20px;
             border-radius: 10px;
-            box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 300px;
             text-align: center;
-            width: 350px;
         }
-
         h2 {
             margin-bottom: 20px;
             color: #333;
         }
-
         input {
             width: 100%;
             padding: 10px;
             margin: 10px 0;
             border: 1px solid #ccc;
             border-radius: 5px;
-            font-size: 16px;
         }
-
         button {
             width: 100%;
             padding: 10px;
-            background: #4A90E2;
+            background: #28a745;
             color: white;
             border: none;
             border-radius: 5px;
-            font-size: 18px;
             cursor: pointer;
-            transition: 0.3s;
         }
-
         button:hover {
-            background: #357ABD;
+            background: #218838;
         }
-
-        .link {
-            display: block;
+        .login-link {
             margin-top: 15px;
+            display: block;
+            color: #007bff;
             text-decoration: none;
-            color: #4A90E2;
-            font-size: 14px;
-            font-weight: bold;
         }
-
-        .link:hover {
+        .login-link:hover {
             text-decoration: underline;
         }
     </style>
 </head>
 <body>
+
     <div class="container">
         <h2>Kayıt Ol</h2>
         <form id="registerForm">
-            <input type="email" id="email" placeholder="E-posta" required>
-            <input type="text" id="username" placeholder="Kullanıcı Adı" required>
-            <input type="password" id="password" placeholder="Şifre" required>
+            <input type="text" id="registerUsername" placeholder="Kullanıcı Adı" required>
+            <input type="email" id="registerEmail" placeholder="E-posta" required>
+            <input type="password" id="registerPassword" placeholder="Şifre" required>
             <button type="submit">Kayıt Ol</button>
         </form>
-        <a class="link" href="login.html">Giriş Yap</a>
+        <a href="login.html" class="login-link">Zaten hesabınız var mı? Giriş yapın.</a>
     </div>
-    <script src="register.js"></script>
+
 </body>
 </html>
