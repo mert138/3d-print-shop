@@ -1,11 +1,31 @@
 document.addEventListener("DOMContentLoaded", function () {
-    document.getElementById("registerForm").addEventListener("submit", function (event) {
+    let form = document.getElementById("registerForm");
+
+    if (!form) {
+        console.error("registerForm bulunamadı!");
+        return;
+    }
+
+    form.addEventListener("submit", function (event) {
         event.preventDefault(); // Sayfanın yenilenmesini engeller
 
-        // Form verilerini al
-        let username = document.getElementById("registerUsername").value;
-        let email = document.getElementById("registerEmail").value;
-        let password = document.getElementById("registerPassword").value;
+        let usernameInput = document.getElementById("registerUsername");
+        let emailInput = document.getElementById("registerEmail");
+        let passwordInput = document.getElementById("registerPassword");
+
+        if (!usernameInput || !emailInput || !passwordInput) {
+            console.error("Kayıt formu için gerekli inputlar bulunamadı!");
+            return;
+        }
+
+        let username = usernameInput.value.trim();
+        let email = emailInput.value.trim();
+        let password = passwordInput.value.trim();
+
+        if (!username || !email || !password) {
+            alert("Lütfen tüm alanları doldurun.");
+            return;
+        }
 
         // LocalStorage'dan mevcut kullanıcıları al
         let users = JSON.parse(localStorage.getItem("users")) || [];
@@ -25,7 +45,7 @@ document.addEventListener("DOMContentLoaded", function () {
             alert("Kayıt başarılı! Giriş yapabilirsiniz.");
 
             // Kullanıcıyı login.html sayfasına yönlendir
-            window.location.href = "login.html"; 
+            window.location.href = "login.html";
         }
     });
 });
