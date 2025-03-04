@@ -25,7 +25,7 @@ document.addEventListener("DOMContentLoaded", function () {
             alert("Kayıt başarılı! Giriş yapabilirsiniz.");
 
             // Kullanıcıyı login.html sayfasına yönlendir
-            window.location.href = "login.html";
+            window.location.href = "login.html"; 
         }
     });
 });
