@@ -81,43 +81,16 @@
 <body>
     <div class="container">
         <h2>Giriş Yap</h2>
-        <input type="text" id="loginEmail" placeholder="E-posta">
-        <input type="password" id="loginPassword" placeholder="Şifre">
-        <button id="loginBtn">Giriş Yap</button>
+        <form id="loginForm">
+            <input type="email" id="loginEmail" placeholder="E-posta" required>
+            <input type="password" id="loginPassword" placeholder="Şifre" required>
+            <button type="submit" id="loginBtn">Giriş Yap</button>
+        </form>
         <a class="link" href="register.html">Kayıt Ol</a>
         <p class="error" id="errorMessage"></p>
     </div>
 
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-app.js";
-        import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-auth.js";
-
-        const firebaseConfig = {
-            apiKey: "AIzaSyCEu0jR_Pdru5ry7Gv8I_61ruajssZVm0k",
-            authDomain: "tremila-shop-133ce.firebaseapp.com",
-            projectId: "tremila-shop-133ce",
-            storageBucket: "tremila-shop-133ce.appspot.com",
-            messagingSenderId: "249334077736",
-            appId: "1:249334077736:web:4f9cb53aec4bbf3d17181d",
-            measurementId: "G-Q8VN1F66LW"
-        };
-
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
-
-        document.getElementById("loginBtn").addEventListener("click", function() {
-            const email = document.getElementById("loginEmail").value;
-            const password = document.getElementById("loginPassword").value;
-
-            signInWithEmailAndPassword(auth, email, password)
-                .then((userCredential) => {
-                    alert("Giriş başarılı! Ana sayfaya yönlendiriliyorsunuz.");
-                    window.location.href = "index.html";
-                })
-                .catch((error) => {
-                    document.getElementById("errorMessage").textContent = "Hata: " + error.message;
-                });
-        });
-    </script>
+    <!-- JavaScript dosyasını body'nin sonunda ekledik -->
+    <script type="module" src="login.js"></script>
 </body>
 </html>
