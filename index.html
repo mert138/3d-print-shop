@@ -15,7 +15,7 @@
         header {
             background-color: #333;
             color: white;
-            padding: 15px;
+            padding: 10px 0;
             text-align: center;
         }
 
@@ -109,49 +109,59 @@
 <body>
 
 <header>
-    <h1>Hoşgeldiniz!</h1>
+    <h1>3D Baskı Ürünlerim</h1>
+    <p>Yüksek kaliteli 3D baskı ürünlerini keşfedin!</p>
     <button onclick="logout()">Çıkış Yap</button>
 </header>
 
 <div class="container">
     <section class="product-list">
         <script>
-            // Firebase config
-            const firebaseConfig = {
-                apiKey: "AIzaSyCEu0jR_Pdru5ry7Gv8I_61ruajssZVm0k",
-                authDomain: "tremila-shop-133ce.firebaseapp.com",
-                projectId: "tremila-shop-133ce",
-                storageBucket: "tremila-shop-133ce.appspot.com",
-                messagingSenderId: "249334077736",
-                appId: "1:249334077736:web:4f9cb53aec4bbf3d17181d",
-                measurementId: "G-Q8VN1F66LW"
-            };
+            const products = [
+                {name: "3D Baskı Tasarımı 1", price: "₺150", img: "product1.jpg"},
+                {name: "3D Baskı Tasarımı 2", price: "₺200", img: "product2.jpg"},
+                {name: "3D Baskı Tasarımı 3", price: "₺180", img: "product3.jpg"},
+                {name: "3D Baskı Tasarımı 4", price: "₺220", img: "product4.jpg"},
+                {name: "3D Baskı Tasarımı 5", price: "₺250", img: "product5.jpg"},
+                {name: "3D Baskı Tasarımı 6", price: "₺170", img: "product6.jpg"},
+                {name: "3D Baskı Tasarımı 7", price: "₺300", img: "product7.jpg"},
+                {name: "3D Baskı Tasarımı 8", price: "₺280", img: "product8.jpg"},
+                {name: "3D Baskı Tasarımı 9", price: "₺260", img: "product9.jpg"}
+            ];
 
-            // Firebase setup
-            const app = firebase.initializeApp(firebaseConfig);
-            const auth = firebase.auth();
-
-            // Kullanıcı durumu kontrolü
-            auth.onAuthStateChanged((user) => {
-                if (user) {
-                    document.querySelector(".product-list").innerHTML = "<p>Giriş Yapıldı, Ürünler Burada Görünecek</p>";
-                } else {
-                    document.querySelector(".product-list").innerHTML = "<p>Giriş yapmadınız. Lütfen giriş yapın.</p>";
-                }
-            });
-
-            function logout() {
-                auth.signOut().then(() => {
-                    window.location.href = "login.html"; // Çıkış yaptıktan sonra login sayfasına yönlendir
+            function renderProducts() {
+                const productList = document.querySelector(".product-list");
+                productList.innerHTML = "";
+                products.forEach((product, index) => {
+                    productList.innerHTML += `
+                        <div class="product">
+                            <img src="${product.img}" alt="${product.name}">
+                            <h3>${product.name}</h3>
+                            <p>Yüksek kaliteli 3D baskı ile yapılmış tasarım.</p>
+                            <p class="price">${product.price}</p>
+                            <button onclick="addToCart(${index})">Sepete Ekle</button>
+                        </div>
+                    `;
                 });
             }
+
+            function addToCart(index) {
+                alert(`${products[index].name} sepete eklendi!`);
+            }
+
+            function logout() {
+                alert("Başarıyla çıkış yaptınız!");
+                window.location.href = "login.html";
+            }
+
+            document.addEventListener("DOMContentLoaded", renderProducts);
         </script>
     </section>
 </div>
 
-<!-- Firebase SDK -->
-<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js"></script>
+<footer>
+    <p>&copy; 2025 3D Baskı Mağazası. Tüm hakları saklıdır.</p>
+</footer>
 
 </body>
 </html>
