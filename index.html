@@ -116,15 +116,81 @@
 
 <div class="container">
     <section class="product-list">
-        <!-- Ürünler buraya yüklenecek -->
+        <script type="module">
+            import { initializeApp } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-app.js";
+            import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-auth.js";
+
+            const firebaseConfig = {
+                apiKey: "API_KEY",
+                authDomain: "tremila-shop-133ce.firebaseapp.com",
+                projectId: "tremila-shop-133ce",
+                storageBucket: "tremila-shop-133ce.appspot.com",
+                messagingSenderId: "249334077736",
+                appId: "1:249334077736:web:4f9cb53aec4bbf3d17181d",
+                measurementId: "G-Q8VN1F66LW"
+            };
+
+            const app = initializeApp(firebaseConfig);
+            const auth = getAuth(app);
+
+            // Oturum kontrolü
+            onAuthStateChanged(auth, (user) => {
+                if (!user) {
+                    // Eğer kullanıcı giriş yapmamışsa login sayfasına yönlendir
+                    window.location.href = "login.html";
+                } else {
+                    // Kullanıcı giriş yapmışsa, ürünleri göster
+                    renderProducts();
+                }
+            });
+
+            const products = [
+                {name: "3D Baskı Tasarımı 1", price: "₺150", img: "product1.jpg"},
+                {name: "3D Baskı Tasarımı 2", price: "₺200", img: "product2.jpg"},
+                {name: "3D Baskı Tasarımı 3", price: "₺180", img: "product3.jpg"},
+                {name: "3D Baskı Tasarımı 4", price: "₺220", img: "product4.jpg"},
+                {name: "3D Baskı Tasarımı 5", price: "₺250", img: "product5.jpg"},
+                {name: "3D Baskı Tasarımı 6", price: "₺170", img: "product6.jpg"},
+                {name: "3D Baskı Tasarımı 7", price: "₺300", img: "product7.jpg"},
+                {name: "3D Baskı Tasarımı 8", price: "₺280", img: "product8.jpg"},
+                {name: "3D Baskı Tasarımı 9", price: "₺260", img: "product9.jpg"}
+            ];
+
+            function renderProducts() {
+                const productList = document.querySelector(".product-list");
+                productList.innerHTML = "";
+                products.forEach((product, index) => {
+                    productList.innerHTML += `
+                        <div class="product">
+                            <img src="${product.img}" alt="${product.name}">
+                            <h3>${product.name}</h3>
+                            <p>Yüksek kaliteli 3D baskı ile yapılmış tasarım.</p>
+                            <p class="price">${product.price}</p>
+                            <button onclick="addToCart(${index})">Sepete Ekle</button>
+                        </div>
+                    `;
+                });
+            }
+
+            function addToCart(index) {
+                alert(`${products[index].name} sepete eklendi!`);
+            }
+
+            function logout() {
+                signOut(auth).then(() => {
+                    alert("Başarıyla çıkış yaptınız!");
+                    window.location.href = "login.html";
+                }).catch((error) => {
+                    console.error(error);
+                });
+            }
+        </script>
     </section>
 </div>
 
 <footer>
     <p>&copy; 2025 3D Baskı Mağazası. Tüm hakları saklıdır.</p>
 </footer>
-
-<script type="module" src="index.js"></script>
 
 </body>
 </html>
