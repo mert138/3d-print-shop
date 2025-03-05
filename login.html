@@ -7,98 +7,120 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
             margin: 0;
+            padding: 0;
+            background-color: #f4f4f9;
         }
-        .login-container {
-            background-color: white;
-            padding: 30px;
-            border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            width: 300px;
+
+        header {
+            background-color: #333;
+            color: white;
+            padding: 10px 0;
             text-align: center;
         }
-        .login-container h1 {
-            margin-bottom: 20px;
-            color: #333;
+
+        .container {
+            width: 80%;
+            margin: 0 auto;
         }
-        input {
+
+        .form-container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            margin: 0 auto;
+            margin-top: 100px;
+        }
+
+        .form-container input {
             width: 100%;
             padding: 10px;
-            margin-bottom: 15px;
-            border: 1px solid #ccc;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
             border-radius: 5px;
-            font-size: 16px;
         }
-        button {
-            width: 100%;
-            padding: 10px;
-            background-color: #28a745;
+
+        .form-container button {
+            background-color: #007bff;
             color: white;
+            padding: 10px;
             border: none;
             border-radius: 5px;
+            width: 100%;
             cursor: pointer;
-            font-size: 16px;
         }
-        button:hover {
-            background-color: #218838;
+
+        .form-container button:hover {
+            background-color: #0056b3;
         }
-        .error {
-            color: red;
-            margin-top: 10px;
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            background-color: #333;
+            color: white;
+            margin-top: 40px;
         }
     </style>
 </head>
 <body>
-    <div class="login-container">
+    <header>
         <h1>Giriş Yap</h1>
-        <form id="loginForm">
-            <input type="email" id="email" placeholder="Email" required><br>
-            <input type="password" id="password" placeholder="Şifre" required><br>
-            <button type="submit">Giriş Yap</button>
-        </form>
-        <p class="error" id="errorMessage"></p>
+    </header>
+
+    <div class="container">
+        <div class="form-container">
+            <form id="login-form">
+                <input type="email" id="email" placeholder="E-posta" required>
+                <input type="password" id="password" placeholder="Şifre" required>
+                <button type="submit">Giriş Yap</button>
+            </form>
+        </div>
     </div>
 
+    <footer>
+        <p>&copy; 2025 3D Baskı Mağazası. Tüm hakları saklıdır.</p>
+    </footer>
+
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js"></script>
+
     <script>
-        // Firebase config
+        // Firebase'in yapılandırma bilgilerini ekleyin
         const firebaseConfig = {
             apiKey: "AIzaSyCEu0jR_Pdru5ry7Gv8I_61ruajssZVm0k", 
-            authDomain: "tremila-shop-133ce.firebaseapp.com",
-            projectId: "tremila-shop-133ce",
-            storageBucket: "tremila-shop-133ce.appspot.com",
-            messagingSenderId: "249334077736",
-            appId: "1:249334077736:web:4f9cb53aec4bbf3d17181d",
-            measurementId: "G-Q8VN1F66LW"
+            authDomain: "your-auth-domain.firebaseapp.com",
+            projectId: "your-project-id",
+            storageBucket: "your-storage-bucket.appspot.com",
+            messagingSenderId: "sender-id",
+            appId: "your-app-id"
         };
 
-        // Firebase setup
+        // Firebase'i başlatma
         const app = firebase.initializeApp(firebaseConfig);
         const auth = firebase.auth();
 
-        // Giriş yapma fonksiyonu
-        document.getElementById('loginForm').addEventListener('submit', function(e) {
-            e.preventDefault();
+        // Giriş formunu ele al
+        document.getElementById('login-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+
             const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
-            
+
+            // Firebase Authentication ile giriş yap
             auth.signInWithEmailAndPassword(email, password)
-                .then((userCredential) => {
-                    // Kullanıcı başarıyla giriş yaptı
-                    window.location.href = "index.html"; // Ana sayfaya yönlendir
+                .then(() => {
+                    // Giriş başarılıysa, ana sayfaya yönlendir
+                    alert("Giriş başarılı!");
+                    window.location.href = 'index.html'; // Yönlendirme
                 })
                 .catch((error) => {
-                    document.getElementById('errorMessage').textContent = "Hata: " + error.message; // Hata mesajı göster
+                    // Hata durumunda mesaj göster
+                    alert("Hata: " + error.message);
                 });
         });
     </script>
-
-    <!-- Firebase SDK -->
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js"></script>
 </body>
 </html>
