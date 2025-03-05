@@ -1,20 +1,30 @@
 document.getElementById("registerForm").addEventListener("submit", function(event) {
     event.preventDefault();
 
-    const username = document.getElementById("username").value.trim();
-    const email = document.getElementById("email").value.trim();
-    const password = document.getElementById("password").value.trim();
+    var username = document.getElementById("registerUsername").value;
+    var email = document.getElementById("registerEmail").value;
+    var password = document.getElementById("registerPassword").value;
 
-    if (!username || !email || !password) {
-        alert("Lütfen tüm alanları doldurun!");
+    if (username === "" || email === "" || password === "") {
+        document.getElementById("errorMessage").innerText = "Lütfen tüm alanları doldurun!";
         return;
     }
 
-    // Kullanıcıyı kaydet (Local listeye ekleyelim)
-    let users = JSON.parse(localStorage.getItem("users")) || [];
-    users.push({ username, email, password });
-    localStorage.setItem("users", JSON.stringify(users));
+    // Kullanıcı bilgilerini bir JSON nesnesine ekleyelim
+    var userData = {
+        username: username,
+        email: email,
+        password: password
+    };
 
-    alert("Kayıt başarılı! Giriş ekranına yönlendiriliyorsunuz.");
-    window.location.href = "login.html"; // Login sayfasına yönlendir
+    var dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(userData, null, 2));
+    var downloadAnchor = document.createElement("a");
+    downloadAnchor.setAttribute("href", dataStr);
+    downloadAnchor.setAttribute("download", "kullanici_bilgileri.json");
+    document.body.appendChild(downloadAnchor);
+    downloadAnchor.click();
+    downloadAnchor.remove();
+
+    alert("Kayıt başarılı! Bilgiler JSON dosyası olarak indirildi.");
+    window.location.href = "login.html";
 });
