@@ -7,32 +7,31 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
             margin: 0;
+            padding: 0;
+            background-color: #f4f4f9;
         }
-        .register-container {
+        .container {
+            max-width: 400px;
+            margin: 50px auto;
+            padding: 20px;
             background-color: white;
-            padding: 30px;
             border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            width: 300px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        h2 {
             text-align: center;
         }
-        .register-container h1 {
-            margin-bottom: 20px;
-            color: #333;
+        label {
+            display: block;
+            margin: 10px 0;
         }
         input {
             width: 100%;
             padding: 10px;
-            margin-bottom: 15px;
-            border: 1px solid #ccc;
+            margin: 5px 0 15px 0;
             border-radius: 5px;
-            font-size: 16px;
+            border: 1px solid #ccc;
         }
         button {
             width: 100%;
@@ -42,75 +41,28 @@
             border: none;
             border-radius: 5px;
             cursor: pointer;
-            font-size: 16px;
         }
         button:hover {
             background-color: #0056b3;
         }
         .error {
             color: red;
-            margin-top: 10px;
+            text-align: center;
         }
     </style>
 </head>
 <body>
-
-    <div class="register-container">
-        <h1>Kayıt Ol</h1>
+    <div class="container">
+        <h2>Kayıt Ol</h2>
         <form id="registerForm">
-            <input type="email" id="email" placeholder="Email" required><br>
-            <input type="password" id="password" placeholder="Şifre" required><br>
-            <input type="password" id="confirmPassword" placeholder="Şifre Tekrar" required><br>
+            <label for="registerEmail">E-posta</label>
+            <input type="email" id="registerEmail" required placeholder="E-posta adresinizi girin">
+            <label for="registerPassword">Şifre</label>
+            <input type="password" id="registerPassword" required placeholder="Şifrenizi girin">
             <button type="submit">Kayıt Ol</button>
         </form>
-        <p class="error" id="errorMessage"></p>
+        <p class="error" id="registerError"></p>
     </div>
-
-    <script>
-        // Firebase config
-        const firebaseConfig = {
-            apiKey: "AIzaSyCEu0jR_Pdru5ry7Gv8I_61ruajssZVm0k",
-            authDomain: "tremila-shop-133ce.firebaseapp.com",
-            projectId: "tremila-shop-133ce",
-            storageBucket: "tremila-shop-133ce.appspot.com",
-            messagingSenderId: "249334077736",
-            appId: "1:249334077736:web:4f9cb53aec4bbf3d17181d",
-            measurementId: "G-Q8VN1F66LW"
-        };
-
-        // Firebase setup
-        const app = firebase.initializeApp(firebaseConfig);
-        const auth = firebase.auth();
-
-        // Kayıt olma fonksiyonu
-        document.getElementById('registerForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
-            const confirmPassword = document.getElementById('confirmPassword').value;
-
-            // Şifrelerin eşleştiğinden emin ol
-            if (password !== confirmPassword) {
-                document.getElementById('errorMessage').textContent = "Şifreler eşleşmiyor!";
-                return;
-            }
-
-            // Firebase ile kullanıcı kaydı
-            auth.createUserWithEmailAndPassword(email, password)
-                .then((userCredential) => {
-                    // Kayıt başarılı, kullanıcı giriş yaptı
-                    window.location.href = "index.html"; // Ana sayfaya yönlendir
-                })
-                .catch((error) => {
-                    document.getElementById('errorMessage').textContent = "Hata: " + error.message; // Hata mesajı göster
-                });
-        });
-    </script>
-
-    <!-- Firebase SDK -->
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js"></script>
-
+    <script src="register.js"></script>
 </body>
 </html>
