@@ -2,7 +2,7 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/11.4.0/firebas
 import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-auth.js";
 
 const firebaseConfig = {
-    apiKey: "API_KEY",
+    apiKey: "AIzaSyCEu0jR_Pdru5ry7Gv8I_61ruajssZVm0k",
     authDomain: "tremila-shop-133ce.firebaseapp.com",
     projectId: "tremila-shop-133ce",
     storageBucket: "tremila-shop-133ce.appspot.com",
