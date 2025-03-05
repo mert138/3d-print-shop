@@ -46,7 +46,9 @@ document.getElementById("registerBtn").addEventListener("click", function(e) {
             }, 1500);
         })
         .catch((error) => {
-            // Hata mesajı
+            // Hata mesajını logla
+            console.log("Hata Detayı: ", error.code, error.message);  // Hata detayını loglamak
             document.getElementById("errorMessage").textContent = "Hata: " + error.message;
         });
 });
+
