@@ -82,15 +82,36 @@
     <div class="container">
         <h2>Kayıt Ol</h2>
         <form id="registerForm">
+            <input type="text" id="registerUsername" placeholder="Kullanıcı Adı" required>
             <input type="email" id="registerEmail" placeholder="E-posta" required>
             <input type="password" id="registerPassword" placeholder="Şifre" required>
-            <button type="submit" id="registerBtn">Kayıt Ol</button>
+            <button type="submit">Kayıt Ol</button>
         </form>
-        <a class="link" href="login.html">Zaten üyeyim, giriş yap</a>
+        <a class="link" href="login.html">Giriş Yap</a>
         <p class="error" id="errorMessage"></p>
     </div>
 
-    <!-- JavaScript dosyasını body'nin sonunda ekledik -->
-    <script type="module" src="register.js"></script>
+    <script>
+        document.getElementById("registerForm").addEventListener("submit", function(event) {
+            event.preventDefault(); // Sayfanın yenilenmesini engelle
+
+            var username = document.getElementById("registerUsername").value;
+            var email = document.getElementById("registerEmail").value;
+            var password = document.getElementById("registerPassword").value;
+
+            if (username === "" || email === "" || password === "") {
+                document.getElementById("errorMessage").innerText = "Lütfen tüm alanları doldurun!";
+                return;
+            }
+
+            // 📌 Kullanıcı bilgilerini localStorage'a kaydet (Geçici çözüm)
+            localStorage.setItem("username", username);
+            localStorage.setItem("email", email);
+            localStorage.setItem("password", password);
+
+            alert("Kayıt başarılı! Şimdi giriş yapabilirsiniz.");
+            window.location.href = "login.html";
+        });
+    </script>
 </body>
 </html>
