@@ -1,34 +1,116 @@
-<script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-app.js";
-  import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-auth.js";
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kayıt Ol</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .register-container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            width: 300px;
+            text-align: center;
+        }
+        .register-container h1 {
+            margin-bottom: 20px;
+            color: #333;
+        }
+        input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .error {
+            color: red;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
 
-  const firebaseConfig = {
-      apiKey: "AIzaSyCEu0jR_Pdru5ry7Gv8I_61ruajssZVm0k",  // **BURAYI DÜZELT**
-      authDomain: "tremila-shop-133ce.firebaseapp.com",
-      projectId: "tremila-shop-133ce",
-      storageBucket: "tremila-shop-133ce.appspot.com",
-      messagingSenderId: "249334077736",
-      appId: "1:249334077736:web:4f9cb53aec4bbf3d17181d",
-      measurementId: "G-Q8VN1F66LW"
-  };
+    <div class="register-container">
+        <h1>Kayıt Ol</h1>
+        <form id="registerForm">
+            <input type="email" id="email" placeholder="Email" required><br>
+            <input type="password" id="password" placeholder="Şifre" required><br>
+            <input type="password" id="confirmPassword" placeholder="Şifre Tekrar" required><br>
+            <button type="submit">Kayıt Ol</button>
+        </form>
+        <p class="error" id="errorMessage"></p>
+    </div>
 
-  const app = initializeApp(firebaseConfig);
-  const auth = getAuth(app);
+    <script>
+        // Firebase config
+        const firebaseConfig = {
+            apiKey: "AIzaSyCEu0jR_Pdru5ry7Gv8I_61ruajssZVm0k",
+            authDomain: "tremila-shop-133ce.firebaseapp.com",
+            projectId: "tremila-shop-133ce",
+            storageBucket: "tremila-shop-133ce.appspot.com",
+            messagingSenderId: "249334077736",
+            appId: "1:249334077736:web:4f9cb53aec4bbf3d17181d",
+            measurementId: "G-Q8VN1F66LW"
+        };
 
-  document.getElementById("registerForm").addEventListener("submit", function (event) {
-      event.preventDefault();
+        // Firebase setup
+        const app = firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
 
-      const email = document.getElementById("registerEmail").value;
-      const password = document.getElementById("registerPassword").value;
-      const errorMessage = document.getElementById("registerError");
+        // Kayıt olma fonksiyonu
+        document.getElementById('registerForm').addEventListener('submit', function(e) {
+            e.preventDefault();
 
-      createUserWithEmailAndPassword(auth, email, password)
-          .then(() => {
-              alert("Kayıt başarılı!");
-              window.location.href = "login.html";
-          })
-          .catch((error) => {
-              errorMessage.textContent = "Hata: " + error.message;
-          });
-  });
-</script>
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+
+            // Şifrelerin eşleştiğinden emin ol
+            if (password !== confirmPassword) {
+                document.getElementById('errorMessage').textContent = "Şifreler eşleşmiyor!";
+                return;
+            }
+
+            // Firebase ile kullanıcı kaydı
+            auth.createUserWithEmailAndPassword(email, password)
+                .then((userCredential) => {
+                    // Kayıt başarılı, kullanıcı giriş yaptı
+                    window.location.href = "index.html"; // Ana sayfaya yönlendir
+                })
+                .catch((error) => {
+                    document.getElementById('errorMessage').textContent = "Hata: " + error.message; // Hata mesajı göster
+                });
+        });
+    </script>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js"></script>
+
+</body>
+</html>
