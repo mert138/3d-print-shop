@@ -2,7 +2,7 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/11.4.0/firebas
 import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-auth.js";
 
 const firebaseConfig = {
-    apiKey: "API_KEY", // Firebase API key'i burada ekle
+    apiKey: "AIzaSyCEu0jR_Pdru5ry7Gv8I_61ruajssZVm0k", // Firebase API key'i burada ekle
     authDomain: "your-project-id.firebaseapp.com", // Firebase auth domain
     projectId: "your-project-id", // Firebase project ID
     storageBucket: "your-project-id.appspot.com", // Firebase storage bucket
