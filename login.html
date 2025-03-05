@@ -4,17 +4,70 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Giriş Yap</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .login-container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            width: 300px;
+            text-align: center;
+        }
+        .login-container h1 {
+            margin-bottom: 20px;
+            color: #333;
+        }
+        input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #218838;
+        }
+        .error {
+            color: red;
+            margin-top: 10px;
+        }
+    </style>
 </head>
 <body>
-    <h1>Giriş Yap</h1>
-    <button onclick="login()">Giriş Yap</button>
+    <div class="login-container">
+        <h1>Giriş Yap</h1>
+        <form id="loginForm">
+            <input type="email" id="email" placeholder="Email" required><br>
+            <input type="password" id="password" placeholder="Şifre" required><br>
+            <button type="submit">Giriş Yap</button>
+        </form>
+        <p class="error" id="errorMessage"></p>
+    </div>
 
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-app.js";
-        import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-auth.js";
-
+    <script>
+        // Firebase config
         const firebaseConfig = {
-            apiKey: "AIzaSyCEu0jR_Pdru5ry7Gv8I_61ruajssZVm0k",
+            apiKey: "API_KEY", 
             authDomain: "tremila-shop-133ce.firebaseapp.com",
             projectId: "tremila-shop-133ce",
             storageBucket: "tremila-shop-133ce.appspot.com",
@@ -23,21 +76,29 @@
             measurementId: "G-Q8VN1F66LW"
         };
 
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
+        // Firebase setup
+        const app = firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
 
-        function login() {
-            const email = prompt("Email:");
-            const password = prompt("Şifre:");
+        // Giriş yapma fonksiyonu
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
             
-            signInWithEmailAndPassword(auth, email, password)
+            auth.signInWithEmailAndPassword(email, password)
                 .then((userCredential) => {
-                    window.location.href = "index.html";
+                    // Kullanıcı başarıyla giriş yaptı
+                    window.location.href = "index.html"; // Ana sayfaya yönlendir
                 })
                 .catch((error) => {
-                    alert("Giriş yapılamadı: " + error.message);
+                    document.getElementById('errorMessage').textContent = "Hata: " + error.message; // Hata mesajı göster
                 });
-        }
+        });
     </script>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js"></script>
 </body>
 </html>
