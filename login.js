@@ -24,7 +24,7 @@ document.getElementById("loginForm").addEventListener("submit", function (event)
     signInWithEmailAndPassword(auth, email, password)
         .then(() => {
             alert("Giriş başarılı!");
-            window.location.href = "dashboard.html";
+            window.location.href = "index.html";
         })
         .catch((error) => {
             errorMessage.textContent = "Hata: " + error.message;
