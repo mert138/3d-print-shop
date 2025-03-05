@@ -4,66 +4,40 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Giriş Yap</title>
-    <style>
-        body {
-            background: linear-gradient(135deg, #4A90E2, #9013FE);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-        }
-        .container {
-            background: white;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.2);
-            text-align: center;
-            width: 350px;
-        }
-        h2 {
-            margin-bottom: 20px;
-            color: #333;
-        }
-        input {
-            width: 100%;
-            padding: 10px;
-            margin: 10px 0;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            font-size: 16px;
-        }
-        button {
-            width: 100%;
-            padding: 10px;
-            background: #4A90E2;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            font-size: 18px;
-            cursor: pointer;
-            transition: 0.3s;
-        }
-        button:hover {
-            background: #357ABD;
-        }
-        .error {
-            color: red;
-            margin-top: 10px;
-        }
-    </style>
 </head>
 <body>
-    <div class="container">
-        <h2>Giriş Yap</h2>
-        <form id="loginForm">
-            <input type="email" id="loginEmail" placeholder="E-posta" required>
-            <input type="password" id="loginPassword" placeholder="Şifre" required>
-            <button type="submit">Giriş Yap</button>
-        </form>
-        <a class="link" href="register.html">Kayıt Ol</a>
-        <p class="error" id="loginError"></p>
-    </div>
+    <h1>Giriş Yap</h1>
+    <button onclick="login()">Giriş Yap</button>
 
-    <script type="module" src="login.js"></script>
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-app.js";
+        import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-auth.js";
+
+        const firebaseConfig = {
+            apiKey: "API_KEY",
+            authDomain: "tremila-shop-133ce.firebaseapp.com",
+            projectId: "tremila-shop-133ce",
+            storageBucket: "tremila-shop-133ce.appspot.com",
+            messagingSenderId: "249334077736",
+            appId: "1:249334077736:web:4f9cb53aec4bbf3d17181d",
+            measurementId: "G-Q8VN1F66LW"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+
+        function login() {
+            const email = prompt("Email:");
+            const password = prompt("Şifre:");
+            
+            signInWithEmailAndPassword(auth, email, password)
+                .then((userCredential) => {
+                    window.location.href = "index.html";
+                })
+                .catch((error) => {
+                    alert("Giriş yapılamadı: " + error.message);
+                });
+        }
+    </script>
 </body>
 </html>
