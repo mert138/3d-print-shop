@@ -2,13 +2,13 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/11.4.0/firebas
 import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-auth.js";
 
 const firebaseConfig = {
-    apiKey: "AIzaSyCEu0jR_Pdru5ry7Gv8I_61ruajssZVm0k",
-    authDomain: "tremila-shop-133ce.firebaseapp.com",
-    projectId: "tremila-shop-133ce",
-    storageBucket: "tremila-shop-133ce.appspot.com",
-    messagingSenderId: "249334077736",
-    appId: "1:249334077736:web:4f9cb53aec4bbf3d17181d",
-    measurementId: "G-Q8VN1F66LW"
+    apiKey: "API_KEY", // Firebase API key'i burada ekle
+    authDomain: "your-project-id.firebaseapp.com", // Firebase auth domain
+    projectId: "your-project-id", // Firebase project ID
+    storageBucket: "your-project-id.appspot.com", // Firebase storage bucket
+    messagingSenderId: "your-messaging-sender-id", // Firebase messaging sender ID
+    appId: "your-app-id", // Firebase app ID
+    measurementId: "your-measurement-id" // Firebase measurement ID
 };
 
 const app = initializeApp(firebaseConfig);
@@ -22,9 +22,9 @@ document.getElementById("registerForm").addEventListener("submit", function (eve
     const errorMessage = document.getElementById("registerError");
 
     createUserWithEmailAndPassword(auth, email, password)
-        .then((userCredential) => {
-            alert("Kayıt başarılı! Giriş sayfasına yönlendiriliyorsunuz...");
-            window.location.href = "login.html";
+        .then(() => {
+            alert("Kayıt başarılı!");
+            window.location.href = "login.html"; // Kayıttan sonra login sayfasına yönlendir
         })
         .catch((error) => {
             errorMessage.textContent = "Hata: " + error.message;
