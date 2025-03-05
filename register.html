@@ -81,44 +81,16 @@
 <body>
     <div class="container">
         <h2>Kayıt Ol</h2>
-        <input type="text" id="email" placeholder="E-posta">
-        <input type="password" id="password" placeholder="Şifre">
-        <button id="registerBtn">Kayıt Ol</button>
-        <a class="link" href="login.html">Giriş Yap</a>
+        <form id="registerForm">
+            <input type="email" id="registerEmail" placeholder="E-posta" required>
+            <input type="password" id="registerPassword" placeholder="Şifre" required>
+            <button type="submit" id="registerBtn">Kayıt Ol</button>
+        </form>
+        <a class="link" href="login.html">Zaten üyeyim, giriş yap</a>
         <p class="error" id="errorMessage"></p>
     </div>
 
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-app.js";
-        import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-auth.js";
-
-        const firebaseConfig = {
-            apiKey: "AIzaSyCEu0jR_Pdru5ry7Gv8I_61ruajssZVm0k",
-            authDomain: "tremila-shop-133ce.firebaseapp.com",
-            projectId: "tremila-shop-133ce",
-            storageBucket: "tremila-shop-133ce.appspot.com",
-            messagingSenderId: "249334077736",
-            appId: "1:249334077736:web:4f9cb53aec4bbf3d17181d",
-            measurementId: "G-Q8VN1F66LW"
-        };
-
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
-
-        document.getElementById("registerBtn").addEventListener("click", function() {
-            const email = document.getElementById("email").value;
-            const password = document.getElementById("password").value;
-
-            createUserWithEmailAndPassword(auth, email, password)
-                .then((userCredential) => {
-                    alert("Kayıt başarılı! Giriş yapabilirsiniz.");
-                    window.location.href = "login.html";
-                })
-                .catch((error) => {
-                    document.getElementById("errorMessage").textContent = "Hata: " + error.message;
-                });
-        });
-    </script>
+    <!-- JavaScript dosyasını body'nin sonunda ekledik -->
+    <script type="module" src="register.js"></script>
 </body>
 </html>
-
