@@ -7,62 +7,59 @@
     <style>
         body {
             font-family: Arial, sans-serif;
+            background: linear-gradient(to right, #6a11cb, #2575fc);
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
             margin: 0;
-            padding: 0;
-            background-color: #f4f4f9;
         }
         .container {
-            max-width: 400px;
-            margin: 50px auto;
+            background: rgba(0, 0, 0, 0.7);
             padding: 20px;
-            background-color: white;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
-        h2 {
+            border-radius: 10px;
             text-align: center;
+            width: 300px;
         }
-        label {
-            display: block;
+        input, button {
+            width: 100%;
+            padding: 10px;
             margin: 10px 0;
-        }
-        input {
-            width: 100%;
-            padding: 10px;
-            margin: 5px 0 15px 0;
-            border-radius: 5px;
-            border: 1px solid #ccc;
-        }
-        button {
-            width: 100%;
-            padding: 10px;
-            background-color: #007bff;
-            color: white;
             border: none;
             border-radius: 5px;
+        }
+        input {
+            background: #f8f8f8;
+        }
+        button {
+            background: #28a745;
+            color: white;
             cursor: pointer;
         }
         button:hover {
-            background-color: #0056b3;
+            background: #218838;
         }
-        .error {
-            color: red;
-            text-align: center;
+        a {
+            color: #ffcc00;
         }
     </style>
 </head>
 <body>
     <div class="container">
         <h2>Kayıt Ol</h2>
-        <form id="registerForm">
-            <label for="registerEmail">E-posta</label>
-            <input type="email" id="registerEmail" required placeholder="E-posta adresinizi girin">
-            <label for="registerPassword">Şifre</label>
-            <input type="password" id="registerPassword" required placeholder="Şifrenizi girin">
+        <form id="register-form">
+            <label for="email">E-posta:</label>
+            <input type="email" id="email" required>
+            
+            <label for="password">Şifre:</label>
+            <input type="password" id="password" required>
+            
             <button type="submit">Kayıt Ol</button>
         </form>
-        <p class="error" id="registerError"></p>
+        <p>Zaten bir hesabınız var mı? <a href="login.html">Giriş yap</a></p>
     </div>
-    <script src="register.js"></script>
+
+    <script type="module" src="register.js"></script>
 </body>
 </html>
