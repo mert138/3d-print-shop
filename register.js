@@ -1,6 +1,6 @@
 // Firebase SDK'yı dinamik olarak yükle
 const firebaseConfig = {
-    apiKey: "API_KEY",
+    apiKey: "AIzaSyCEu0jR_Pdru5ry7Gv8I_61ruajssZVm0k",
     authDomain: "your-project-id.firebaseapp.com",
     projectId: "your-project-id",
     storageBucket: "your-project-id.appspot.com",
