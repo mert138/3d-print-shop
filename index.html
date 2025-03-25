@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ana Sayfa</title>
+    <title>Login Sayfası</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -21,47 +21,39 @@
             width: 80%;
             margin: 0 auto;
         }
-        .product-list {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 20px;
-            margin-top: 20px;
-        }
-        .product {
+        .form-container {
             background-color: white;
-            padding: 15px;
+            padding: 20px;
             border-radius: 8px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            margin: 50px auto;
         }
-        .product img {
+        .form-container h2 {
+            margin-bottom: 20px;
+        }
+        .form-container input {
             width: 100%;
-            height: auto;
-            border-radius: 8px;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 4px;
         }
-        .product h3 {
-            margin-top: 10px;
-            font-size: 1.5em;
-            color: #333;
-        }
-        .product p {
-            font-size: 1em;
-            color: #555;
-        }
-        .product .price {
-            font-size: 1.2em;
-            color: #28a745;
-            margin-top: 10px;
-        }
-        .product button {
+        .form-container button {
+            width: 100%;
+            padding: 10px;
             background-color: #007bff;
             color: white;
             border: none;
-            padding: 10px;
-            border-radius: 5px;
+            border-radius: 4px;
             cursor: pointer;
         }
-        .product button:hover {
+        .form-container button:hover {
             background-color: #0056b3;
+        }
+        .error {
+            color: red;
+            margin-top: 10px;
         }
     </style>
 </head>
@@ -70,41 +62,18 @@
         <h1>Hoşgeldiniz</h1>
     </header>
     <div class="container">
-        <div class="product-list">
-            <div class="product">
-                <img src="product1.jpg" alt="Ürün 1">
-                <h3>Ürün 1</h3>
-                <p>Ürün 1 açıklaması.</p>
-                <div class="price">₺100</div>
-                <button>Sepete Ekle</button>
-            </div>
+        <div class="form-container">
+            <h2>Giriş Yap</h2>
+            <form id="loginForm">
+                <input type="email" id="loginEmail" placeholder="E-posta" required>
+                <input type="password" id="loginPassword" placeholder="Şifre" required>
+                <button type="submit">Giriş Yap</button>
+            </form>
+            <p id="loginError" class="error"></p>
         </div>
     </div>
 
-    <!-- Firebase SDK ve modüllerinin yüklenmesi -->
-    <script type="module">
-        // Firebase SDK'larını içe aktar
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-app.js";
-        import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-auth.js";
-        import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-analytics.js";
-
-        // Firebase yapılandırma bilgileri
-        const firebaseConfig = {
-            apiKey: "AIzaSyCEu0jR_Pdru5ry7Gv8I_61ruajssZVm0k",
-            authDomain: "tremila-shop-133ce.firebaseapp.com",
-            projectId: "tremila-shop-133ce",
-            storageBucket: "tremila-shop-133ce.firebasestorage.app",
-            messagingSenderId: "249334077736",
-            appId: "1:249334077736:web:4f9cb53aec4bbf3d17181d",
-            measurementId: "G-Q8VN1F66LW"
-        };
-
-        // Firebase'i başlat
-        const app = initializeApp(firebaseConfig);
-        const analytics = getAnalytics(app);
-
-        // Firebase Authentication
-        const auth = getAuth();
-    </script>
+    <!-- Firebase ve login.js dosyasını modül olarak ekle -->
+    <script type="module" src="login.js"></script>
 </body>
 </html>
