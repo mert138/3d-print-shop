@@ -105,21 +105,6 @@
 
         // Firebase Authentication
         const auth = getAuth();
-
-        // Örnek giriş işlevi
-        const email = "example@example.com";  // Kullanıcı e-posta adresi
-        const password = "password123";        // Kullanıcı şifresi
-        signInWithEmailAndPassword(auth, email, password)
-            .then((userCredential) => {
-                // Başarılı giriş
-                const user = userCredential.user;
-                console.log("Giriş başarılı: ", user);
-            })
-            .catch((error) => {
-                // Hata oluştu
-                console.error("Hata: ", error.message);
-            });
     </script>
 </body>
 </html>
-
