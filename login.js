@@ -1,40 +1,22 @@
-// Firebase yapılandırması
-const firebaseConfig = {
-  apiKey: "AIzaSyCEu0jR_Pdru5ry7Gv8I_61ruajssZVm0k",
-  authDomain: "tremila-shop-133ce.firebaseapp.com",
-  projectId: "tremila-shop-133ce",
-  storageBucket: "tremila-shop-133ce.firebasestorage.app",
-  messagingSenderId: "249334077736",
-  appId: "1:249334077736:web:4f9cb53aec4bbf3d17181d",
-  measurementId: "G-Q8VN1F66LW"
-};
+// Firebase'i yükle
+import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-auth.js";
 
 // Firebase'i başlat
-if (!firebase.apps.length) {
-    firebase.initializeApp(firebaseConfig);
-}
-const auth = firebase.auth();
+const auth = getAuth();
 
-// Giriş formunu dinle
-document.addEventListener("DOMContentLoaded", function () {
-    const loginForm = document.getElementById("loginForm");
-
-    if (loginForm) {
-        loginForm.addEventListener("submit", function (event) {
-            event.preventDefault();
-
-            const email = document.getElementById("loginEmail").value;
-            const password = document.getElementById("loginPassword").value;
-            const errorMessage = document.getElementById("loginError");
-
-            auth.signInWithEmailAndPassword(email, password)
-                .then(() => {
-                    alert("Giriş başarılı!");
-                    window.location.href = "dashboard.html"; // Kullanıcı giriş yaptıktan sonra yönlendir
-                })
-                .catch((error) => {
-                    errorMessage.textContent = "Hata: " + error.message;
-                });
+// Giriş fonksiyonu
+function loginUser(email, password) {
+    signInWithEmailAndPassword(auth, email, password)
+        .then((userCredential) => {
+            const user = userCredential.user;
+            console.log("Giriş başarılı: ", user);
+        })
+        .catch((error) => {
+            console.error("Hata: ", error.message);
         });
-    }
-});
+}
+
+// Kullanıcı girişini başlatmak için
+const email = "example@example.com"; // Kullanıcı email adresi
+const password = "password123"; // Kullanıcı şifresi
+loginUser(email, password);
