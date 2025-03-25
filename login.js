@@ -6,7 +6,7 @@ const firebaseConfig = {
   storageBucket: "tremila-shop-133ce.firebasestorage.app",
   messagingSenderId: "249334077736",
   appId: "1:249334077736:web:4f9cb53aec4bbf3d17181d",
-  measurementId: "G-Q8VN1F66LW
+  measurementId: "G-Q8VN1F66LW"
 };
 
 // Firebase'i başlat
