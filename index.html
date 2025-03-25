@@ -64,6 +64,28 @@
             background-color: #0056b3;
         }
     </style>
+    <!-- Firebase SDK'larını içe aktar -->
+    <script type="module">
+        // Import the functions you need from the SDKs you need
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-app.js";
+        import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-auth.js";
+        import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-analytics.js";
+
+        // Your web app's Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyCEu0jR_Pdru5ry7Gv8I_61ruajssZVm0k",
+            authDomain: "tremila-shop-133ce.firebaseapp.com",
+            projectId: "tremila-shop-133ce",
+            storageBucket: "tremila-shop-133ce.firebasestorage.app",
+            messagingSenderId: "249334077736",
+            appId: "1:249334077736:web:4f9cb53aec4bbf3d17181d",
+            measurementId: "G-Q8VN1F66LW"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const analytics = getAnalytics(app);
+    </script>
 </head>
 <body>
     <header>
