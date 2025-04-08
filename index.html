@@ -6,7 +6,7 @@
   <title>3D Sanat & Tasarım</title>
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
-  <!-- Google Font -->
+  <!-- Google Font (Poppins) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
@@ -16,9 +16,11 @@
     }
   </style>
   
-  <!-- Google AdSense Script -->
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5871375969253618"
-     crossorigin="anonymous"></script>
+  <!-- Google AdSense Script (Kendi kodun) -->
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5871375969253618"
+       crossorigin="anonymous"></script>
+       
+  <!-- Siteye ait JavaScript dosyasını daha sonra eklemek üzere defer ile yükleyelim -->
   <script defer src="app.js"></script>
 </head>
 <body class="bg-gray-50 text-gray-800">
@@ -26,8 +28,8 @@
   <!-- Navbar -->
   <header class="fixed w-full bg-white shadow z-50">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="flex justify-between h-16">
-        <div class="flex-shrink-0 flex items-center">
+      <div class="flex justify-between h-16 items-center">
+        <div class="flex-shrink-0">
           <a href="#" class="text-2xl font-bold text-blue-600">3DArt</a>
         </div>
         <nav class="hidden md:flex items-center space-x-6">
@@ -35,16 +37,31 @@
           <a href="#portfoy" class="hover:text-blue-600 transition">Portföy</a>
           <a href="#hakkimizda" class="hover:text-blue-600 transition">Hakkımızda</a>
         </nav>
-        <div class="flex items-center">
-          <button onclick="toggleCart()" class="relative bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition">
+        <div class="flex items-center gap-4">
+          <button id="cartButton" onclick="toggleCart()" class="relative bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition">
             🛒
             <span id="cart-count" class="absolute -top-2 -right-2 bg-red-500 rounded-full text-xs w-5 h-5 flex items-center justify-center">0</span>
           </button>
+          <button id="signupButton" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 transition">Kayıt Ol</button>
         </div>
       </div>
     </div>
   </header>
-
+  
+  <!-- Kayıt Formu Modalı -->
+  <div id="signupModal" class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center hidden z-50">
+    <div class="bg-white rounded-lg shadow-lg w-96 p-6 relative">
+      <h2 class="text-xl font-semibold mb-4 text-center">Kayıt Ol</h2>
+      <form id="signupForm" class="space-y-4">
+        <input type="text" placeholder="Adınız" class="w-full border p-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+        <input type="email" placeholder="E-posta" class="w-full border p-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+        <input type="password" placeholder="Şifre" class="w-full border p-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+        <button type="submit" class="w-full bg-green-500 text-white p-2 rounded hover:bg-green-600 transition">Kayıt Ol</button>
+      </form>
+      <button id="closeSignupModal" class="absolute top-2 right-3 text-gray-500 hover:text-gray-800 text-xl font-bold">&times;</button>
+    </div>
+  </div>
+  
   <!-- Hero Section -->
   <section class="relative h-screen flex items-center justify-center" style="background: url('hero-bg.jpg') no-repeat center center/cover;">
     <div class="absolute inset-0 bg-black opacity-50"></div>
@@ -63,14 +80,14 @@
            style="display:block"
            data-ad-format="auto"
            data-full-width-responsive="true"
-           data-ad-client="ca-pub-XXXXXXXXXXXX"
+           data-ad-client="ca-pub-5871375969253618"
            data-ad-slot="1234567890"></ins>
       <script>
            (adsbygoogle = window.adsbygoogle || []).push({});
       </script>
     </div>
   </section>
-
+  
   <!-- Ürünler Bölümü -->
   <section id="urunler" class="py-16 bg-gray-100">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -109,7 +126,7 @@
       </div>
     </div>
   </section>
-
+  
   <!-- Portföy Bölümü -->
   <section id="portfoy" class="py-16">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -124,7 +141,7 @@
       </div>
     </div>
   </section>
-
+  
   <!-- Hakkımızda Bölümü -->
   <section id="hakkimizda" class="py-16 bg-blue-50">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -139,7 +156,7 @@
       </div>
     </div>
   </section>
-
+  
   <!-- Sepet Modalı -->
   <div id="cart-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden flex justify-center items-center z-50">
     <div class="bg-white p-8 rounded-lg w-96">
@@ -149,18 +166,17 @@
       <button onclick="toggleCart()" class="mt-6 bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded">Kapat</button>
     </div>
   </div>
-
-  <!-- Footer -->
+  
+  <!-- Google AdSense Footer Reklam Alanı -->
   <footer class="bg-gray-800 text-gray-300 py-6">
     <div class="max-w-7xl mx-auto px-4 text-center">
       <p>&copy; 2025 3DArt. Tüm hakları saklıdır.</p>
-      <!-- Footer Bölgesinde Ek Reklam Alanı -->
       <div class="mt-4">
         <ins class="adsbygoogle"
              style="display:block"
              data-ad-format="auto"
              data-full-width-responsive="true"
-             data-ad-client="ca-pub-XXXXXXXXXXXX"
+             data-ad-client="ca-pub-5871375969253618"
              data-ad-slot="0987654321"></ins>
         <script>
              (adsbygoogle = window.adsbygoogle || []).push({});
@@ -168,6 +184,83 @@
       </div>
     </div>
   </footer>
+  
+  <!-- JavaScript Kodları -->
+  <script>
+    // Sepet İşlemleri
+    let cart = [];
 
+    function addToCart(name, price) {
+      cart.push({ name, price });
+      document.getElementById('cart-count').textContent = cart.length;
+      alert(`${name} sepete eklendi!`);
+    }
+
+    function removeItem(index) {
+      cart.splice(index, 1);
+      document.getElementById('cart-count').textContent = cart.length;
+      renderCartItems(); // Sepet listesini güncelle
+    }
+
+    function renderCartItems() {
+      const itemsList = document.getElementById('cart-items');
+      const totalText = document.getElementById('cart-total');
+      itemsList.innerHTML = ''; // Listeyi temizle
+      let total = 0;
+      
+      cart.forEach((item, index) => {
+        const li = document.createElement('li');
+        li.classList.add("flex", "justify-between", "items-center", "mb-2");
+
+        const itemInfo = document.createElement('span');
+        itemInfo.textContent = `${item.name} - ${item.price} TL`;
+        
+        const removeBtn = document.createElement('button');
+        removeBtn.textContent = "Çıkar";
+        removeBtn.classList.add("bg-red-500", "hover:bg-red-600", "text-white", "px-2", "py-1", "rounded", "ml-4");
+        removeBtn.onclick = function() { removeItem(index); };
+        
+        li.appendChild(itemInfo);
+        li.appendChild(removeBtn);
+        itemsList.appendChild(li);
+        
+        total += item.price;
+      });
+      totalText.textContent = total;
+    }
+
+    function toggleCart() {
+      const modal = document.getElementById('cart-modal');
+      if (modal.classList.contains('hidden')) {
+        renderCartItems();
+      }
+      modal.classList.toggle('hidden');
+    }
+
+    // Kayıt Formu Modal İşlemleri
+    const signupModal = document.getElementById('signupModal');
+    const signupButton = document.getElementById('signupButton');
+    const closeSignupModal = document.getElementById('closeSignupModal');
+
+    signupButton.addEventListener('click', () => {
+      signupModal.classList.remove('hidden');
+    });
+
+    closeSignupModal.addEventListener('click', () => {
+      signupModal.classList.add('hidden');
+    });
+
+    window.addEventListener('click', (e) => {
+      if (e.target === signupModal) {
+        signupModal.classList.add('hidden');
+      }
+    });
+
+    document.getElementById('signupForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      alert("Kayıt başarılı!");
+      signupModal.classList.add('hidden');
+    });
+  </script>
 </body>
 </html>
