@@ -1,79 +1,74 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login Sayfası</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f4f4f9;
-        }
-        header {
-            background-color: #333;
-            color: white;
-            padding: 10px 0;
-            text-align: center;
-        }
-        .container {
-            width: 80%;
-            margin: 0 auto;
-        }
-        .form-container {
-            background-color: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            max-width: 400px;
-            margin: 50px auto;
-        }
-        .form-container h2 {
-            margin-bottom: 20px;
-        }
-        .form-container input {
-            width: 100%;
-            padding: 10px;
-            margin: 10px 0;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-        }
-        .form-container button {
-            width: 100%;
-            padding: 10px;
-            background-color: #007bff;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-        .form-container button:hover {
-            background-color: #0056b3;
-        }
-        .error {
-            color: red;
-            margin-top: 10px;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>3D Satış Sitesi</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script defer src="app.js"></script>
 </head>
-<body>
-    <header>
-        <h1>Hoşgeldiniz</h1>
-    </header>
-    <div class="container">
-        <div class="form-container">
-            <h2>Giriş Yap</h2>
-            <form id="loginForm">
-                <input type="email" id="loginEmail" placeholder="E-posta" required>
-                <input type="password" id="loginPassword" placeholder="Şifre" required>
-                <button type="submit">Giriş Yap</button>
-            </form>
-            <p id="loginError" class="error"></p>
-        </div>
-    </div>
+<body class="bg-gray-100 text-gray-800">
 
-    <!-- Firebase ve login.js dosyasını modül olarak ekle -->
-    <script type="module" src="login.js"></script>
+  <!-- Navbar -->
+  <nav class="bg-white shadow p-4 flex justify-between items-center">
+    <h1 class="text-xl font-bold">3DMarket</h1>
+    <div>
+      <button onclick="toggleCart()" class="bg-blue-600 text-white px-4 py-2 rounded">🛒 Sepet (<span id="cart-count">0</span>)</button>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <section class="text-center py-12 bg-blue-100">
+    <h2 class="text-4xl font-bold mb-4">Benzersiz 3D Ürünler</h2>
+    <p class="text-lg">Kendi üretimimiz olan 3D baskılarla fark yarat!</p>
+  </section>
+
+  <!-- Ürünler -->
+  <section class="p-6">
+    <h3 class="text-2xl font-semibold mb-6">Ürünler</h3>
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+      <div class="bg-white rounded shadow p-4">
+        <img src="urun1.jpg" alt="Ürün 1" class="w-full h-48 object-cover rounded">
+        <h4 class="text-xl mt-2">3D Anahtarlık</h4>
+        <p class="text-gray-500">15 TL</p>
+        <button onclick="addToCart('3D Anahtarlık', 15)" class="mt-2 bg-green-600 text-white px-4 py-2 rounded">Sepete Ekle</button>
+      </div>
+
+      <div class="bg-white rounded shadow p-4">
+        <img src="urun2.jpg" alt="Ürün 2" class="w-full h-48 object-cover rounded">
+        <h4 class="text-xl mt-2">Mini Heykel</h4>
+        <p class="text-gray-500">35 TL</p>
+        <button onclick="addToCart('Mini Heykel', 35)" class="mt-2 bg-green-600 text-white px-4 py-2 rounded">Sepete Ekle</button>
+      </div>
+
+      <div class="bg-white rounded shadow p-4">
+        <img src="urun3.jpg" alt="Ürün 3" class="w-full h-48 object-cover rounded">
+        <h4 class="text-xl mt-2">Kişiye Özel Kalemlik</h4>
+        <p class="text-gray-500">50 TL</p>
+        <button onclick="addToCart('Kalemlik', 50)" class="mt-2 bg-green-600 text-white px-4 py-2 rounded">Sepete Ekle</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Portföy -->
+  <section class="p-6 bg-white mt-8">
+    <h3 class="text-2xl font-semibold mb-6">Portföy</h3>
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+      <img src="portfoy1.jpg" alt="Portföy 1" class="rounded shadow">
+      <img src="portfoy2.jpg" alt="Portföy 2" class="rounded shadow">
+      <img src="portfoy3.jpg" alt="Portföy 3" class="rounded shadow">
+    </div>
+  </section>
+
+  <!-- Sepet Modalı -->
+  <div id="cart-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden justify-center items-center z-50">
+    <div class="bg-white p-6 rounded w-96">
+      <h3 class="text-xl font-bold mb-4">Sepet</h3>
+      <ul id="cart-items" class="mb-4"></ul>
+      <p class="font-semibold">Toplam: <span id="cart-total">0</span> TL</p>
+      <button onclick="toggleCart()" class="mt-4 bg-red-600 text-white px-4 py-2 rounded">Kapat</button>
+    </div>
+  </div>
+
 </body>
 </html>
