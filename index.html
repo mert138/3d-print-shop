@@ -20,7 +20,7 @@
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5871375969253618"
        crossorigin="anonymous"></script>
        
-  <!-- Siteye ait JavaScript dosyasını daha sonra eklemek üzere defer ile yükleyelim -->
+  <!-- Site JavaScript dosyası (daha sonra eklenecek olan işlevler için defer) -->
   <script defer src="app.js"></script>
 </head>
 <body class="bg-gray-50 text-gray-800">
@@ -42,6 +42,7 @@
             🛒
             <span id="cart-count" class="absolute -top-2 -right-2 bg-red-500 rounded-full text-xs w-5 h-5 flex items-center justify-center">0</span>
           </button>
+          <!-- Kayıt Ol Butonu, işlem tamamlandıktan sonra bu alanda kullanıcı ikonu gösterilecek -->
           <button id="signupButton" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 transition">Kayıt Ol</button>
         </div>
       </div>
@@ -199,13 +200,13 @@
     function removeItem(index) {
       cart.splice(index, 1);
       document.getElementById('cart-count').textContent = cart.length;
-      renderCartItems(); // Sepet listesini güncelle
+      renderCartItems();
     }
 
     function renderCartItems() {
       const itemsList = document.getElementById('cart-items');
       const totalText = document.getElementById('cart-total');
-      itemsList.innerHTML = ''; // Listeyi temizle
+      itemsList.innerHTML = '';
       let total = 0;
       
       cart.forEach((item, index) => {
@@ -260,6 +261,12 @@
       e.preventDefault();
       alert("Kayıt başarılı!");
       signupModal.classList.add('hidden');
+      // Kayıt olduktan sonra, "Kayıt Ol" butonunun yerine kullanıcı ikonu ekle
+      signupButton.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none"
+           viewBox="0 0 24 24" stroke="currentColor">
+         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+           d="M5.121 17.804A4.992 4.992 0 0112 15c1.355 0 2.576.539 3.879 1.464M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 4a9.956 9.956 0 01-6 2c-1.03 0-2.02-.157-3-.444M4 14a9.956 9.956 0 016 2c1 .35 2.019.538 3 .538" />
+       </svg>`;
     });
   </script>
 </body>
