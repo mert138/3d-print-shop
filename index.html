@@ -14,20 +14,31 @@
     body {
       font-family: 'Poppins', sans-serif;
     }
+    /* logout dropdown için basit konumlandırma */
+    #logoutDropdown {
+      position: absolute;
+      top: 3.8rem; /* Navbar yüksekliğine göre ayarlandı */
+      right: 1rem;
+      background: white;
+      border: 1px solid #e5e7eb; /* Tailwind'ın gray-200'si */
+      border-radius: 0.375rem;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      z-index: 60;
+    }
   </style>
   
-  <!-- Google AdSense Script (Kendi kodun) -->
+  <!-- Google AdSense Script (Verdiğiniz kod) -->
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5871375969253618"
        crossorigin="anonymous"></script>
        
-  <!-- Site JavaScript dosyası (daha sonra eklenecek olan işlevler için defer) -->
+  <!-- Site JavaScript dosyası -->
   <script defer src="app.js"></script>
 </head>
 <body class="bg-gray-50 text-gray-800">
 
   <!-- Navbar -->
   <header class="fixed w-full bg-white shadow z-50">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
       <div class="flex justify-between h-16 items-center">
         <div class="flex-shrink-0">
           <a href="#" class="text-2xl font-bold text-blue-600">3DArt</a>
@@ -37,14 +48,22 @@
           <a href="#portfoy" class="hover:text-blue-600 transition">Portföy</a>
           <a href="#hakkimizda" class="hover:text-blue-600 transition">Hakkımızda</a>
         </nav>
-        <div class="flex items-center gap-4">
+        <div class="flex items-center gap-4 relative">
           <button id="cartButton" onclick="toggleCart()" class="relative bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition">
             🛒
             <span id="cart-count" class="absolute -top-2 -right-2 bg-red-500 rounded-full text-xs w-5 h-5 flex items-center justify-center">0</span>
           </button>
-          <!-- Kayıt Ol Butonu, işlem tamamlandıktan sonra bu alanda kullanıcı ikonu gösterilecek -->
-          <button id="signupButton" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 transition">Kayıt Ol</button>
+          <!-- Başlangıçta Kayıt Ol butonu -->
+          <button id="signupButton" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 transition">
+            Kayıt Ol
+          </button>
         </div>
+      </div>
+      <!-- Logout Dropdown (Başlangıçta gizli) -->
+      <div id="logoutDropdown" class="hidden">
+        <button id="logoutButton" class="block px-4 py-2 text-gray-800 hover:bg-gray-100 w-full text-left">
+          Çıkış Yap
+        </button>
       </div>
     </div>
   </header>
@@ -244,7 +263,12 @@
     const closeSignupModal = document.getElementById('closeSignupModal');
 
     signupButton.addEventListener('click', () => {
-      signupModal.classList.remove('hidden');
+      // Eğer kullanıcı zaten kayıt olmuş ise (ikon görünüyorsa) logout dropdown'u toggle et
+      if (signupButton.dataset.loggedIn === "true") {
+        toggleLogoutDropdown();
+      } else {
+        signupModal.classList.remove('hidden');
+      }
     });
 
     closeSignupModal.addEventListener('click', () => {
@@ -252,8 +276,13 @@
     });
 
     window.addEventListener('click', (e) => {
+      // Kayıt formu dışında bir yere tıklanırsa modal kapanır
       if (e.target === signupModal) {
         signupModal.classList.add('hidden');
+      }
+      // Logout dropdown dışına tıklanırsa kapat
+      if (!document.getElementById('logoutDropdown').contains(e.target) && e.target !== signupButton) {
+        document.getElementById('logoutDropdown').classList.add('hidden');
       }
     });
 
@@ -261,12 +290,27 @@
       e.preventDefault();
       alert("Kayıt başarılı!");
       signupModal.classList.add('hidden');
-      // Kayıt olduktan sonra, "Kayıt Ol" butonunun yerine kullanıcı ikonu ekle
+      // Kayıt olduktan sonra, signupButton içeriğini SVG kullanıcı ikonu olarak değiştirelim
       signupButton.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none"
            viewBox="0 0 24 24" stroke="currentColor">
          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
            d="M5.121 17.804A4.992 4.992 0 0112 15c1.355 0 2.576.539 3.879 1.464M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 4a9.956 9.956 0 01-6 2c-1.03 0-2.02-.157-3-.444M4 14a9.956 9.956 0 016 2c1 .35 2.019.538 3 .538" />
        </svg>`;
+      signupButton.dataset.loggedIn = "true";
+    });
+
+    // Logout Dropdown İşlemleri
+    function toggleLogoutDropdown() {
+      const logoutDropdown = document.getElementById('logoutDropdown');
+      logoutDropdown.classList.toggle('hidden');
+    }
+
+    document.getElementById('logoutButton').addEventListener('click', () => {
+      // Çıkış yapıldığında, kullanıcı ikonunu tekrar "Kayıt Ol" butonuna çeviriyoruz.
+      signupButton.innerText = "Kayıt Ol";
+      signupButton.dataset.loggedIn = "false";
+      document.getElementById('logoutDropdown').classList.add('hidden');
+      alert("Çıkış yapıldı!");
     });
   </script>
 </body>
