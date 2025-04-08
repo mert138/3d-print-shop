@@ -15,6 +15,10 @@
       font-family: 'Poppins', sans-serif;
     }
   </style>
+  
+  <!-- Google AdSense Script -->
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXX"
+       crossorigin="anonymous"></script>
   <script defer src="app.js"></script>
 </head>
 <body class="bg-gray-50 text-gray-800">
@@ -48,6 +52,22 @@
       <h1 class="text-5xl font-bold mb-4">3D Tasarımda Yeni Bir Soluk</h1>
       <p class="text-xl mb-8">Farklı ve şık 3D ürünlerle yaşam alanınıza estetik katın.</p>
       <a href="#urunler" class="bg-blue-600 hover:bg-blue-700 transition px-6 py-3 rounded-full text-lg">Ürünleri Keşfet</a>
+    </div>
+  </section>
+  
+  <!-- Google AdSense Ortak Reklam Bloğu -->
+  <section class="py-6 bg-gray-50">
+    <div class="max-w-7xl mx-auto px-4">
+      <!-- Responsive Ad Unit Örneği -->
+      <ins class="adsbygoogle"
+           style="display:block"
+           data-ad-format="auto"
+           data-full-width-responsive="true"
+           data-ad-client="ca-pub-XXXXXXXXXXXX"
+           data-ad-slot="1234567890"></ins>
+      <script>
+           (adsbygoogle = window.adsbygoogle || []).push({});
+      </script>
     </div>
   </section>
 
@@ -120,12 +140,34 @@
     </div>
   </section>
 
-<!-- Sepet Modalı -->
-<div id="cart-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden flex justify-center items-center z-50">
-  <div class="bg-white p-8 rounded-lg w-96">
-    <h3 class="text-2xl font-bold mb-4">Sepet</h3>
-    <ul id="cart-items" class="mb-4 space-y-2"></ul>
-    <p class="font-semibold">Toplam: <span id="cart-total">0</span> TL</p>
-    <button onclick="toggleCart()" class="mt-6 bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded">Kapat</button>
+  <!-- Sepet Modalı -->
+  <div id="cart-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden flex justify-center items-center z-50">
+    <div class="bg-white p-8 rounded-lg w-96">
+      <h3 class="text-2xl font-bold mb-4">Sepet</h3>
+      <ul id="cart-items" class="mb-4 space-y-2"></ul>
+      <p class="font-semibold">Toplam: <span id="cart-total">0</span> TL</p>
+      <button onclick="toggleCart()" class="mt-6 bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded">Kapat</button>
+    </div>
   </div>
-</div>
+
+  <!-- Footer -->
+  <footer class="bg-gray-800 text-gray-300 py-6">
+    <div class="max-w-7xl mx-auto px-4 text-center">
+      <p>&copy; 2025 3DArt. Tüm hakları saklıdır.</p>
+      <!-- Footer Bölgesinde Ek Reklam Alanı -->
+      <div class="mt-4">
+        <ins class="adsbygoogle"
+             style="display:block"
+             data-ad-format="auto"
+             data-full-width-responsive="true"
+             data-ad-client="ca-pub-XXXXXXXXXXXX"
+             data-ad-slot="0987654321"></ins>
+        <script>
+             (adsbygoogle = window.adsbygoogle || []).push({});
+        </script>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>
