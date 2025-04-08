@@ -3,72 +3,139 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>3D Satış Sitesi</title>
+  <title>3D Sanat & Tasarım</title>
+  <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+    }
+  </style>
   <script defer src="app.js"></script>
 </head>
-<body class="bg-gray-100 text-gray-800">
+<body class="bg-gray-50 text-gray-800">
 
   <!-- Navbar -->
-  <nav class="bg-white shadow p-4 flex justify-between items-center">
-    <h1 class="text-xl font-bold">3DMarket</h1>
-    <div>
-      <button onclick="toggleCart()" class="bg-blue-600 text-white px-4 py-2 rounded">🛒 Sepet (<span id="cart-count">0</span>)</button>
+  <header class="fixed w-full bg-white shadow z-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between h-16">
+        <div class="flex-shrink-0 flex items-center">
+          <a href="#" class="text-2xl font-bold text-blue-600">3DArt</a>
+        </div>
+        <nav class="hidden md:flex items-center space-x-6">
+          <a href="#urunler" class="hover:text-blue-600 transition">Ürünler</a>
+          <a href="#portfoy" class="hover:text-blue-600 transition">Portföy</a>
+          <a href="#hakkimizda" class="hover:text-blue-600 transition">Hakkımızda</a>
+        </nav>
+        <div class="flex items-center">
+          <button onclick="toggleCart()" class="relative bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition">
+            🛒
+            <span id="cart-count" class="absolute -top-2 -right-2 bg-red-500 rounded-full text-xs w-5 h-5 flex items-center justify-center">0</span>
+          </button>
+        </div>
+      </div>
     </div>
-  </nav>
+  </header>
 
-  <!-- Hero -->
-  <section class="text-center py-12 bg-blue-100">
-    <h2 class="text-4xl font-bold mb-4">Benzersiz 3D Ürünler</h2>
-    <p class="text-lg">Kendi üretimimiz olan 3D baskılarla fark yarat!</p>
-  </section>
-
-  <!-- Ürünler -->
-  <section class="p-6">
-    <h3 class="text-2xl font-semibold mb-6">Ürünler</h3>
-    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-      <div class="bg-white rounded shadow p-4">
-        <img src="urun1.jpg" alt="Ürün 1" class="w-full h-48 object-cover rounded">
-        <h4 class="text-xl mt-2">3D Anahtarlık</h4>
-        <p class="text-gray-500">15 TL</p>
-        <button onclick="addToCart('3D Anahtarlık', 15)" class="mt-2 bg-green-600 text-white px-4 py-2 rounded">Sepete Ekle</button>
-      </div>
-
-      <div class="bg-white rounded shadow p-4">
-        <img src="urun2.jpg" alt="Ürün 2" class="w-full h-48 object-cover rounded">
-        <h4 class="text-xl mt-2">Mini Heykel</h4>
-        <p class="text-gray-500">35 TL</p>
-        <button onclick="addToCart('Mini Heykel', 35)" class="mt-2 bg-green-600 text-white px-4 py-2 rounded">Sepete Ekle</button>
-      </div>
-
-      <div class="bg-white rounded shadow p-4">
-        <img src="urun3.jpg" alt="Ürün 3" class="w-full h-48 object-cover rounded">
-        <h4 class="text-xl mt-2">Kişiye Özel Kalemlik</h4>
-        <p class="text-gray-500">50 TL</p>
-        <button onclick="addToCart('Kalemlik', 50)" class="mt-2 bg-green-600 text-white px-4 py-2 rounded">Sepete Ekle</button>
-      </div>
+  <!-- Hero Section -->
+  <section class="relative h-screen flex items-center justify-center" style="background: url('hero-bg.jpg') no-repeat center center/cover;">
+    <div class="absolute inset-0 bg-black opacity-50"></div>
+    <div class="relative z-10 text-center text-white px-4">
+      <h1 class="text-5xl font-bold mb-4">3D Tasarımda Yeni Bir Soluk</h1>
+      <p class="text-xl mb-8">Farklı ve şık 3D ürünlerle yaşam alanınıza estetik katın.</p>
+      <a href="#urunler" class="bg-blue-600 hover:bg-blue-700 transition px-6 py-3 rounded-full text-lg">Ürünleri Keşfet</a>
     </div>
   </section>
 
-  <!-- Portföy -->
-  <section class="p-6 bg-white mt-8">
-    <h3 class="text-2xl font-semibold mb-6">Portföy</h3>
-    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-      <img src="portfoy1.jpg" alt="Portföy 1" class="rounded shadow">
-      <img src="portfoy2.jpg" alt="Portföy 2" class="rounded shadow">
-      <img src="portfoy3.jpg" alt="Portföy 3" class="rounded shadow">
+  <!-- Ürünler Bölümü -->
+  <section id="urunler" class="py-16 bg-gray-100">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-12">
+        <h2 class="text-4xl font-bold">Ürünler</h2>
+        <p class="mt-4 text-gray-600">Modern 3D tasarımlarımızı keşfedin</p>
+      </div>
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
+        <!-- Ürün Kartı -->
+        <div class="bg-white rounded-lg shadow-lg overflow-hidden transform transition duration-300 hover:scale-105">
+          <img src="urun1.jpg" alt="3D Anahtarlık" class="w-full h-64 object-cover">
+          <div class="p-6">
+            <h3 class="text-2xl font-semibold">3D Anahtarlık</h3>
+            <p class="mt-2 text-gray-600">15 TL</p>
+            <button onclick="addToCart('3D Anahtarlık', 15)" class="mt-4 bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded">Sepete Ekle</button>
+          </div>
+        </div>
+        <!-- Ürün Kartı -->
+        <div class="bg-white rounded-lg shadow-lg overflow-hidden transform transition duration-300 hover:scale-105">
+          <img src="urun2.jpg" alt="Mini Heykel" class="w-full h-64 object-cover">
+          <div class="p-6">
+            <h3 class="text-2xl font-semibold">Mini Heykel</h3>
+            <p class="mt-2 text-gray-600">35 TL</p>
+            <button onclick="addToCart('Mini Heykel', 35)" class="mt-4 bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded">Sepete Ekle</button>
+          </div>
+        </div>
+        <!-- Ürün Kartı -->
+        <div class="bg-white rounded-lg shadow-lg overflow-hidden transform transition duration-300 hover:scale-105">
+          <img src="urun3.jpg" alt="Kişiye Özel Kalemlik" class="w-full h-64 object-cover">
+          <div class="p-6">
+            <h3 class="text-2xl font-semibold">Kalemlik</h3>
+            <p class="mt-2 text-gray-600">50 TL</p>
+            <button onclick="addToCart('Kalemlik', 50)" class="mt-4 bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded">Sepete Ekle</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Portföy Bölümü -->
+  <section id="portfoy" class="py-16">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-12">
+        <h2 class="text-4xl font-bold">Portföy</h2>
+        <p class="mt-4 text-gray-600">Gerçekleşen projelerimizden örnekler</p>
+      </div>
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
+        <img src="portfoy1.jpg" alt="Portföy 1" class="rounded-lg shadow-lg">
+        <img src="portfoy2.jpg" alt="Portföy 2" class="rounded-lg shadow-lg">
+        <img src="portfoy3.jpg" alt="Portföy 3" class="rounded-lg shadow-lg">
+      </div>
+    </div>
+  </section>
+
+  <!-- Hakkımızda Bölümü -->
+  <section id="hakkimizda" class="py-16 bg-blue-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-12">
+        <h2 class="text-4xl font-bold">Hakkımızda</h2>
+        <p class="mt-4 text-gray-600">3D tasarımın estetiğini ve işlevselliğini bir araya getiriyoruz.</p>
+      </div>
+      <div class="max-w-2xl mx-auto text-center">
+        <p class="text-lg text-gray-700">
+          Yaratıcılığımızı ve teknolojiyi harmanlayarak müşterilerimize eşsiz deneyimler sunmayı hedefliyoruz. Her detayda kaliteyi hissettiriyoruz.
+        </p>
+      </div>
     </div>
   </section>
 
   <!-- Sepet Modalı -->
-  <div id="cart-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden justify-center items-center z-50">
-    <div class="bg-white p-6 rounded w-96">
-      <h3 class="text-xl font-bold mb-4">Sepet</h3>
-      <ul id="cart-items" class="mb-4"></ul>
+  <div id="cart-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden flex justify-center items-center z-50">
+    <div class="bg-white p-8 rounded-lg w-96">
+      <h3 class="text-2xl font-bold mb-4">Sepet</h3>
+      <ul id="cart-items" class="mb-4 space-y-2"></ul>
       <p class="font-semibold">Toplam: <span id="cart-total">0</span> TL</p>
-      <button onclick="toggleCart()" class="mt-4 bg-red-600 text-white px-4 py-2 rounded">Kapat</button>
+      <button onclick="toggleCart()" class="mt-6 bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded">Kapat</button>
     </div>
   </div>
+
+  <!-- Footer -->
+  <footer class="bg-gray-800 text-gray-300 py-6">
+    <div class="max-w-7xl mx-auto px-4 text-center">
+      <p>&copy; 2025 3DArt. Tüm hakları saklıdır.</p>
+    </div>
+  </footer>
 
 </body>
 </html>
