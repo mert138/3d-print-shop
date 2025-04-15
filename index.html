@@ -38,9 +38,7 @@
   <!-- Google AdSense Script (Verdiğiniz kod) -->
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5871375969253618"
        crossorigin="anonymous"></script>
-       
-  <!-- Site JavaScript dosyası -->
-  <script defer src="app.js"></script>
+  
 </head>
 <body class="bg-gray-50 text-gray-800">
 
@@ -81,9 +79,9 @@
     <div class="bg-white rounded-lg shadow-lg w-96 p-6 relative">
       <h2 class="text-xl font-semibold mb-4 text-center">Kayıt Ol</h2>
       <form id="signupForm" class="space-y-4">
-        <input type="text" placeholder="Adınız" class="w-full border p-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-500" required>
-        <input type="email" placeholder="E-posta" class="w-full border p-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-500" required>
-        <input type="password" placeholder="Şifre" class="w-full border p-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+        <input type="text" id="userName" placeholder="Adınız" class="w-full border p-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+        <input type="email" id="userEmail" placeholder="E-posta" class="w-full border p-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+        <input type="password" id="userPassword" placeholder="Şifre" class="w-full border p-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-500" required>
         <button type="submit" class="w-full bg-green-500 text-white p-2 rounded hover:bg-green-600 transition">Kayıt Ol</button>
       </form>
       <button id="closeSignupModal" class="absolute top-2 right-3 text-gray-500 hover:text-gray-800 text-xl font-bold">&times;</button>
@@ -126,7 +124,7 @@
       <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
         <!-- Ürün Kartı -->
         <div class="bg-white rounded-lg shadow-lg overflow-hidden transform transition duration-300 hover:scale-105">
-          <img src="urun1.jpg" alt="3D Anahtarlık" class="w-full h-64 object-cover">
+          <img src="images/urun1.jpg" alt="3D Anahtarlık" class="w-full h-64 object-cover">
           <div class="p-6">
             <h3 class="text-2xl font-semibold">3D Anahtarlık</h3>
             <p class="mt-2 text-gray-600">15 TL</p>
@@ -137,7 +135,7 @@
         </div>
         <!-- Ürün Kartı -->
         <div class="bg-white rounded-lg shadow-lg overflow-hidden transform transition duration-300 hover:scale-105">
-          <img src="urun2.jpg" alt="Mini Heykel" class="w-full h-64 object-cover">
+          <img src="images/urun2.jpg" alt="Mini Heykel" class="w-full h-64 object-cover">
           <div class="p-6">
             <h3 class="text-2xl font-semibold">Mini Heykel</h3>
             <p class="mt-2 text-gray-600">35 TL</p>
@@ -148,7 +146,7 @@
         </div>
         <!-- Ürün Kartı -->
         <div class="bg-white rounded-lg shadow-lg overflow-hidden transform transition duration-300 hover:scale-105">
-          <img src="urun3.jpg" alt="Kişiye Özel Kalemlik" class="w-full h-64 object-cover">
+          <img src="images/kalemlik.png" alt="Kişiye Özel Kalemlik" class="w-full h-64 object-cover">
           <div class="p-6">
             <h3 class="text-2xl font-semibold">Kalemlik</h3>
             <p class="mt-2 text-gray-600">50 TL</p>
@@ -169,9 +167,9 @@
         <p class="mt-4 text-gray-600">Gerçekleşen projelerimizden örnekler</p>
       </div>
       <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
-        <img src="portfoy1.jpg" alt="Portföy 1" class="rounded-lg shadow-lg">
-        <img src="portfoy2.jpg" alt="Portföy 2" class="rounded-lg shadow-lg">
-        <img src="portfoy3.jpg" alt="Portföy 3" class="rounded-lg shadow-lg">
+        <img src="images/portfoy1.jpg" alt="Portföy 1" class="rounded-lg shadow-lg">
+        <img src="images/portfoy2.jpg" alt="Portföy 2" class="rounded-lg shadow-lg">
+        <img src="images/portfoy3.jpg" alt="Portföy 3" class="rounded-lg shadow-lg">
       </div>
     </div>
   </section>
@@ -228,21 +226,74 @@
     </div>
   </footer>
   
-  <!-- JavaScript Kodları -->
-  <script>
+  <!-- Firebase ve Uygulama İşlevselliği için Script (Module Olarak) -->
+  <script type="module">
+    // Firebase SDK'larının gerekli modüllerini içe aktarıyoruz
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
+    import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-analytics.js";
+    import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-auth.js";
+    
+    // Firebase yapılandırman (verdiğin bilgileri kullanıyoruz)
+    const firebaseConfig = {
+      apiKey: "AIzaSyCEu0jR_Pdru5ry7Gv8I_61ruajssZVm0k",
+      authDomain: "tremila-shop-133ce.firebaseapp.com",
+      projectId: "tremila-shop-133ce",
+      storageBucket: "tremila-shop-133ce.firebasestorage.app",
+      messagingSenderId: "249334077736",
+      appId: "1:249334077736:web:e8a299685fc6de4b17181d",
+      measurementId: "G-R9RTKPFN19"
+    };
+    
+    // Firebase'i başlatıyoruz
+    const app = initializeApp(firebaseConfig);
+    const analytics = getAnalytics(app);
+    const auth = getAuth(app);
+    
+    // Kayıt Formu İşlemleri: Firebase ile kayıt olma
+    const signupForm = document.getElementById('signupForm');
+    signupForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const userName = document.getElementById('userName').value;
+      const email = document.getElementById('userEmail').value;
+      const password = document.getElementById('userPassword').value;
+      
+      createUserWithEmailAndPassword(auth, email, password)
+        .then((userCredential) => {
+          // Kayıt başarılı, kullanıcı bilgileri alındı
+          alert("Kayıt başarılı! Hoş geldin " + userName);
+          document.getElementById('signupModal').classList.add('hidden');
+          // Kayıt butonunu SVG kullanıcı ikonuna dönüştür
+          const signupButton = document.getElementById('signupButton');
+          signupButton.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none"
+               viewBox="0 0 24 24" stroke="currentColor">
+             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+               d="M5.121 17.804A4.992 4.992 0 0112 15c1.355 0 2.576.539 3.879 1.464M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 4a9.956 9.956 0 01-6 2c-1.03 0-2.02-.157-3-.444M4 14a9.956 9.956 0 016 2c1 .35 2.019.538 3 .538" />
+           </svg>`;
+          signupButton.dataset.loggedIn = "true";
+        })
+        .catch((error) => {
+          alert("Hata: " + error.message);
+        });
+    });
+    
+    // Diğer uygulama işlevsellikleri (sepet işlemleri, logout dropdown vs.) mevcut koddaki gibi çalışacak.
+    // Aşağıdaki işlevsellikler, yukarıda tanımlanan global kod bloğunda yer alıyor.
+    
     // Sepet İşlemleri
     let cart = [];
-    function addToCart(name, price) {
+    window.addToCart = function(name, price) {
       cart.push({ name, price });
       document.getElementById('cart-count').textContent = cart.length;
       alert(`${name} sepete eklendi!`);
     }
-    function removeItem(index) {
+    
+    window.removeItem = function(index) {
       cart.splice(index, 1);
       document.getElementById('cart-count').textContent = cart.length;
       renderCartItems();
     }
-    function renderCartItems() {
+    
+    window.renderCartItems = function() {
       const itemsList = document.getElementById('cart-items');
       const totalText = document.getElementById('cart-total');
       itemsList.innerHTML = '';
@@ -263,7 +314,8 @@
       });
       totalText.textContent = `Toplam: ${total} TL`;
     }
-    function toggleCart() {
+    
+    window.toggleCart = function() {
       const popup = document.getElementById('cartPopup');
       if (popup.classList.contains('hidden')) {
         renderCartItems();
@@ -271,50 +323,39 @@
       popup.classList.toggle('hidden');
     }
     
-    // Kayıt Formu Modal İşlemleri
-    const signupModal = document.getElementById('signupModal');
-    const signupButton = document.getElementById('signupButton');
-    const closeSignupModal = document.getElementById('closeSignupModal');
-    signupButton.addEventListener('click', () => {
-      if (signupButton.dataset.loggedIn === "true") {
-        toggleLogoutDropdown();
-      } else {
-        signupModal.classList.remove('hidden');
-      }
-    });
-    closeSignupModal.addEventListener('click', () => {
-      signupModal.classList.add('hidden');
-    });
-    window.addEventListener('click', (e) => {
-      if (e.target === signupModal) {
-        signupModal.classList.add('hidden');
-      }
-      if (!document.getElementById('logoutDropdown').contains(e.target) && e.target !== signupButton) {
-        document.getElementById('logoutDropdown').classList.add('hidden');
-      }
-    });
-    document.getElementById('signupForm').addEventListener('submit', function(e) {
-      e.preventDefault();
-      alert("Kayıt başarılı!");
-      signupModal.classList.add('hidden');
-      signupButton.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none"
-           viewBox="0 0 24 24" stroke="currentColor">
-         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-           d="M5.121 17.804A4.992 4.992 0 0112 15c1.355 0 2.576.539 3.879 1.464M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 4a9.956 9.956 0 01-6 2c-1.03 0-2.02-.157-3-.444M4 14a9.956 9.956 0 016 2c1 .35 2.019.538 3 .538" />
-       </svg>`;
-      signupButton.dataset.loggedIn = "true";
-    });
-    
     // Logout Dropdown İşlemleri
-    function toggleLogoutDropdown() {
+    window.toggleLogoutDropdown = function() {
       const logoutDropdown = document.getElementById('logoutDropdown');
       logoutDropdown.classList.toggle('hidden');
     }
     document.getElementById('logoutButton').addEventListener('click', () => {
+      const signupButton = document.getElementById('signupButton');
       signupButton.innerText = "Kayıt Ol";
       signupButton.dataset.loggedIn = "false";
       document.getElementById('logoutDropdown').classList.add('hidden');
       alert("Çıkış yapıldı!");
+    });
+    
+    // Kayıt/Logout UI İşlemleri (diğer event listener'lar zaten global kodda var, yukarıdaki gibi çalışıyor)
+    const signupButton = document.getElementById('signupButton');
+    signupButton.addEventListener('click', () => {
+      if (signupButton.dataset.loggedIn === "true") {
+        toggleLogoutDropdown();
+      } else {
+        document.getElementById('signupModal').classList.remove('hidden');
+      }
+    });
+    const closeSignupModal = document.getElementById('closeSignupModal');
+    closeSignupModal.addEventListener('click', () => {
+      document.getElementById('signupModal').classList.add('hidden');
+    });
+    window.addEventListener('click', (e) => {
+      if (e.target === document.getElementById('signupModal')) {
+        document.getElementById('signupModal').classList.add('hidden');
+      }
+      if (!document.getElementById('logoutDropdown').contains(e.target) && e.target !== signupButton) {
+        document.getElementById('logoutDropdown').classList.add('hidden');
+      }
     });
   </script>
 </body>
