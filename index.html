@@ -38,7 +38,8 @@
   <!-- Google AdSense Script (Verdiğiniz kod) -->
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5871375969253618"
        crossorigin="anonymous"></script>
-  
+       
+  <!-- Firebase SDK'ları için Modüler Importlar; aşağıdaki script modül olarak çalışacak -->
 </head>
 <body class="bg-gray-50 text-gray-800">
 
@@ -59,9 +60,12 @@
             🛒
             <span id="cart-count" class="absolute -top-2 -right-2 bg-red-500 rounded-full text-xs w-5 h-5 flex items-center justify-center">0</span>
           </button>
-          <!-- Başlangıçta Kayıt Ol butonu -->
+          <!-- Kayıt Ol ve Giriş Yap Butonları -->
           <button id="signupButton" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 transition">
             Kayıt Ol
+          </button>
+          <button id="loginButton" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition">
+            Giriş Yap
           </button>
         </div>
       </div>
@@ -85,6 +89,19 @@
         <button type="submit" class="w-full bg-green-500 text-white p-2 rounded hover:bg-green-600 transition">Kayıt Ol</button>
       </form>
       <button id="closeSignupModal" class="absolute top-2 right-3 text-gray-500 hover:text-gray-800 text-xl font-bold">&times;</button>
+    </div>
+  </div>
+  
+  <!-- Giriş Formu Modalı -->
+  <div id="loginModal" class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center hidden z-50">
+    <div class="bg-white rounded-lg shadow-lg w-96 p-6 relative">
+      <h2 class="text-xl font-semibold mb-4 text-center">Giriş Yap</h2>
+      <form id="loginForm" class="space-y-4">
+        <input type="email" id="loginEmail" placeholder="E-posta" class="w-full border p-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+        <input type="password" id="loginPassword" placeholder="Şifre" class="w-full border p-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+        <button type="submit" class="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600 transition">Giriş Yap</button>
+      </form>
+      <button id="closeLoginModal" class="absolute top-2 right-3 text-gray-500 hover:text-gray-800 text-xl font-bold">&times;</button>
     </div>
   </div>
   
@@ -228,12 +245,12 @@
   
   <!-- Firebase ve Uygulama İşlevselliği için Script (Module Olarak) -->
   <script type="module">
-    // Firebase SDK'larının gerekli modüllerini içe aktarıyoruz
+    // Firebase modüler SDK içe aktarımları
     import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
     import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-analytics.js";
-    import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-auth.js";
+    import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-auth.js";
     
-    // Firebase yapılandırman (verdiğin bilgileri kullanıyoruz)
+    // Firebase yapılandırma (sizin verdiğiniz bilgiler)
     const firebaseConfig = {
       apiKey: "AIzaSyCEu0jR_Pdru5ry7Gv8I_61ruajssZVm0k",
       authDomain: "tremila-shop-133ce.firebaseapp.com",
@@ -244,12 +261,12 @@
       measurementId: "G-R9RTKPFN19"
     };
     
-    // Firebase'i başlatıyoruz
+    // Firebase'i başlatma
     const app = initializeApp(firebaseConfig);
     const analytics = getAnalytics(app);
     const auth = getAuth(app);
     
-    // Kayıt Formu İşlemleri: Firebase ile kayıt olma
+    // Kayıt Formu İşlemleri: Yeni kullanıcı kaydı
     const signupForm = document.getElementById('signupForm');
     signupForm.addEventListener('submit', (e) => {
       e.preventDefault();
@@ -259,10 +276,8 @@
       
       createUserWithEmailAndPassword(auth, email, password)
         .then((userCredential) => {
-          // Kayıt başarılı, kullanıcı bilgileri alındı
           alert("Kayıt başarılı! Hoş geldin " + userName);
           document.getElementById('signupModal').classList.add('hidden');
-          // Kayıt butonunu SVG kullanıcı ikonuna dönüştür
           const signupButton = document.getElementById('signupButton');
           signupButton.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none"
                viewBox="0 0 24 24" stroke="currentColor">
@@ -276,8 +291,30 @@
         });
     });
     
-    // Diğer uygulama işlevsellikleri (sepet işlemleri, logout dropdown vs.) mevcut koddaki gibi çalışacak.
-    // Aşağıdaki işlevsellikler, yukarıda tanımlanan global kod bloğunda yer alıyor.
+    // Giriş Formu İşlemleri: Var olan kullanıcıyla giriş
+    const loginForm = document.getElementById('loginForm');
+    loginForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const email = document.getElementById('loginEmail').value;
+      const password = document.getElementById('loginPassword').value;
+      
+      signInWithEmailAndPassword(auth, email, password)
+        .then((userCredential) => {
+          alert("Giriş başarılı!");
+          document.getElementById('loginModal').classList.add('hidden');
+          const loginButton = document.getElementById('loginButton');
+          // Giriş yapıldıktan sonra kullanıcı ikonunu gösterebiliriz. Örneğin:
+          loginButton.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none"
+               viewBox="0 0 24 24" stroke="currentColor">
+             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+               d="M5.121 17.804A4.992 4.992 0 0112 15c1.355 0 2.576.539 3.879 1.464M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 4a9.956 9.956 0 01-6 2c-1.03 0-2.02-.157-3-.444M4 14a9.956 9.956 0 016 2c1 .35 2.019.538 3 .538" />
+           </svg>`;
+          loginButton.dataset.loggedIn = "true";
+        })
+        .catch((error) => {
+          alert("Hata: " + error.message);
+        });
+    });
     
     // Sepet İşlemleri
     let cart = [];
@@ -330,13 +367,16 @@
     }
     document.getElementById('logoutButton').addEventListener('click', () => {
       const signupButton = document.getElementById('signupButton');
+      const loginButton = document.getElementById('loginButton');
       signupButton.innerText = "Kayıt Ol";
+      loginButton.innerText = "Giriş Yap";
       signupButton.dataset.loggedIn = "false";
+      loginButton.dataset.loggedIn = "false";
       document.getElementById('logoutDropdown').classList.add('hidden');
       alert("Çıkış yapıldı!");
     });
     
-    // Kayıt/Logout UI İşlemleri (diğer event listener'lar zaten global kodda var, yukarıdaki gibi çalışıyor)
+    // Kayıt/Logout UI İşlemleri: Eğer kullanıcı zaten kayıtlı/giriş yapmışsa, ilgili butonlar togglanır.
     const signupButton = document.getElementById('signupButton');
     signupButton.addEventListener('click', () => {
       if (signupButton.dataset.loggedIn === "true") {
@@ -345,15 +385,30 @@
         document.getElementById('signupModal').classList.remove('hidden');
       }
     });
+    const loginButton = document.getElementById('loginButton');
+    loginButton.addEventListener('click', () => {
+      if (loginButton.dataset.loggedIn === "true") {
+        toggleLogoutDropdown();
+      } else {
+        document.getElementById('loginModal').classList.remove('hidden');
+      }
+    });
     const closeSignupModal = document.getElementById('closeSignupModal');
     closeSignupModal.addEventListener('click', () => {
       document.getElementById('signupModal').classList.add('hidden');
+    });
+    const closeLoginModal = document.getElementById('closeLoginModal');
+    closeLoginModal.addEventListener('click', () => {
+      document.getElementById('loginModal').classList.add('hidden');
     });
     window.addEventListener('click', (e) => {
       if (e.target === document.getElementById('signupModal')) {
         document.getElementById('signupModal').classList.add('hidden');
       }
-      if (!document.getElementById('logoutDropdown').contains(e.target) && e.target !== signupButton) {
+      if (e.target === document.getElementById('loginModal')) {
+        document.getElementById('loginModal').classList.add('hidden');
+      }
+      if (!document.getElementById('logoutDropdown').contains(e.target) && e.target !== signupButton && e.target !== loginButton) {
         document.getElementById('logoutDropdown').classList.add('hidden');
       }
     });
