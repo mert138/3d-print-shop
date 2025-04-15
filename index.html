@@ -14,7 +14,7 @@
     body {
       font-family: 'Poppins', sans-serif;
     }
-    /* logout dropdown için basit konumlandırma */
+    /* Logout dropdown için basit konumlandırma */
     #logoutDropdown {
       position: absolute;
       top: 3.8rem; /* Navbar yüksekliğine göre ayarlandı */
@@ -24,6 +24,14 @@
       border-radius: 0.375rem;
       box-shadow: 0 2px 10px rgba(0,0,0,0.1);
       z-index: 60;
+    }
+    /* Büyük sepet popup için scrollbar stili */
+    #cartPopup::-webkit-scrollbar {
+      width: 8px;
+    }
+    #cartPopup::-webkit-scrollbar-thumb {
+      background-color: rgba(0, 0, 0, 0.2);
+      border-radius: 4px;
     }
   </style>
   
@@ -122,7 +130,9 @@
           <div class="p-6">
             <h3 class="text-2xl font-semibold">3D Anahtarlık</h3>
             <p class="mt-2 text-gray-600">15 TL</p>
-            <button onclick="addToCart('3D Anahtarlık', 15)" class="mt-4 bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded">Sepete Ekle</button>
+            <button onclick="addToCart('3D Anahtarlık', 15)" class="mt-4 bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded">
+              Sepete Ekle
+            </button>
           </div>
         </div>
         <!-- Ürün Kartı -->
@@ -131,7 +141,9 @@
           <div class="p-6">
             <h3 class="text-2xl font-semibold">Mini Heykel</h3>
             <p class="mt-2 text-gray-600">35 TL</p>
-            <button onclick="addToCart('Mini Heykel', 35)" class="mt-4 bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded">Sepete Ekle</button>
+            <button onclick="addToCart('Mini Heykel', 35)" class="mt-4 bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded">
+              Sepete Ekle
+            </button>
           </div>
         </div>
         <!-- Ürün Kartı -->
@@ -140,7 +152,9 @@
           <div class="p-6">
             <h3 class="text-2xl font-semibold">Kalemlik</h3>
             <p class="mt-2 text-gray-600">50 TL</p>
-            <button onclick="addToCart('Kalemlik', 50)" class="mt-4 bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded">Sepete Ekle</button>
+            <button onclick="addToCart('Kalemlik', 50)" class="mt-4 bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded">
+              Sepete Ekle
+            </button>
           </div>
         </div>
       </div>
@@ -177,13 +191,22 @@
     </div>
   </section>
   
-  <!-- Sepet Modalı -->
-  <div id="cart-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden flex justify-center items-center z-50">
-    <div class="bg-white p-8 rounded-lg w-96">
-      <h3 class="text-2xl font-bold mb-4">Sepet</h3>
-      <ul id="cart-items" class="mb-4 space-y-2"></ul>
-      <p class="font-semibold">Toplam: <span id="cart-total">0</span> TL</p>
-      <button onclick="toggleCart()" class="mt-6 bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded">Kapat</button>
+  <!-- Büyük Sepet Popup -->
+  <div id="cartPopup" class="hidden fixed top-16 right-4 bg-white border border-gray-300 shadow-2xl rounded-3xl z-50 w-[90vw] max-w-[700px] max-h-[80vh] overflow-y-auto transition-all duration-300">
+    <div class="p-6">
+      <div class="flex justify-between items-center mb-4">
+        <h2 class="text-2xl font-semibold text-gray-800">🛒 Sepetiniz</h2>
+        <button onclick="toggleCart()" class="text-gray-500 hover:text-red-500 text-xl font-bold">&times;</button>
+      </div>
+      <ul id="cart-items" class="space-y-4 text-gray-700">
+        <!-- Sepete eklenen ürünler dinamik olarak buraya eklenecek -->
+      </ul>
+      <div class="mt-6 flex justify-between items-center">
+        <span id="cart-total" class="text-xl font-bold text-green-600">Toplam: 0 TL</span>
+        <button class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-5 py-2 rounded-xl transition-all">
+          Satın Al
+        </button>
+      </div>
     </div>
   </div>
   
@@ -209,88 +232,71 @@
   <script>
     // Sepet İşlemleri
     let cart = [];
-
     function addToCart(name, price) {
       cart.push({ name, price });
       document.getElementById('cart-count').textContent = cart.length;
       alert(`${name} sepete eklendi!`);
     }
-
     function removeItem(index) {
       cart.splice(index, 1);
       document.getElementById('cart-count').textContent = cart.length;
       renderCartItems();
     }
-
     function renderCartItems() {
       const itemsList = document.getElementById('cart-items');
       const totalText = document.getElementById('cart-total');
       itemsList.innerHTML = '';
       let total = 0;
-      
       cart.forEach((item, index) => {
         const li = document.createElement('li');
         li.classList.add("flex", "justify-between", "items-center", "mb-2");
-
         const itemInfo = document.createElement('span');
         itemInfo.textContent = `${item.name} - ${item.price} TL`;
-        
         const removeBtn = document.createElement('button');
         removeBtn.textContent = "Çıkar";
         removeBtn.classList.add("bg-red-500", "hover:bg-red-600", "text-white", "px-2", "py-1", "rounded", "ml-4");
         removeBtn.onclick = function() { removeItem(index); };
-        
         li.appendChild(itemInfo);
         li.appendChild(removeBtn);
         itemsList.appendChild(li);
-        
         total += item.price;
       });
-      totalText.textContent = total;
+      totalText.textContent = `Toplam: ${total} TL`;
     }
-
     function toggleCart() {
-      const modal = document.getElementById('cart-modal');
-      if (modal.classList.contains('hidden')) {
+      const popup = document.getElementById('cartPopup');
+      if (popup.classList.contains('hidden')) {
         renderCartItems();
       }
-      modal.classList.toggle('hidden');
+      popup.classList.toggle('hidden');
     }
-
+    
     // Kayıt Formu Modal İşlemleri
     const signupModal = document.getElementById('signupModal');
     const signupButton = document.getElementById('signupButton');
     const closeSignupModal = document.getElementById('closeSignupModal');
-
     signupButton.addEventListener('click', () => {
-      // Eğer kullanıcı zaten kayıt olmuş ise (ikon görünüyorsa) logout dropdown'u toggle et
       if (signupButton.dataset.loggedIn === "true") {
         toggleLogoutDropdown();
       } else {
         signupModal.classList.remove('hidden');
       }
     });
-
     closeSignupModal.addEventListener('click', () => {
       signupModal.classList.add('hidden');
     });
-
     window.addEventListener('click', (e) => {
-      // Kayıt formu dışında bir yere tıklanırsa modal kapanır
       if (e.target === signupModal) {
         signupModal.classList.add('hidden');
       }
-      // Logout dropdown dışına tıklanırsa kapat
       if (!document.getElementById('logoutDropdown').contains(e.target) && e.target !== signupButton) {
         document.getElementById('logoutDropdown').classList.add('hidden');
       }
     });
-
     document.getElementById('signupForm').addEventListener('submit', function(e) {
       e.preventDefault();
       alert("Kayıt başarılı!");
       signupModal.classList.add('hidden');
-      // Kayıt olduktan sonra, signupButton içeriğini SVG kullanıcı ikonu olarak değiştirelim
       signupButton.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none"
            viewBox="0 0 24 24" stroke="currentColor">
          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -298,15 +304,13 @@
        </svg>`;
       signupButton.dataset.loggedIn = "true";
     });
-
+    
     // Logout Dropdown İşlemleri
     function toggleLogoutDropdown() {
       const logoutDropdown = document.getElementById('logoutDropdown');
       logoutDropdown.classList.toggle('hidden');
     }
-
     document.getElementById('logoutButton').addEventListener('click', () => {
-      // Çıkış yapıldığında, kullanıcı ikonunu tekrar "Kayıt Ol" butonuna çeviriyoruz.
       signupButton.innerText = "Kayıt Ol";
       signupButton.dataset.loggedIn = "false";
       document.getElementById('logoutDropdown').classList.add('hidden');
