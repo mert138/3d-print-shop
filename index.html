@@ -7,7 +7,7 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5871375969253618" crossorigin="anonymous"></script>
-  <style>body{font-family:'Poppins',sans-serif}.dropdown,#cart,#signupModal,#loginModal{position:absolute;z-index:50}.hidden{display:none}</style>
+  <style>body{font-family:'Poppins',sans-serif}.dropdown,#cart,#signupModal,#loginModal,#checkoutModal{position:absolute;z-index:50}.hidden{display:none}</style>
 </head>
 <body class="bg-gray-50 text-gray-800">
   <!-- Navbar -->
@@ -48,6 +48,18 @@
       </form>
     </div>
   </div>
+  <!-- Checkout Modal -->
+  <div id="checkoutModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden">
+    <div class="bg-white rounded-lg w-96 p-6 relative">
+      <button data-close class="absolute top-2 right-3 text-gray-500 text-xl">&times;</button>
+      <h2 class="text-xl font-semibold mb-4 text-center">Teslimat Bilgileri</h2>
+      <form id="checkoutForm" class="space-y-4">
+        <input type="text" id="address" placeholder="Adresinizi girin" class="w-full border p-2 rounded focus:ring-2 focus:ring-blue-500" required>
+        <input type="tel" id="phone" placeholder="Telefon numaranız" pattern="\\+?\d{10,}" class="w-full border p-2 rounded focus:ring-2 focus:ring-blue-500" required>
+        <button type="submit" id="confirmBtn" class="w-full bg-blue-600 text-white p-2 rounded hover:bg-blue-700">Siparişi Onayla</button>
+      </form>
+    </div>
+  </div>
 
   <!-- Hero -->
   <section class="relative h-screen flex items-center justify-center bg-cover bg-center" style="background:url('hero-bg.jpg')">
@@ -72,7 +84,7 @@
           <div class="p-6">
             <h3 class="text-2xl font-semibold"></h3>
             <p class="mt-2 text-gray-600"></p>
-            <button data-action="add-to-cart" class="mt-4 bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded"></button>
+            <button data-action="add-to-cart" class="mt-4 bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded">Sepete Ekle</button>
           </div>
         </div>
       </template>
@@ -80,16 +92,16 @@
   </section>
 
   <!-- Portföy -->
-  <section id="portfoy" class="py-16"><div class="max-w-7xl mx-auto px-4 text-center mb-12"><h2 class="text-4xl font-bold">Portföy</h2><p class="mt-4 text-gray-600">Gerçekleşen projelerimizden örnekler</p></div><div class="max-w-7xl mx-auto px-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8"><img src="images/portfoy1.jpg" alt="Portföy 1" class="rounded-lg shadow-lg"><img src="images/portfoy2.jpg" alt="Portföy 2" class="rounded-lg shadow-lg"><img src="images/portfoy3.jpg" alt="Portföy 3" class="rounded-lg shadow-lg"></div></section>
+  <section id="portfoy" class="py-16"><div class="max-w-7xl mx-auto px-4 text-center mb-12"><h2 class="text-4xl font-bold">Portföy</h2><p class="mt-4 text-gray-600">Gerçekleşen projelerimizden örnekler</p></div><div class="max-w-7xl mx-auto px-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8"><img src="images/portfoy1.jpg" alt="Portföy 1" class="rounded-lg shadow-lg"><img src="images/portföy2.jpg" alt="Portföy 2" class="rounded-lg shadow-lg"><img src="images/portfoy3.jpg" alt="Portföy 3" class="rounded-lg shadow-lg"></div></section>
 
   <!-- Hakkımızda -->
   <section id="hakkimizda" class="py-16 bg-blue-50"><div class="max-w-7xl mx-auto px-4 text-center mb-12"><h2 class="text-4xl font-bold">Hakkımızda</h2><p class="mt-4 text-gray-600">3D tasarımın estetiğini ve işlevselliğini bir araya getiriyoruz.</p></div><div class="max-w-2xl mx-auto px-4 text-center"><p class="text-lg text-gray-700">Yaratıcılığımızı ve teknolojiyi harmanlayarak müşterilerimize eşsiz deneyimler sunmayı hedefliyoruz. Her detayda kaliteyi hissettiriyoruz.<br>Bize Ulaşın: +90 5425131603 | +90 5316604012</p></div></section>
 
   <!-- Sepet Popup -->
   <div id="cart" class="hidden fixed top-16 right-4 bg-white border rounded-3xl shadow-2xl w-[90vw] max-w-[700px] max-h-[80vh] overflow-y-auto p-6">
-    <div class="flex justify-between items-center mb-4"><h2 class="text-2xl font-semibold">🛒 Sepetiniz</h2><button id="closeCart">&times;</button></div>
+    <div class="flex justify-between items-center mb-4"><h2 class="text-2xl font-semibold">🛒 Sepetiniz</h2><button id="closeCart" class="text-xl">&times;</button></div>
     <ul id="cartItems" class="space-y-4 text-gray-700"></ul>
-    <div class="mt-6 flex justify-between items-center"><span id="cartTotal" class="text-xl font-bold text-green-600">Toplam: 0 TL</span><button class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-5 py-2 rounded-xl">Satın Al</button></div>
+    <div class="mt-6 flex justify-between items-center"><span id="cartTotal" class="text-xl font-bold text-green-600">Toplam: 0 TL</span><button id="purchaseBtn" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-5 py-2 rounded-xl">Satın Al</button></div>
   </div>
 
   <!-- Footer AdSense -->
@@ -102,19 +114,19 @@
     import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-auth.js";
     const config={apiKey:"AIzaSyCEu0jR_Pdru5ry7Gv8I_61ruajssZVm0k",authDomain:"tremila-shop-133ce.firebaseapp.com",projectId:"tremila-shop-133ce",storageBucket:"tremila-shop-133ce.firebasestorage.app",messagingSenderId:"249334077736",appId:"1:249334077736:web:e8a299685fc6de4b17181d",measurementId:"G-R9RTKPFN19"};
     const app=initializeApp(config),analytics=getAnalytics(app),auth=getAuth(app),cart=[];
-    const mods={signup:document.getElementById('signupModal'),login:document.getElementById('loginModal')};
+    const mods={signup:document.getElementById('signupModal'),login:document.getElementById('loginModal'),checkout:document.getElementById('checkoutModal')};
     document.querySelectorAll('[data-modal]').forEach(btn=>btn.onclick=()=>mods[btn.dataset.modal].classList.remove('hidden'));
-    document.querySelectorAll('[data-close]').forEach(x=>x.onclick=()=>x.closest('div[id$="Modal"]').classList.add('hidden'));
-    document.getElementById('signupForm').onsubmit=e=>{e.preventDefault();const n=name.value,eS=emailSignup.value,p=passSignup.value;createUserWithEmailAndPassword(auth,eS,p).then(u=>{alert(`Kayıt başarılı! Hoş geldin ${n}`);mods.signup.classList.add('hidden');signupBtn.innerHTML='<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.121 17.804A4.992 4.992 0 0112 15c1.355 0 2.576.539 3.879 1.464M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 4a9.956 9.956 0 01-6 2c-1.03 0-2.02-.157-3-.444M4 14a9.956 9.956 0 016 2c1 .35 2.019.538 3 .538"/></svg>';signupBtn.dataset.loggedIn=true}).catch(err=>alert(err.message))};
-    document.getElementById('loginForm').onsubmit=e=>{e.preventDefault();signInWithEmailAndPassword(auth,emailLogin.value,passLogin.value).then(u=>{alert('Giriş başarılı!');mods.login.classList.add('hidden');loginBtn.innerHTML='<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.121 17.804A4.992 4.992 0 0112 15c1.355 0 2.576.539 3.879 1.464M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 4a9.956 9.956 0 01-6 2c-1.03 0-2.02-.157-3-.444M4 14a9.956 9.956 0 016 2c1 .35 2.019.538 3 .538"/></svg>';loginBtn.dataset.loggedIn=true}).catch(err=>alert(err.message))};
-    signupBtn.addEventListener('click',e=>signupBtn.dataset.loggedIn=='true'?logoutDropdown.classList.toggle('hidden'):null);
-    loginBtn.addEventListener('click',e=>loginBtn.dataset.loggedIn=='true'?logoutDropdown.classList.toggle('hidden'):null);
+    document.querySelectorAll('[data-close]').forEach(x=>x.onclick=()=>x.closest('div[class*="Modal"]').classList.add('hidden'));
+    document.getElementById('signupForm').onsubmit=e=>{e.preventDefault();const n=name.value,eS=emailSignup.value,p=passSignup.value;createUserWithEmailAndPassword(auth,eS,p).then(()=>{alert(`Kayıt başarılı! Hoş geldin ${n}`);mods.signup.classList.add('hidden');signupBtn.innerHTML='<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.121 17.804A4.992 4.992 0 0112 15c1.355 0 2.576.539 3.879 1.464M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 4a9.956 9.956 0 01-6 2c-1.03 0-2.02-.157-3-.444M4 14a9.956 9.956 0 016 2c1 .35 2.019.538 3 .538"/></svg>';signupBtn.dataset.loggedIn=true}).catch(err=>alert(err.message))};
+    document.getElementById('loginForm').onsubmit=e=>{e.preventDefault();signInWithEmailAndPassword(auth,emailLogin.value,passLogin.value).then(()=>{alert('Giriş başarılı!');mods.login.classList.add('hidden');loginBtn.innerHTML='<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.121 17.804A4.992 4.992 0 0112 15c1.355 0 2.576.539 3.879 1.464M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 4a9.956 9.956 0 01-6 2c-1.03 0-2.02-.157-3-.444M4 14a9.956 9.956 0 016 2c1 .35 2.019.538 3 .538"/></svg>';loginBtn.dataset.loggedIn=true}).catch(err=>alert(err.message))};
+    signupBtn.addEventListener('click',()=>signupBtn.dataset.loggedIn=='true'?logoutDropdown.classList.toggle('hidden'):null);
+    loginBtn.addEventListener('click',()=>loginBtn.dataset.loggedIn=='true'?logoutDropdown.classList.toggle('hidden'):null);
     logoutBtn.onclick=()=>{signupBtn.textContent='Kayıt Ol';loginBtn.textContent='Giriş Yap';signupBtn.dataset.loggedIn=loginBtn.dataset.loggedIn=false;logoutDropdown.classList.add('hidden');alert('Çıkış yapıldı!')};
     // Ürünler
     const products=[{img:'images/urun1.jpg',name:'3D Anahtarlık',price:15},{img:'images/urun2.jpg',name:'Mini Heykel',price:35},{img:'images/kalemlik.png',name:'Kalemlik',price:50}];
     const container=document.querySelector('#urunler .grid'),tpl=document.getElementById('productTpl');
-    products.forEach(p=>{const el=tpl.content.cloneNode(true);el.querySelector('img').src=p.img;el.querySelector('img').alt=p.name;el.querySelector('h3').textContent=p.name;el.querySelector('p').textContent=`${p.price} TL`;const btn=el.querySelector('button');btn.textContent='Sepete Ekle';btn.dataset.name=p.name;btn.dataset.price=p.price;container.append(el)});
+    products.forEach(p=>{const el=tpl.content.cloneNode(true);el.querySelector('img').src=p.img;el.querySelector('img').alt=p.name;el.querySelector('h3').textContent=p.name;el.querySelector('p').textContent=`${p.price} TL`;const btn=el.querySelector('button');btn.dataset.action='add-to-cart';btn.dataset.name=p.name;btn.dataset.price=p.price;container.append(el)});
     // Sepet
-    const cartBtn=document.getElementById('cartBtn'),cartCount=document.getElementById('cartCount'),cartModal=document.getElementById('cart'),closeCart=document.getElementById('closeCart'),itemsList=document.getElementById('cartItems'),totalText=document.getElementById('cartTotal');
-    container.addEventListener('click',e=>{if(e.target.dataset.action==='add-to-cart'){const n=e.target.dataset.name,pr=+e.target.dataset.price;cart.push({n,pr});cartCount.textContent=cart.length;alert(`${n} sepete eklendi!`)}});
-    const render=()=>{itemsList.innerHTML='';let sum=0;cart.forEach((i,i
+    const cartBtn=document.getElementById('cartBtn'),cartCount=document.getElementById('cartCount'),cartModal=document.getElementById('cart'),closeCart=document.get
+
+] }]}
