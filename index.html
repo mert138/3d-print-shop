@@ -279,11 +279,11 @@
           alert("Kayıt başarılı! Hoş geldin " + userName);
           document.getElementById('signupModal').classList.add('hidden');
           const signupButton = document.getElementById('signupButton');
-          signupButton.innerHTML = <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none"
+          signupButton.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none"
                viewBox="0 0 24 24" stroke="currentColor">
              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                d="M5.121 17.804A4.992 4.992 0 0112 15c1.355 0 2.576.539 3.879 1.464M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 4a9.956 9.956 0 01-6 2c-1.03 0-2.02-.157-3-.444M4 14a9.956 9.956 0 016 2c1 .35 2.019.538 3 .538" />
-           </svg>;
+           </svg>`;
           signupButton.dataset.loggedIn = "true";
         })
         .catch((error) => {
@@ -304,11 +304,11 @@
           document.getElementById('loginModal').classList.add('hidden');
           const loginButton = document.getElementById('loginButton');
           // Giriş yapıldıktan sonra kullanıcı ikonunu gösterebiliriz. Örneğin:
-          loginButton.innerHTML = <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none"
+          loginButton.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none"
                viewBox="0 0 24 24" stroke="currentColor">
              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                d="M5.121 17.804A4.992 4.992 0 0112 15c1.355 0 2.576.539 3.879 1.464M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 4a9.956 9.956 0 01-6 2c-1.03 0-2.02-.157-3-.444M4 14a9.956 9.956 0 016 2c1 .35 2.019.538 3 .538" />
-           </svg>;
+           </svg>`;
           loginButton.dataset.loggedIn = "true";
         })
         .catch((error) => {
@@ -321,7 +321,7 @@
     window.addToCart = function(name, price) {
       cart.push({ name, price });
       document.getElementById('cart-count').textContent = cart.length;
-      alert(${name} sepete eklendi!);
+      alert(`${name} sepete eklendi!`);
     }
     
     window.removeItem = function(index) {
@@ -339,7 +339,7 @@
         const li = document.createElement('li');
         li.classList.add("flex", "justify-between", "items-center", "mb-2");
         const itemInfo = document.createElement('span');
-        itemInfo.textContent = ${item.name} - ${item.price} TL;
+        itemInfo.textContent = `${item.name} - ${item.price} TL`;
         const removeBtn = document.createElement('button');
         removeBtn.textContent = "Çıkar";
         removeBtn.classList.add("bg-red-500", "hover:bg-red-600", "text-white", "px-2", "py-1", "rounded", "ml-4");
@@ -349,7 +349,7 @@
         itemsList.appendChild(li);
         total += item.price;
       });
-      totalText.textContent = Toplam: ${total} TL;
+      totalText.textContent = `Toplam: ${total} TL`;
     }
     
     window.toggleCart = function() {
