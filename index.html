@@ -4,416 +4,117 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>3D Sanat & Tasarım</title>
-  <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
-  <!-- Google Font (Poppins) -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
-  <style>
-    body {
-      font-family: 'Poppins', sans-serif;
-    }
-    /* Logout dropdown için basit konumlandırma */
-    #logoutDropdown {
-      position: absolute;
-      top: 3.8rem; /* Navbar yüksekliğine göre ayarlandı */
-      right: 1rem;
-      background: white;
-      border: 1px solid #e5e7eb; /* Tailwind'ın gray-200'si */
-      border-radius: 0.375rem;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-      z-index: 60;
-    }
-    /* Büyük sepet popup için scrollbar stili */
-    #cartPopup::-webkit-scrollbar {
-      width: 8px;
-    }
-    #cartPopup::-webkit-scrollbar-thumb {
-      background-color: rgba(0, 0, 0, 0.2);
-      border-radius: 4px;
-    }
-  </style>
-  
-  <!-- Google AdSense Script (Verdiğiniz kod) -->
-  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5871375969253618"
-       crossorigin="anonymous"></script>
-       
-  <!-- Firebase SDK'ları için Modüler Importlar; aşağıdaki script modül olarak çalışacak -->
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5871375969253618" crossorigin="anonymous"></script>
+  <style>body{font-family:'Poppins',sans-serif}.dropdown,#cart,#signupModal,#loginModal{position:absolute;z-index:50}.hidden{display:none}</style>
 </head>
 <body class="bg-gray-50 text-gray-800">
-
   <!-- Navbar -->
   <header class="fixed w-full bg-white shadow z-50">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
-      <div class="flex justify-between h-16 items-center">
-        <div class="flex-shrink-0">
-          <a href="#" class="text-2xl font-bold text-blue-600">3DArt</a>
-        </div>
-        <nav class="hidden md:flex items-center space-x-6">
-          <a href="#urunler" class="hover:text-blue-600 transition">Ürünler</a>
-          <a href="#portfoy" class="hover:text-blue-600 transition">Portföy</a>
-          <a href="#hakkimizda" class="hover:text-blue-600 transition">Hakkımızda</a>
-        </nav>
-        <div class="flex items-center gap-4 relative">
-          <button id="cartButton" onclick="toggleCart()" class="relative bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition">
-            🛒
-            <span id="cart-count" class="absolute -top-2 -right-2 bg-red-500 rounded-full text-xs w-5 h-5 flex items-center justify-center">0</span>
-          </button>
-          <!-- Kayıt Ol ve Giriş Yap Butonları -->
-          <button id="signupButton" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 transition">
-            Kayıt Ol
-          </button>
-          <button id="loginButton" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition">
-            Giriş Yap
-          </button>
-        </div>
+    <div class="max-w-7xl mx-auto px-4 flex justify-between items-center h-16">
+      <a href="#" class="text-2xl font-bold text-blue-600">3DArt</a>
+      <nav class="hidden md:flex space-x-6"><a href="#urunler" class="hover:text-blue-600">Ürünler</a><a href="#portfoy" class="hover:text-blue-600">Portföy</a><a href="#hakkimizda" class="hover:text-blue-600">Hakkımızda</a></nav>
+      <div class="flex items-center space-x-4">
+        <button id="cartBtn" class="relative bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">🛒<span id="cartCount" class="absolute -top-2 -right-2 bg-red-500 rounded-full text-xs w-5 h-5 flex items-center justify-center">0</span></button>
+        <button data-modal="signup" id="signupBtn" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">Kayıt Ol</button>
+        <button data-modal="login" id="loginBtn" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Giriş Yap</button>
       </div>
-      <!-- Logout Dropdown (Başlangıçta gizli) -->
-      <div id="logoutDropdown" class="hidden">
-        <button id="logoutButton" class="block px-4 py-2 text-gray-800 hover:bg-gray-100 w-full text-left">
-          Çıkış Yap
-        </button>
-      </div>
+      <div id="logoutDropdown" class="dropdown right-4 top-16 bg-white border rounded p-2 hidden"><button id="logoutBtn" class="w-full text-left hover:bg-gray-100">Çıkış Yap</button></div>
     </div>
   </header>
-  
-  <!-- Kayıt Formu Modalı -->
-  <div id="signupModal" class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center hidden z-50">
-    <div class="bg-white rounded-lg shadow-lg w-96 p-6 relative">
+
+  <!-- Modals -->
+  <div id="signupModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden">
+    <div class="bg-white rounded-lg w-96 p-6 relative">
+      <button data-close class="absolute top-2 right-3 text-gray-500 text-xl">&times;</button>
       <h2 class="text-xl font-semibold mb-4 text-center">Kayıt Ol</h2>
       <form id="signupForm" class="space-y-4">
-        <input type="text" id="userName" placeholder="Adınız" class="w-full border p-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-500" required>
-        <input type="email" id="userEmail" placeholder="E-posta" class="w-full border p-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-500" required>
-        <input type="password" id="userPassword" placeholder="Şifre" class="w-full border p-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-500" required>
-        <button type="submit" class="w-full bg-green-500 text-white p-2 rounded hover:bg-green-600 transition">Kayıt Ol</button>
+        <input type="text" id="name" placeholder="Adınız" class="w-full border p-2 rounded focus:ring-2 focus:ring-blue-500" required>
+        <input type="email" id="emailSignup" placeholder="E-posta" class="w-full border p-2 rounded focus:ring-2 focus:ring-blue-500" required>
+        <input type="password" id="passSignup" placeholder="Şifre" class="w-full border p-2 rounded focus:ring-2 focus:ring-blue-500" required>
+        <button type="submit" class="w-full bg-green-500 text-white p-2 rounded hover:bg-green-600">Kayıt Ol</button>
       </form>
-      <button id="closeSignupModal" class="absolute top-2 right-3 text-gray-500 hover:text-gray-800 text-xl font-bold">&times;</button>
     </div>
   </div>
-  
-  <!-- Giriş Formu Modalı -->
-  <div id="loginModal" class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center hidden z-50">
-    <div class="bg-white rounded-lg shadow-lg w-96 p-6 relative">
+  <div id="loginModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden">
+    <div class="bg-white rounded-lg w-96 p-6 relative">
+      <button data-close class="absolute top-2 right-3 text-gray-500 text-xl">&times;</button>
       <h2 class="text-xl font-semibold mb-4 text-center">Giriş Yap</h2>
       <form id="loginForm" class="space-y-4">
-        <input type="email" id="loginEmail" placeholder="E-posta" class="w-full border p-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-500" required>
-        <input type="password" id="loginPassword" placeholder="Şifre" class="w-full border p-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-500" required>
-        <button type="submit" class="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600 transition">Giriş Yap</button>
+        <input type="email" id="emailLogin" placeholder="E-posta" class="w-full border p-2 rounded focus:ring-2 focus:ring-blue-500" required>
+        <input type="password" id="passLogin" placeholder="Şifre" class="w-full border p-2 rounded focus:ring-2 focus:ring-blue-500" required>
+        <button type="submit" class="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600">Giriş Yap</button>
       </form>
-      <button id="closeLoginModal" class="absolute top-2 right-3 text-gray-500 hover:text-gray-800 text-xl font-bold">&times;</button>
     </div>
   </div>
-  
-  <!-- Hero Section -->
-  <section class="relative h-screen flex items-center justify-center" style="background: url('hero-bg.jpg') no-repeat center center/cover;">
+
+  <!-- Hero -->
+  <section class="relative h-screen flex items-center justify-center bg-cover bg-center" style="background:url('hero-bg.jpg')">
     <div class="absolute inset-0 bg-black opacity-50"></div>
     <div class="relative z-10 text-center text-white px-4">
       <h1 class="text-5xl font-bold mb-4">3D Tasarımda Yeni Bir Soluk</h1>
       <p class="text-xl mb-8">Farklı ve şık 3D ürünlerle yaşam alanınıza estetik katın.</p>
-      <a href="#urunler" class="bg-blue-600 hover:bg-blue-700 transition px-6 py-3 rounded-full text-lg">Ürünleri Keşfet</a>
+      <a href="#urunler" class="bg-blue-600 hover:bg-blue-700 px-6 py-3 rounded-full text-lg transition">Ürünleri Keşfet</a>
     </div>
   </section>
-  
-  <!-- Google AdSense Ortak Reklam Bloğu -->
-  <section class="py-6 bg-gray-50">
-    <div class="max-w-7xl mx-auto px-4">
-      <!-- Responsive Ad Unit Örneği -->
-      <ins class="adsbygoogle"
-           style="display:block"
-           data-ad-format="auto"
-           data-full-width-responsive="true"
-           data-ad-client="ca-pub-5871375969253618"
-           data-ad-slot="1234567890"></ins>
-      <script>
-           (adsbygoogle = window.adsbygoogle || []).push({});
-      </script>
-    </div>
-  </section>
-  
-  <!-- Ürünler Bölümü -->
+
+  <!-- AdSense -->
+  <section class="py-6 bg-gray-50"><ins class="adsbygoogle" style="display:block" data-ad-format="auto" data-full-width-responsive="true" data-ad-client="ca-pub-5871375969253618" data-ad-slot="1234567890"></ins><script>(adsbygoogle=window.adsbygoogle||[]).push({})</script></section>
+
+  <!-- Ürünler -->
   <section id="urunler" class="py-16 bg-gray-100">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="text-center mb-12">
-        <h2 class="text-4xl font-bold">Ürünler</h2>
-        <p class="mt-4 text-gray-600">Modern 3D tasarımlarımızı keşfedin</p>
-      </div>
-      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
-        <!-- Ürün Kartı -->
-        <div class="bg-white rounded-lg shadow-lg overflow-hidden transform transition duration-300 hover:scale-105">
-          <img src="images/urun1.jpg" alt="3D Anahtarlık" class="w-full h-64 object-cover">
+    <div class="max-w-7xl mx-auto px-4 text-center mb-12"><h2 class="text-4xl font-bold">Ürünler</h2><p class="mt-4 text-gray-600">Modern 3D tasarımlarımızı keşfedin</p></div>
+    <div class="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 px-4">
+      <template id="productTpl">
+        <div class="bg-white rounded-lg shadow-lg hover:scale-105 transform transition duration-300">
+          <img class="w-full h-64 object-cover" alt>
           <div class="p-6">
-            <h3 class="text-2xl font-semibold">3D Anahtarlık</h3>
-            <p class="mt-2 text-gray-600">15 TL</p>
-            <button onclick="addToCart('3D Anahtarlık', 15)" class="mt-4 bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded">
-              Sepete Ekle
-            </button>
+            <h3 class="text-2xl font-semibold"></h3>
+            <p class="mt-2 text-gray-600"></p>
+            <button data-action="add-to-cart" class="mt-4 bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded"></button>
           </div>
         </div>
-        <!-- Ürün Kartı -->
-        <div class="bg-white rounded-lg shadow-lg overflow-hidden transform transition duration-300 hover:scale-105">
-          <img src="images/urun2.jpg" alt="Mini Heykel" class="w-full h-64 object-cover">
-          <div class="p-6">
-            <h3 class="text-2xl font-semibold">Mini Heykel</h3>
-            <p class="mt-2 text-gray-600">35 TL</p>
-            <button onclick="addToCart('Mini Heykel', 35)" class="mt-4 bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded">
-              Sepete Ekle
-            </button>
-          </div>
-        </div>
-        <!-- Ürün Kartı -->
-        <div class="bg-white rounded-lg shadow-lg overflow-hidden transform transition duration-300 hover:scale-105">
-          <img src="images/kalemlik.png" alt="Kişiye Özel Kalemlik" class="w-full h-64 object-cover">
-          <div class="p-6">
-            <h3 class="text-2xl font-semibold">Kalemlik</h3>
-            <p class="mt-2 text-gray-600">50 TL</p>
-            <button onclick="addToCart('Kalemlik', 50)" class="mt-4 bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded">
-              Sepete Ekle
-            </button>
-          </div>
-        </div>
-      </div>
+      </template>
     </div>
   </section>
-  
-  <!-- Portföy Bölümü -->
-  <section id="portfoy" class="py-16">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="text-center mb-12">
-        <h2 class="text-4xl font-bold">Portföy</h2>
-        <p class="mt-4 text-gray-600">Gerçekleşen projelerimizden örnekler</p>
-      </div>
-      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
-        <img src="images/portfoy1.jpg" alt="Portföy 1" class="rounded-lg shadow-lg">
-        <img src="images/portfoy2.jpg" alt="Portföy 2" class="rounded-lg shadow-lg">
-        <img src="images/portfoy3.jpg" alt="Portföy 3" class="rounded-lg shadow-lg">
-      </div>
-    </div>
-  </section>
-  
-  <!-- Hakkımızda Bölümü -->
-  <section id="hakkimizda" class="py-16 bg-blue-50">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="text-center mb-12">
-        <h2 class="text-4xl font-bold">Hakkımızda</h2>
-        <p class="mt-4 text-gray-600">3D tasarımın estetiğini ve işlevselliğini bir araya getiriyoruz.</p>
-      </div>
-      <div class="max-w-2xl mx-auto text-center">
-        <p class="text-lg text-gray-700">
-          Yaratıcılığımızı ve teknolojiyi harmanlayarak müşterilerimize eşsiz deneyimler sunmayı hedefliyoruz. Her detayda kaliteyi hissettiriyoruz.
-               Bize Ulaşın : +90 5425131603
-                        +90 5316604012 
-        </p>
-      </div>
-    </div>
-  </section>
-  
-  <!-- Büyük Sepet Popup -->
-  <div id="cartPopup" class="hidden fixed top-16 right-4 bg-white border border-gray-300 shadow-2xl rounded-3xl z-50 w-[90vw] max-w-[700px] max-h-[80vh] overflow-y-auto transition-all duration-300">
-    <div class="p-6">
-      <div class="flex justify-between items-center mb-4">
-        <h2 class="text-2xl font-semibold text-gray-800">🛒 Sepetiniz</h2>
-        <button onclick="toggleCart()" class="text-gray-500 hover:text-red-500 text-xl font-bold">&times;</button>
-      </div>
-      <ul id="cart-items" class="space-y-4 text-gray-700">
-        <!-- Sepete eklenen ürünler dinamik olarak buraya eklenecek -->
-      </ul>
-      <div class="mt-6 flex justify-between items-center">
-        <span id="cart-total" class="text-xl font-bold text-green-600">Toplam: 0 TL</span>
-        <button class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-5 py-2 rounded-xl transition-all">
-          Satın Al
-        </button>
-      </div>
-    </div>
+
+  <!-- Portföy -->
+  <section id="portfoy" class="py-16"><div class="max-w-7xl mx-auto px-4 text-center mb-12"><h2 class="text-4xl font-bold">Portföy</h2><p class="mt-4 text-gray-600">Gerçekleşen projelerimizden örnekler</p></div><div class="max-w-7xl mx-auto px-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8"><img src="images/portfoy1.jpg" alt="Portföy 1" class="rounded-lg shadow-lg"><img src="images/portfoy2.jpg" alt="Portföy 2" class="rounded-lg shadow-lg"><img src="images/portfoy3.jpg" alt="Portföy 3" class="rounded-lg shadow-lg"></div></section>
+
+  <!-- Hakkımızda -->
+  <section id="hakkimizda" class="py-16 bg-blue-50"><div class="max-w-7xl mx-auto px-4 text-center mb-12"><h2 class="text-4xl font-bold">Hakkımızda</h2><p class="mt-4 text-gray-600">3D tasarımın estetiğini ve işlevselliğini bir araya getiriyoruz.</p></div><div class="max-w-2xl mx-auto px-4 text-center"><p class="text-lg text-gray-700">Yaratıcılığımızı ve teknolojiyi harmanlayarak müşterilerimize eşsiz deneyimler sunmayı hedefliyoruz. Her detayda kaliteyi hissettiriyoruz.<br>Bize Ulaşın: +90 5425131603 | +90 5316604012</p></div></section>
+
+  <!-- Sepet Popup -->
+  <div id="cart" class="hidden fixed top-16 right-4 bg-white border rounded-3xl shadow-2xl w-[90vw] max-w-[700px] max-h-[80vh] overflow-y-auto p-6">
+    <div class="flex justify-between items-center mb-4"><h2 class="text-2xl font-semibold">🛒 Sepetiniz</h2><button id="closeCart">&times;</button></div>
+    <ul id="cartItems" class="space-y-4 text-gray-700"></ul>
+    <div class="mt-6 flex justify-between items-center"><span id="cartTotal" class="text-xl font-bold text-green-600">Toplam: 0 TL</span><button class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-5 py-2 rounded-xl">Satın Al</button></div>
   </div>
-  
-  <!-- Google AdSense Footer Reklam Alanı -->
-  <footer class="bg-gray-800 text-gray-300 py-6">
-    <div class="max-w-7xl mx-auto px-4 text-center">
-      <p>&copy; 2025 3DArt. Tüm hakları saklıdır.</p>
-      <div class="mt-4">
-        <ins class="adsbygoogle"
-             style="display:block"
-             data-ad-format="auto"
-             data-full-width-responsive="true"
-             data-ad-client="ca-pub-5871375969253618"
-             data-ad-slot="0987654321"></ins>
-        <script>
-             (adsbygoogle = window.adsbygoogle || []).push({});
-        </script>
-      </div>
-    </div>
-  </footer>
-  
-  <!-- Firebase ve Uygulama İşlevselliği için Script (Module Olarak) -->
+
+  <!-- Footer AdSense -->
+  <footer class="bg-gray-800 text-gray-300 py-6 text-center"><p>&copy; 2025 3DArt. Tüm hakları saklıdır.</p><div class="mt-4"><ins class="adsbygoogle" style="display:block" data-ad-format="auto" data-full-width-responsive="true" data-ad-client="ca-pub-5871375969253618" data-ad-slot="0987654321"></ins><script>(adsbygoogle=window.adsbygoogle||[]).push({})</script></div></footer>
+
+  <!-- Scripts -->
   <script type="module">
-    // Firebase modüler SDK içe aktarımları
     import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
     import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-analytics.js";
     import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-auth.js";
-    
-    // Firebase yapılandırma (sizin verdiğiniz bilgiler)
-    const firebaseConfig = {
-      apiKey: "AIzaSyCEu0jR_Pdru5ry7Gv8I_61ruajssZVm0k",
-      authDomain: "tremila-shop-133ce.firebaseapp.com",
-      projectId: "tremila-shop-133ce",
-      storageBucket: "tremila-shop-133ce.firebasestorage.app",
-      messagingSenderId: "249334077736",
-      appId: "1:249334077736:web:e8a299685fc6de4b17181d",
-      measurementId: "G-R9RTKPFN19"
-    };
-    
-    // Firebase'i başlatma
-    const app = initializeApp(firebaseConfig);
-    const analytics = getAnalytics(app);
-    const auth = getAuth(app);
-    
-    // Kayıt Formu İşlemleri: Yeni kullanıcı kaydı
-    const signupForm = document.getElementById('signupForm');
-    signupForm.addEventListener('submit', (e) => {
-      e.preventDefault();
-      const userName = document.getElementById('userName').value;
-      const email = document.getElementById('userEmail').value;
-      const password = document.getElementById('userPassword').value;
-      
-      createUserWithEmailAndPassword(auth, email, password)
-        .then((userCredential) => {
-          alert("Kayıt başarılı! Hoş geldin " + userName);
-          document.getElementById('signupModal').classList.add('hidden');
-          const signupButton = document.getElementById('signupButton');
-          signupButton.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none"
-               viewBox="0 0 24 24" stroke="currentColor">
-             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-               d="M5.121 17.804A4.992 4.992 0 0112 15c1.355 0 2.576.539 3.879 1.464M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 4a9.956 9.956 0 01-6 2c-1.03 0-2.02-.157-3-.444M4 14a9.956 9.956 0 016 2c1 .35 2.019.538 3 .538" />
-           </svg>`;
-          signupButton.dataset.loggedIn = "true";
-        })
-        .catch((error) => {
-          alert("Hata: " + error.message);
-        });
-    });
-    
-    // Giriş Formu İşlemleri: Var olan kullanıcıyla giriş
-    const loginForm = document.getElementById('loginForm');
-    loginForm.addEventListener('submit', (e) => {
-      e.preventDefault();
-      const email = document.getElementById('loginEmail').value;
-      const password = document.getElementById('loginPassword').value;
-      
-      signInWithEmailAndPassword(auth, email, password)
-        .then((userCredential) => {
-          alert("Giriş başarılı!");
-          document.getElementById('loginModal').classList.add('hidden');
-          const loginButton = document.getElementById('loginButton');
-          // Giriş yapıldıktan sonra kullanıcı ikonunu gösterebiliriz. Örneğin:
-          loginButton.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none"
-               viewBox="0 0 24 24" stroke="currentColor">
-             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-               d="M5.121 17.804A4.992 4.992 0 0112 15c1.355 0 2.576.539 3.879 1.464M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 4a9.956 9.956 0 01-6 2c-1.03 0-2.02-.157-3-.444M4 14a9.956 9.956 0 016 2c1 .35 2.019.538 3 .538" />
-           </svg>`;
-          loginButton.dataset.loggedIn = "true";
-        })
-        .catch((error) => {
-          alert("Hata: " + error.message);
-        });
-    });
-    
-    // Sepet İşlemleri
-    let cart = [];
-    window.addToCart = function(name, price) {
-      cart.push({ name, price });
-      document.getElementById('cart-count').textContent = cart.length;
-      alert(`${name} sepete eklendi!`);
-    }
-    
-    window.removeItem = function(index) {
-      cart.splice(index, 1);
-      document.getElementById('cart-count').textContent = cart.length;
-      renderCartItems();
-    }
-    
-    window.renderCartItems = function() {
-      const itemsList = document.getElementById('cart-items');
-      const totalText = document.getElementById('cart-total');
-      itemsList.innerHTML = '';
-      let total = 0;
-      cart.forEach((item, index) => {
-        const li = document.createElement('li');
-        li.classList.add("flex", "justify-between", "items-center", "mb-2");
-        const itemInfo = document.createElement('span');
-        itemInfo.textContent = `${item.name} - ${item.price} TL`;
-        const removeBtn = document.createElement('button');
-        removeBtn.textContent = "Çıkar";
-        removeBtn.classList.add("bg-red-500", "hover:bg-red-600", "text-white", "px-2", "py-1", "rounded", "ml-4");
-        removeBtn.onclick = function() { removeItem(index); };
-        li.appendChild(itemInfo);
-        li.appendChild(removeBtn);
-        itemsList.appendChild(li);
-        total += item.price;
-      });
-      totalText.textContent = `Toplam: ${total} TL`;
-    }
-    
-    window.toggleCart = function() {
-      const popup = document.getElementById('cartPopup');
-      if (popup.classList.contains('hidden')) {
-        renderCartItems();
-      }
-      popup.classList.toggle('hidden');
-    }
-    
-    // Logout Dropdown İşlemleri
-    window.toggleLogoutDropdown = function() {
-      const logoutDropdown = document.getElementById('logoutDropdown');
-      logoutDropdown.classList.toggle('hidden');
-    }
-    document.getElementById('logoutButton').addEventListener('click', () => {
-      const signupButton = document.getElementById('signupButton');
-      const loginButton = document.getElementById('loginButton');
-      signupButton.innerText = "Kayıt Ol";
-      loginButton.innerText = "Giriş Yap";
-      signupButton.dataset.loggedIn = "false";
-      loginButton.dataset.loggedIn = "false";
-      document.getElementById('logoutDropdown').classList.add('hidden');
-      alert("Çıkış yapıldı!");
-    });
-    
-    // Kayıt/Logout UI İşlemleri: Eğer kullanıcı zaten kayıtlı/giriş yapmışsa, ilgili butonlar togglanır.
-    const signupButton = document.getElementById('signupButton');
-    signupButton.addEventListener('click', () => {
-      if (signupButton.dataset.loggedIn === "true") {
-        toggleLogoutDropdown();
-      } else {
-        document.getElementById('signupModal').classList.remove('hidden');
-      }
-    });
-    const loginButton = document.getElementById('loginButton');
-    loginButton.addEventListener('click', () => {
-      if (loginButton.dataset.loggedIn === "true") {
-        toggleLogoutDropdown();
-      } else {
-        document.getElementById('loginModal').classList.remove('hidden');
-      }
-    });
-    const closeSignupModal = document.getElementById('closeSignupModal');
-    closeSignupModal.addEventListener('click', () => {
-      document.getElementById('signupModal').classList.add('hidden');
-    });
-    const closeLoginModal = document.getElementById('closeLoginModal');
-    closeLoginModal.addEventListener('click', () => {
-      document.getElementById('loginModal').classList.add('hidden');
-    });
-    window.addEventListener('click', (e) => {
-      if (e.target === document.getElementById('signupModal')) {
-        document.getElementById('signupModal').classList.add('hidden');
-      }
-      if (e.target === document.getElementById('loginModal')) {
-        document.getElementById('loginModal').classList.add('hidden');
-      }
-      if (!document.getElementById('logoutDropdown').contains(e.target) && e.target !== signupButton && e.target !== loginButton) {
-        document.getElementById('logoutDropdown').classList.add('hidden');
-      }
-    });
-  </script>
-</body>
-</html>
+    const config={apiKey:"AIzaSyCEu0jR_Pdru5ry7Gv8I_61ruajssZVm0k",authDomain:"tremila-shop-133ce.firebaseapp.com",projectId:"tremila-shop-133ce",storageBucket:"tremila-shop-133ce.firebasestorage.app",messagingSenderId:"249334077736",appId:"1:249334077736:web:e8a299685fc6de4b17181d",measurementId:"G-R9RTKPFN19"};
+    const app=initializeApp(config),analytics=getAnalytics(app),auth=getAuth(app),cart=[];
+    const mods={signup:document.getElementById('signupModal'),login:document.getElementById('loginModal')};
+    document.querySelectorAll('[data-modal]').forEach(btn=>btn.onclick=()=>mods[btn.dataset.modal].classList.remove('hidden'));
+    document.querySelectorAll('[data-close]').forEach(x=>x.onclick=()=>x.closest('div[id$="Modal"]').classList.add('hidden'));
+    document.getElementById('signupForm').onsubmit=e=>{e.preventDefault();const n=name.value,eS=emailSignup.value,p=passSignup.value;createUserWithEmailAndPassword(auth,eS,p).then(u=>{alert(`Kayıt başarılı! Hoş geldin ${n}`);mods.signup.classList.add('hidden');signupBtn.innerHTML='<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.121 17.804A4.992 4.992 0 0112 15c1.355 0 2.576.539 3.879 1.464M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 4a9.956 9.956 0 01-6 2c-1.03 0-2.02-.157-3-.444M4 14a9.956 9.956 0 016 2c1 .35 2.019.538 3 .538"/></svg>';signupBtn.dataset.loggedIn=true}).catch(err=>alert(err.message))};
+    document.getElementById('loginForm').onsubmit=e=>{e.preventDefault();signInWithEmailAndPassword(auth,emailLogin.value,passLogin.value).then(u=>{alert('Giriş başarılı!');mods.login.classList.add('hidden');loginBtn.innerHTML='<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.121 17.804A4.992 4.992 0 0112 15c1.355 0 2.576.539 3.879 1.464M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 4a9.956 9.956 0 01-6 2c-1.03 0-2.02-.157-3-.444M4 14a9.956 9.956 0 016 2c1 .35 2.019.538 3 .538"/></svg>';loginBtn.dataset.loggedIn=true}).catch(err=>alert(err.message))};
+    signupBtn.addEventListener('click',e=>signupBtn.dataset.loggedIn=='true'?logoutDropdown.classList.toggle('hidden'):null);
+    loginBtn.addEventListener('click',e=>loginBtn.dataset.loggedIn=='true'?logoutDropdown.classList.toggle('hidden'):null);
+    logoutBtn.onclick=()=>{signupBtn.textContent='Kayıt Ol';loginBtn.textContent='Giriş Yap';signupBtn.dataset.loggedIn=loginBtn.dataset.loggedIn=false;logoutDropdown.classList.add('hidden');alert('Çıkış yapıldı!')};
+    // Ürünler
+    const products=[{img:'images/urun1.jpg',name:'3D Anahtarlık',price:15},{img:'images/urun2.jpg',name:'Mini Heykel',price:35},{img:'images/kalemlik.png',name:'Kalemlik',price:50}];
+    const container=document.querySelector('#urunler .grid'),tpl=document.getElementById('productTpl');
+    products.forEach(p=>{const el=tpl.content.cloneNode(true);el.querySelector('img').src=p.img;el.querySelector('img').alt=p.name;el.querySelector('h3').textContent=p.name;el.querySelector('p').textContent=`${p.price} TL`;const btn=el.querySelector('button');btn.textContent='Sepete Ekle';btn.dataset.name=p.name;btn.dataset.price=p.price;container.append(el)});
+    // Sepet
+    const cartBtn=document.getElementById('cartBtn'),cartCount=document.getElementById('cartCount'),cartModal=document.getElementById('cart'),closeCart=document.getElementById('closeCart'),itemsList=document.getElementById('cartItems'),totalText=document.getElementById('cartTotal');
+    container.addEventListener('click',e=>{if(e.target.dataset.action==='add-to-cart'){const n=e.target.dataset.name,pr=+e.target.dataset.price;cart.push({n,pr});cartCount.textContent=cart.length;alert(`${n} sepete eklendi!`)}});
+    const render=()=>{itemsList.innerHTML='';let sum=0;cart.forEach((i,i
