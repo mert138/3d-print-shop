@@ -207,23 +207,115 @@
   </section>
   
   <!-- Büyük Sepet Popup -->
-  <div id="cartPopup" class="hidden fixed top-16 right-4 bg-white border border-gray-300 shadow-2xl rounded-3xl z-50 w-[90vw] max-w-[700px] max-h-[80vh] overflow-y-auto transition-all duration-300">
-    <div class="p-6">
-      <div class="flex justify-between items-center mb-4">
-        <h2 class="text-2xl font-semibold text-gray-800">🛒 Sepetiniz</h2>
-        <button onclick="toggleCart()" class="text-gray-500 hover:text-red-500 text-xl font-bold">&times;</button>
-      </div>
-      <ul id="cart-items" class="space-y-4 text-gray-700">
-        <!-- Sepete eklenen ürünler dinamik olarak buraya eklenecek -->
-      </ul>
-      <div class="mt-6 flex justify-between items-center">
-        <span id="cart-total" class="text-xl font-bold text-green-600">Toplam: 0 TL</span>
-        <button class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-5 py-2 rounded-xl transition-all">
-          Satın Al
-        </button>
-      </div>
-    </div>
+<!-- Sepet Popup -->
+<div id="cartPopup" class="hidden fixed top-20 right-4 w-80 bg-white shadow-lg rounded-lg z-50 max-h-96 overflow-y-auto p-4">
+  <h3 class="text-lg font-semibold mb-4">Sepet</h3>
+  <div id="cartItems" class="space-y-4"></div>
+  <div class="mt-4 border-t pt-4 flex justify-between items-center">
+    <span class="font-semibold">Toplam:</span>
+    <span id="cartTotal" class="text-green-600 font-bold">0 TL</span>
   </div>
+  <div class="mt-4 flex justify-between">
+    <button onclick="clearCart()" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition">Temizle</button>
+    <button class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 transition">Satın Al</button>
+  </div>
+</div>
+
+<!-- Bildirim -->
+<div id="notification" class="fixed bottom-4 right-4 bg-blue-600 text-white px-4 py-2 rounded shadow-lg hidden z-50"></div>
+
+<script>
+  let cart = [];
+
+  function toggleCart() {
+    document.getElementById('cartPopup').classList.toggle('hidden');
+  }
+
+  function showNotification(message) {
+    const notification = document.getElementById('notification');
+    notification.textContent = message;
+    notification.classList.remove('hidden');
+    setTimeout(() => {
+      notification.classList.add('hidden');
+    }, 2000);
+  }
+
+  function addToCart(name, price) {
+    const existingItem = cart.find(item => item.name === name);
+    if (existingItem) {
+      existingItem.quantity++;
+    } else {
+      cart.push({ name, price, quantity: 1 });
+    }
+    updateCart();
+    showNotification(`${name} sepete eklendi!`);
+  }
+
+  function updateCart() {
+    const cartItems = document.getElementById('cartItems');
+    cartItems.innerHTML = '';
+    let total = 0;
+    cart.forEach(item => {
+      total += item.price * item.quantity;
+      const div = document.createElement('div');
+      div.className = "flex justify-between items-center";
+      div.innerHTML = `
+        <div>
+          <h4 class="font-semibold">${item.name}</h4>
+          <p class="text-gray-600">${item.price} TL x ${item.quantity}</p>
+        </div>
+        <div class="flex gap-1">
+          <button onclick="increaseQuantity('${item.name}')" class="bg-blue-500 text-white px-2 rounded">+</button>
+          <button onclick="decreaseQuantity('${item.name}')" class="bg-gray-300 text-black px-2 rounded">-</button>
+        </div>
+      `;
+      cartItems.appendChild(div);
+    });
+    document.getElementById('cartTotal').textContent = `${total} TL`;
+    document.getElementById('cart-count').textContent = cart.reduce((sum, item) => sum + item.quantity, 0);
+  }
+
+  function clearCart() {
+    cart = [];
+    updateCart();
+    showNotification("Sepet temizlendi!");
+  }
+
+  function increaseQuantity(name) {
+    const item = cart.find(i => i.name === name);
+    item.quantity++;
+    updateCart();
+  }
+
+  function decreaseQuantity(name) {
+    const item = cart.find(i => i.name === name);
+    if (item.quantity > 1) {
+      item.quantity--;
+    } else {
+      cart = cart.filter(i => i.name !== name);
+    }
+    updateCart();
+  }
+
+  // Modalları Aç/Kapat
+  document.getElementById('signupButton').onclick = () => document.getElementById('signupModal').classList.remove('hidden');
+  document.getElementById('loginButton').onclick = () => document.getElementById('loginModal').classList.remove('hidden');
+  document.getElementById('closeSignupModal').onclick = () => document.getElementById('signupModal').classList.add('hidden');
+  document.getElementById('closeLoginModal').onclick = () => document.getElementById('loginModal').classList.add('hidden');
+
+  // Logout Dropdown
+  let logoutOpen = false;
+  document.getElementById('loginButton').addEventListener('click', () => {
+    document.getElementById('logoutDropdown').classList.add('hidden');
+    logoutOpen = false;
+  });
+  document.getElementById('logoutButton').addEventListener('click', () => {
+    showNotification("Çıkış yapıldı!");
+    document.getElementById('logoutDropdown').classList.add('hidden');
+    logoutOpen = false;
+  });
+</script>
+
   
   <!-- Google AdSense Footer Reklam Alanı -->
   <footer class="bg-gray-800 text-gray-300 py-6">
