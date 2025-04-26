@@ -483,5 +483,15 @@
     });
   </script>
 <script src="app.js"></script>
+<!-- Sepet Modal Konteyneri -->
+<div id="cart-modal" class="hidden fixed inset-0 bg-black bg-opacity-50">
+  <div class="absolute right-0 top-0 w-80 bg-white h-full p-6 overflow-auto">
+    <button onclick="toggleCart()" class="mb-4">× Kapat</button>
+    <h2>Sepetiniz</h2>
+    <ul id="cart-items"></ul>
+    <div>Toplam: <span id="cart-total">0</span> TL</div>
+  </div>
+</div>
+
 </body>
 </html>
