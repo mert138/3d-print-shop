@@ -42,7 +42,7 @@ function renderCartItems() {
 }
 
 function toggleCart() {
-  const modal = document.getElementById('myCartModal');
+  const modal = document.getElementById('cart-modal');
   // Sepeti açarken öğeleri render ediyoruz
   if (modal.classList.contains('hidden')) {
     renderCartItems();
