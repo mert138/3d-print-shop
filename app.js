@@ -49,4 +49,9 @@ function toggleCart() {
   }
   modal.classList.toggle('hidden');
 }
+// app.js’in sonunda:
+window.addToCart    = addToCart;
+window.removeItem   = removeItem;
+window.toggleCart   = toggleCart;
+
 
