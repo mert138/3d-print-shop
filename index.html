@@ -518,6 +518,32 @@
     <div>Toplam: <span id="cart-total">0</span> TL</div>
   </div>
 </div>
+<!-- Kayıt Modal -->
+<div id="signupModal" class="hidden">
+  <form id="signupForm">
+    <h2>Kayıt Ol</h2>
+    <input id="userName"     type="text"     placeholder="Adınız" required>
+    <input id="userEmail"    type="email"    placeholder="Email" required>
+    <input id="userPassword" type="password" placeholder="Şifre" required>
+    <button type="submit">Gönder</button>
+  </form>
+  <button id="closeSignupModal">✕ Kapat</button>
+</div>
+
+<!-- Giriş Modal -->
+<div id="loginModal" class="hidden">
+  <form id="loginForm">
+    <h2>Giriş Yap</h2>
+    <input id="loginEmail"    type="email"    placeholder="Email" required>
+    <input id="loginPassword" type="password" placeholder="Şifre" required>
+    <button type="submit">Gönder</button>
+  </form>
+  <button id="closeLoginModal">✕ Kapat</button>
+</div>
+
+
+<button id="signupButton">Kayıt Ol</button>
+<button id="loginButton">Giriş Yap</button>
 
 </body>
 </html>
