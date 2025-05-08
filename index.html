@@ -69,6 +69,51 @@
 </head>
 <body class="bg-gray-50 text-gray-800">
 
+   <div id="cookie-banner" class="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 p-4 flex flex-col md:flex-row items-center justify-between space-y-2 md:space-y-0 shadow-lg hidden">
+    <div class="text-gray-700 text-center md:text-left">
+      Bu site çerezler kullanır. Site deneyiminizi iyileştirmek için çerez kullanımına izin veriyor musunuz?
+      <a href="/cerez-politikasi" class="underline hover:text-blue-600 ml-1">Detaylar</a>
+    </div>
+    <button id="accept-cookies" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded">
+      Kabul Et
+    </button>
+  </div>
+
+  <!-- Mevcut navbar, içerik vs... -->
+
+  <!-- En altta, app.js’den önce veya </body> kapanışından hemen önce ekleyin -->
+  <script>
+    // Sayfa yüklendiğinde çalışacak
+    document.addEventListener('DOMContentLoaded', function () {
+      const banner = document.getElementById('cookie-banner');
+      const acceptBtn = document.getElementById('accept-cookies');
+
+      // Çerez var mı kontrol et
+      function getCookie(name) {
+        const value = "; " + document.cookie;
+        const parts = value.split("; " + name + "=");
+        if (parts.length === 2) return parts.pop().split(";").shift();
+      }
+
+      // Çerez set et
+      function setCookie(name, value, days) {
+        const expires = new Date(Date.now() + days * 864e5).toUTCString();
+        document.cookie = name + '=' + encodeURIComponent(value) + '; expires=' + expires + '; path=/';
+      }
+
+      // Eğer daha önce kabul edilmediyse banner’ı göster
+      if (!getCookie('cookieConsent')) {
+        banner.classList.remove('hidden');
+      }
+
+      // Kabul et butonuna tıklanınca
+      acceptBtn.addEventListener('click', function () {
+        setCookie('cookieConsent', 'true', 365);
+        banner.classList.add('hidden');
+      });
+    });
+  </script>
+
   <!-- Navbar -->
   <header class="fixed w-full bg-white shadow z-50">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
