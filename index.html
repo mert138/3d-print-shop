@@ -110,6 +110,32 @@
       acceptBtn.addEventListener('click', function () {
         setCookie('cookieConsent', 'true', 365);
         banner.classList.add('hidden');
+
+
+        // Sepeti localStorage'dan oku veya yeni başlat
+function loadCart() {
+  const data = localStorage.getItem('cart');
+  return data ? JSON.parse(data) : [];
+}
+
+// Sepeti localStorage'a kaydet
+function saveCart(cart) {
+  localStorage.setItem('cart', JSON.stringify(cart));
+}
+
+// Ürün ekle
+function addToCart(name, price) {
+  const cart = loadCart();
+  cart.push({ name, price });
+  saveCart(cart);
+  updateCartUI(cart);
+}
+
+// Sepeti sayfa yüklendiğinde geri yükle
+document.addEventListener('DOMContentLoaded', () => {
+  const cart = loadCart();
+  updateCartUI(cart);
+
       });
     });
   </script>
