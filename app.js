@@ -1,5 +1,17 @@
 let cart = [];
 
+function purchase() {
+  const cartItems = getCartItems();  // Sepetteki ürünleri al (senin sepet verin nasıl ise ona göre)
+  const total = calculateTotal();    // Toplam tutarı hesapla
+  
+  const data = { items: cartItems, total: total };
+  
+  // localStorage'a kaydet
+  localStorage.setItem('cartData', JSON.stringify(data));
+  
+  // Sepet detay sayfasına yönlendir
+  window.location.href = "sepet-detay.html";
+}
 
 
 // Butonlara tıklanınca modal’ı aç
