@@ -10,7 +10,7 @@ function purchase() {
   localStorage.setItem('cartData', JSON.stringify(data));
   
   // Sepet detay sayfasına yönlendir
-  window.location.href = "sepet-detay.html";
+  window.location.href = "sepet.html";
 }
 
 
