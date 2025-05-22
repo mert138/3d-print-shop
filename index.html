@@ -162,31 +162,34 @@ document.addEventListener('DOMContentLoaded', () => {
   </script>
 
   <!-- Navbar -->
-  <header class="fixed w-full bg-white shadow z-50">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
-      <div class="flex justify-between h-16 items-center">
-        <div class="flex-shrink-0">
-          <a href="#" class="text-2xl font-bold text-blue-600">3DArt</a>
-        </div>
-        <nav class="hidden md:flex items-center space-x-6">
-          <a href="#urunler" class="hover:text-blue-600 transition">Ürünler</a>
-          <a href="#portfoy" class="hover:text-blue-600 transition">Portföy</a>
-          <a href="#hakkimizda" class="hover:text-blue-600 transition">Hakkımızda</a>
-        </nav>
-        <div class="flex items-center gap-4 relative">
-          <button id="cartButton" onclick="toggleCart()" class="relative bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition">
-            🛒
-            <span id="cart-count" class="absolute -top-2 -right-2 bg-red-500 rounded-full text-xs w-5 h-5 flex items-center justify-center">0</span>
-          </button>
-          <!-- Kayıt Ol ve Giriş Yap Butonları -->
-          <button id="signupButton" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 transition">
-            Kayıt Ol
-          </button>
-          <button id="loginButton" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition">
-            Giriş Yap
-          </button>
-        </div>
+  <header class="sticky top-0 w-full bg-white shadow z-50">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
+    <div class="flex justify-between h-16 items-center">
+      <div class="flex-shrink-0">
+        <a href="#" class="text-2xl font-bold text-blue-600">3DArt</a>
       </div>
+      <nav class="hidden md:flex items-center space-x-6">
+        <a href="#urunler" class="hover:text-blue-600 transition">Ürünler</a>
+        <a href="#portfoy" class="hover:text-blue-600 transition">Portföy</a>
+        <a href="#hakkimizda" class="hover:text-blue-600 transition">Hakkımızda</a>
+      </nav>
+      <div class="flex items-center gap-4 relative">
+        <button id="cartButton" onclick="toggleCart()" class="relative bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition">
+          🛒
+          <span id="cart-count" class="absolute -top-2 -right-2 bg-red-500 rounded-full text-xs w-5 h-5 flex items-center justify-center">0</span>
+        </button>
+        <!-- Kayıt Ol ve Giriş Yap Butonları -->
+        <button id="signupButton" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 transition">
+          Kayıt Ol
+        </button>
+        <button id="loginButton" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition">
+          Giriş Yap
+        </button>
+      </div>
+    </div>
+  </div>
+</header>
+
       <!-- Logout Dropdown (Başlangıçta gizli) -->
       <div id="logoutDropdown" class="hidden">
         <button id="logoutButton" class="block px-4 py-2 text-gray-800 hover:bg-gray-100 w-full text-left">
