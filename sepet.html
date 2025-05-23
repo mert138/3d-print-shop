@@ -132,6 +132,44 @@
   <!-- İstek üzerine JavaScript: Sepet verilerini doldur, toplamları hesapla -->
   <script>
     // Örnek veri: localStorage'dan ya da API'den çekilebilir
+    <script>
+  // 1) Sepeti oku
+  const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+  const tbody = document.getElementById('cart-items');
+  const subtotalEl = document.getElementById('subtotal');
+  const totalEl    = document.getElementById('total');
+
+  // 2) Öğeleri tabloya ekle
+  cart.forEach(item => {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td class="px-6 py-4">${item.name}</td>
+      <td class="px-6 py-4">1</td>
+      <td class="px-6 py-4">₺${item.price.toFixed(2)}</td>
+      <td class="px-6 py-4">₺${item.price.toFixed(2)}</td>
+      <td class="px-6 py-4">
+        <button onclick="removeItem('${item.name}')" class="text-red-500 hover:text-red-700">Sil</button>
+      </td>`;
+    tbody.appendChild(tr);
+  });
+
+  // 3) Toplam hesapla
+  const subtotal = cart.reduce((sum, i) => sum + i.price, 0);
+  subtotalEl.textContent = `₺${subtotal.toFixed(2)}`;
+  totalEl.textContent    = `₺${subtotal.toFixed(2)}`;
+
+  // 4) Öğeyi silme fonksiyonu
+  function removeItem(name) {
+    const updated = cart.filter(i => i.name !== name);
+    localStorage.setItem('cart', JSON.stringify(updated));
+    location.reload();
+  }
+</script>
+
+
+
+
+    
     const cartData = JSON.parse(localStorage.getItem('cartData') || '{"items":[],"total":0}');
     const tbody = document.getElementById('cart-items');
     const subtotalEl = document.getElementById('subtotal');
