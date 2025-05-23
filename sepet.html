@@ -14,19 +14,19 @@
 </head>
 <body class="bg-gray-50 text-gray-800">
 
-  <!-- Navbar (Opsiyonel) -->
+  <!-- Navbar -->
   <header class="sticky top-0 bg-white shadow-md z-50">
     <div class="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
       <a href="index.html" class="text-2xl font-bold text-blue-600">3DArt</a>
       <nav class="space-x-6 hidden md:flex">
         <a href="index.html" class="hover:text-blue-600">Ana Sayfa</a>
         <a href="urunler.html" class="hover:text-blue-600">Ürünler</a>
-        <a href="contact.html" class="hover:text-blue-600">İletişim</a>
+        <a href="iletisim.html" class="hover:text-blue-600">İletişim</a>
       </nav>
     </div>
   </header>
 
-  <!-- Sayfa Başlığı -->
+  <!-- Başlık -->
   <section class="bg-white shadow-sm py-6">
     <div class="max-w-7xl mx-auto px-4">
       <h1 class="text-3xl font-semibold">Sepetiniz</h1>
@@ -37,7 +37,7 @@
   <!-- İçerik -->
   <main class="max-w-7xl mx-auto px-4 py-8 grid grid-cols-1 lg:grid-cols-3 gap-8">
 
-    <!-- 1) Sepet Ürünleri Listesi -->
+    <!-- Ürünler Tablosu -->
     <div class="lg:col-span-2">
       <div class="bg-white shadow rounded-lg overflow-hidden">
         <table class="min-w-full text-left">
@@ -51,72 +51,32 @@
             </tr>
           </thead>
           <tbody id="cart-items">
-            <!--
-              JavaScript ile bu tbody içine şu formatta satırlar ekle:
-              <tr>
-                <td class="px-6 py-4 flex items-center gap-4">
-                  <img src="resim-url" alt="Ürün Adı" class="w-16 h-16 object-cover rounded" />
-                  <span>Ürün Adı</span>
-                </td>
-                <td class="px-6 py-4">
-                  <input type="number" value="1" min="1" class="w-16 border rounded text-center" />
-                </td>
-                <td class="px-6 py-4">₺50</td>
-                <td class="px-6 py-4">₺50</td>
-                <td class="px-6 py-4">
-                  <button class="text-red-500 hover:text-red-700">Sil</button>
-                </td>
-              </tr>
-            -->
+            <!-- JS ile doldurulacak -->
           </tbody>
         </table>
       </div>
     </div>
 
-    <!-- 2) Ödeme Özeti Kartı -->
+    <!-- Ödeme Özeti -->
     <aside class="space-y-6">
       <div class="bg-white shadow rounded-lg p-6 space-y-4">
         <h2 class="text-xl font-semibold">Ödeme Özeti</h2>
         <div class="flex justify-between">
           <span>Ara Toplam</span>
-          <span id="subtotal">₺0</span>
+          <span id="subtotal">₺0.00</span>
         </div>
         <div class="flex justify-between">
           <span>KDV (%18)</span>
-          <span id="tax">₺0</span>
+          <span id="tax">₺0.00</span>
         </div>
         <hr/>
         <div class="flex justify-between font-bold text-lg">
           <span>Genel Toplam</span>
-          <span id="total">₺0</span>
+          <span id="total">₺0.00</span>
         </div>
         <button id="checkoutBtn" class="w-full bg-green-500 hover:bg-green-600 text-white py-3 rounded-lg mt-4">
           Satın Al
         </button>
-      </div>
-
-      <!-- 3) Tavsiye Edilen Ürünler -->
-      <div class="bg-white shadow rounded-lg p-6">
-        <h3 class="text-lg font-semibold mb-4">Sizin İçin Öneriler</h3>
-        <ul class="space-y-4">
-          <li class="flex items-center gap-4">
-            <img src="images/urun1.jpg" alt="Ürün 1" class="w-12 h-12 object-cover rounded"/>
-            <div>
-              <h4 class="font-medium">3D Kalem</h4>
-              <span class="text-sm text-gray-600">₺120</span>
-            </div>
-            <button class="ml-auto bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 rounded text-sm">Ekle</button>
-          </li>
-          <li class="flex items-center gap-4">
-            <img src="images/urun2.jpg" alt="Ürün 2" class="w-12 h-12 object-cover rounded"/>
-            <div>
-              <h4 class="font-medium">Dekoratif Vazo</h4>
-              <span class="text-sm text-gray-600">₺80</span>
-            </div>
-            <button class="ml-auto bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 rounded text-sm">Ekle</button>
-          </li>
-          <!-- Daha fazla öneri ekleyebilirsin -->
-        </ul>
       </div>
     </aside>
 
@@ -129,112 +89,79 @@
     </div>
   </footer>
 
-  <!-- İstek üzerine JavaScript: Sepet verilerini doldur, toplamları hesapla -->
+  <!-- Sepet verilerini oku ve göster -->
   <script>
-    // Örnek veri: localStorage'dan ya da API'den çekilebilir
-    <script>
-  // 1) Sepeti oku
-  const cart = JSON.parse(localStorage.getItem('cart') || '[]');
-  const tbody = document.getElementById('cart-items');
-  const subtotalEl = document.getElementById('subtotal');
-  const totalEl    = document.getElementById('total');
-
-  // 2) Öğeleri tabloya ekle
-  cart.forEach(item => {
-    const tr = document.createElement('tr');
-    tr.innerHTML = `
-      <td class="px-6 py-4">${item.name}</td>
-      <td class="px-6 py-4">1</td>
-      <td class="px-6 py-4">₺${item.price.toFixed(2)}</td>
-      <td class="px-6 py-4">₺${item.price.toFixed(2)}</td>
-      <td class="px-6 py-4">
-        <button onclick="removeItem('${item.name}')" class="text-red-500 hover:text-red-700">Sil</button>
-      </td>`;
-    tbody.appendChild(tr);
-  });
-
-  // 3) Toplam hesapla
-  const subtotal = cart.reduce((sum, i) => sum + i.price, 0);
-  subtotalEl.textContent = `₺${subtotal.toFixed(2)}`;
-  totalEl.textContent    = `₺${subtotal.toFixed(2)}`;
-
-  // 4) Öğeyi silme fonksiyonu
-  function removeItem(name) {
-    const updated = cart.filter(i => i.name !== name);
-    localStorage.setItem('cart', JSON.stringify(updated));
-    location.reload();
-  }
-</script>
-
-
-
-
-    
-    const cartData = JSON.parse(localStorage.getItem('cartData') || '{"items":[],"total":0}');
+    // 1) localStorage'dan 'cart' anahtarını oku
+    const cart = JSON.parse(localStorage.getItem('cart') || '[]');
     const tbody = document.getElementById('cart-items');
     const subtotalEl = document.getElementById('subtotal');
-    const taxEl = document.getElementById('tax');
-    const totalEl = document.getElementById('total');
+    const taxEl      = document.getElementById('tax');
+    const totalEl    = document.getElementById('total');
 
-    // Sepet öğelerini oluştur
-    cartData.items.forEach(item => {
+    // 2) Her bir ürün için tablo satırı oluştur
+    cart.forEach(item => {
       const tr = document.createElement('tr');
+      const qty = item.quantity || 1;
+      const lineTotal = item.price * qty;
       tr.innerHTML = `
         <td class="px-6 py-4 flex items-center gap-4">
-          <img src="${item.image}" alt="${item.name}" class="w-16 h-16 object-cover rounded" />
+          ${ item.image 
+            ? `<img src="${item.image}" alt="${item.name}" class="w-16 h-16 object-cover rounded"/>` 
+            : ''
+          }
           <span>${item.name}</span>
         </td>
         <td class="px-6 py-4">
-          <input type="number" value="${item.quantity}" min="1" class="w-16 border rounded text-center" onchange="updateQty('${item.id}', this.value)" />
+          <input 
+            type="number" 
+            value="${qty}" 
+            min="1" 
+            class="w-16 border rounded text-center"
+            onchange="updateQty('${item.id}', this.value)"
+          />
         </td>
         <td class="px-6 py-4">₺${item.price.toFixed(2)}</td>
-        <td class="px-6 py-4">₺${(item.price * item.quantity).toFixed(2)}</td>
+        <td class="px-6 py-4">₺${lineTotal.toFixed(2)}</td>
         <td class="px-6 py-4">
           <button onclick="removeItem('${item.id}')" class="text-red-500 hover:text-red-700">Sil</button>
-        </td>
-      `;
+        </td>`;
       tbody.appendChild(tr);
     });
 
-    // Toplamları hesapla
+    // 3) Toplamları hesapla ve göster
     function calculateTotals() {
-      const subtotal = cartData.items.reduce((sum, i) => sum + i.price * i.quantity, 0);
+      const subtotal = cart.reduce((sum, i) => sum + i.price * (i.quantity || 1), 0);
       const tax = subtotal * 0.18;
       const total = subtotal + tax;
       subtotalEl.textContent = `₺${subtotal.toFixed(2)}`;
-      taxEl.textContent = `₺${tax.toFixed(2)}`;
-      totalEl.textContent = `₺${total.toFixed(2)}`;
+      taxEl.textContent      = `₺${tax.toFixed(2)}`;
+      totalEl.textContent    = `₺${total.toFixed(2)}`;
     }
-
     calculateTotals();
 
-    // Miktarı güncelle
+    // 4) Miktar güncelleme
     function updateQty(id, qty) {
-      const item = cartData.items.find(i => i.id === id);
+      const item = cart.find(i => i.id === id);
       if (!item) return;
       item.quantity = parseInt(qty);
-      localStorage.setItem('cartData', JSON.stringify(cartData));
-      tbody.innerHTML = '';
-      cartData.items.forEach(i => { /* aynı satır ekleme işlemi */ });
-      calculateTotals();
-      location.reload(); // Basit refresh
-    }
-
-    // Öğeyi kaldır
-    function removeItem(id) {
-      cartData.items = cartData.items.filter(i => i.id !== id);
-      localStorage.setItem('cartData', JSON.stringify(cartData));
+      localStorage.setItem('cart', JSON.stringify(cart));
       location.reload();
     }
 
-    // Satın alma
+    // 5) Öğeyi kaldır
+    function removeItem(id) {
+      const updated = cart.filter(i => i.id !== id);
+      localStorage.setItem('cart', JSON.stringify(updated));
+      location.reload();
+    }
+
+    // 6) Satın al butonu
     document.getElementById('checkoutBtn').addEventListener('click', () => {
-      alert('Satın alma işlemi gerçekleştirildi!');
-      localStorage.removeItem('cartData');
+      alert('Satın alma işleminiz tamamlandı!');
+      localStorage.removeItem('cart');
       window.location.href = 'thankyou.html';
     });
   </script>
 
 </body>
 </html>
-
