@@ -100,3 +100,34 @@ window.removeItem   = removeItem;
 window.toggleCart   = toggleCart;
 
 
+<!-- sayfanın en altına, </body> kapanışından hemen önce ekle -->
+<script>
+  // 1) Sepeti localStorage’dan oku
+  function loadCart() {
+    const data = localStorage.getItem('cart');
+    return data ? JSON.parse(data) : [];
+  }
+
+  // 2) Sepeti localStorage’a yaz
+  function saveCart(cart) {
+    localStorage.setItem('cart', JSON.stringify(cart));
+  }
+
+  // 3) Sepete ürün ekle
+  function addToCart(name, price, image = null, id = null) {
+    const cart = loadCart();
+    // istersen burada aynı üründen birden fazla eklemek yerine quantity artırma mantığı da koyabilirsin
+    cart.push({ id: id || name, name, price, image, quantity: 1 });
+    saveCart(cart);
+    updateCartUI();  // mevcut sepetteki sayı vs. güncellensin
+  }
+
+  // 4) Sepet ikonundaki sayacı güncelle
+  function updateCartUI() {
+    const count = loadCart().length;
+    document.getElementById('cart-count').textContent = count;
+  }
+
+  // 5) Sayfa yüklendiğinde sayaç güncellensin
+  document.addEventListener('DOMContentLoaded', updateCartUI);
+</script>
