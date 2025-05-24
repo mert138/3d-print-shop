@@ -757,5 +757,41 @@ function purchase() {
 <button id="signupButton">Kayıt Ol</button>
 <button id="loginButton">Giriş Yap</button>
 
+<!-- sayfa içeriğinin sonuna, </body> kapanışından hemen önce ekle -->
+<script>
+  // 1. LocalStorage’dan sepeti oku veya yeni başlat
+  function loadCart() {
+    const data = localStorage.getItem('cart');
+    return data ? JSON.parse(data) : [];
+  }
+
+  // 2. Sepeti LocalStorage’a kaydet
+  function saveCart(cart) {
+    localStorage.setItem('cart', JSON.stringify(cart));
+  }
+
+  // 3. Sepete ürün ekle (global tanımlı)
+  function addToCart(name, price) {
+    const cart = loadCart();
+    cart.push({ name, price });
+    saveCart(cart);
+    updateCartUI(cart);
+  }
+
+  // 4. UI’daki sepet sayacını güncelle
+  function updateCartUI(cart) {
+    const countEl = document.getElementById('cart-count');
+    if (countEl) {
+      countEl.textContent = cart.length;
+    }
+  }
+
+  // 5. Sayfa yüklendiğinde sepeti yükleyip UI’yı güncelle
+  document.addEventListener('DOMContentLoaded', () => {
+    const cart = loadCart();
+    updateCartUI(cart);
+  });
+</script>
+
 </body>
 </html>
