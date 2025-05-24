@@ -100,8 +100,7 @@ window.removeItem   = removeItem;
 window.toggleCart   = toggleCart;
 
 
-<!-- sayfanın en altına, </body> kapanışından hemen önce ekle -->
-<script>
+
   // 1) Sepeti localStorage’dan oku
   function loadCart() {
     const data = localStorage.getItem('cart');
@@ -130,4 +129,4 @@ window.toggleCart   = toggleCart;
 
   // 5) Sayfa yüklendiğinde sayaç güncellensin
   document.addEventListener('DOMContentLoaded', updateCartUI);
-</script>
+
