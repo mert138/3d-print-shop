@@ -14,35 +14,6 @@ function purchase() {
 }
 
 
-// Butonlara tıklanınca modal’ı aç
-document.getElementById('signupButton').onclick = () => {
-  document.getElementById('signupModal').classList.remove('hidden');
-};
-document.getElementById('loginButton').onclick = () => {
-  document.getElementById('loginModal').classList.remove('hidden');
-};
-
-// Kapat butonları
-document.getElementById('closeSignupModal').onclick = () => {
-  document.getElementById('signupModal').classList.add('hidden');
-};
-document.getElementById('closeLoginModal').onclick = () => {
-  document.getElementById('loginModal').classList.add('hidden');
-};
-
-// Form gönderimlerini dinle (örnek işleme)
-document.getElementById('signupForm').addEventListener('submit', e => {
-  e.preventDefault();
-  // Kayıt işlemi...
-  alert('Kayıt başarılı!');
-  document.getElementById('signupModal').classList.add('hidden');
-});
-document.getElementById('loginForm').addEventListener('submit', e => {
-  e.preventDefault();
-  // Giriş işlemi...
-  alert('Giriş başarılı!');
-  document.getElementById('loginModal').classList.add('hidden');
-});
 
 
 function addToCart(name, price) {
