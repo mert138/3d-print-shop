@@ -388,78 +388,7 @@ Yaratıcılığı teknolojiyle harmanlayarak müşterilerimize özgün ve kalite
     
     
   </script>
-<script src="app.js"></script>
-<!-- Sepet Modal Konteyneri -->
-<div id="cart-modal" class="hidden fixed inset-0 bg-black bg-opacity-50">
-  <div class="absolute right-0 top-0 w-80 bg-white h-full p-6 overflow-auto">
-    <button onclick="toggleCart()" class="mb-4">× Kapat</button>
-    <h2>Sepetiniz</h2>
-    <ul id="cart-items"></ul>
-    <div>Toplam: <span id="cart-total">0</span> TL</div>
-  </div>
-</div>
-<!-- Kayıt Modal -->
-<div id="signupModal" class="hidden">
-  <form id="signupForm">
-    <h2>Kayıt Ol</h2>
-    <input id="userName"     type="text"     placeholder="Adınız" required>
-    <input id="userEmail"    type="email"    placeholder="Email" required>
-    <input id="userPassword" type="password" placeholder="Şifre" required>
-    <button type="submit">Gönder</button>
-  </form>
-  <button id="closeSignupModal">✕ Kapat</button>
-</div>
 
-<!-- Giriş Modal -->
-<div id="loginModal" class="hidden">
-  <form id="loginForm">
-    <h2>Giriş Yap</h2>
-    <input id="loginEmail"    type="email"    placeholder="Email" required>
-    <input id="loginPassword" type="password" placeholder="Şifre" required>
-    <button type="submit">Gönder</button>
-  </form>
-  <button id="closeLoginModal">✕ Kapat</button>
-</div>
-
-
-<button id="signupButton">Kayıt Ol</button>
-<button id="loginButton">Giriş Yap</button>
-
-<!-- sayfa içeriğinin sonuna, </body> kapanışından hemen önce ekle -->
-<script>
-  // 1. LocalStorage’dan sepeti oku veya yeni başlat
-  function loadCart() {
-    const data = localStorage.getItem('cart');
-    return data ? JSON.parse(data) : [];
-  }
-
-  // 2. Sepeti LocalStorage’a kaydet
-  function saveCart(cart) {
-    localStorage.setItem('cart', JSON.stringify(cart));
-  }
-
-  // 3. Sepete ürün ekle (global tanımlı)
-  function addToCart(name, price) {
-    const cart = loadCart();
-    cart.push({ name, price });
-    saveCart(cart);
-    updateCartUI(cart);
-  }
-
-  // 4. UI’daki sepet sayacını güncelle
-  function updateCartUI(cart) {
-    const countEl = document.getElementById('cart-count');
-    if (countEl) {
-      countEl.textContent = cart.length;
-    }
-  }
-
-  // 5. Sayfa yüklendiğinde sepeti yükleyip UI’yı güncelle
-  document.addEventListener('DOMContentLoaded', () => {
-    const cart = loadCart();
-    updateCartUI(cart);
-  });
-</script>
 
 </body>
 </html>
