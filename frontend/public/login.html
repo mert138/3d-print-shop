@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Giriş Yap - 3D Market</title>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-brand">
+            <h2>3D Market</h2>
+        </div>
+        <div class="nav-links">
+            <a href="index.html">Ana Sayfa</a>
+            <a href="products.html">Ürünler</a>
+        </div>
+    </nav>
+
+    <main class="auth-container">
+        <div class="auth-form">
+            <h2>Giriş Yap</h2>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Şifre</label>
+                    <input type="password" id="password" name="password" required>
+                </div>
+                <button type="submit" class="btn btn-primary btn-block">Giriş Yap</button>
+            </form>
+            <p>Hesabınız yok mu? <a href="register.html">Kayıt Olun</a></p>
+            <div id="message" class="message"></div>
+        </div>
+    </main>
+
+    <script src="../js/auth.js"></script>
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const messageDiv = document.getElementById('message');
+
+            const result = await auth.login(email, password);
+            
+            if (result.success) {
+                messageDiv.style.color = 'green';
+                messageDiv.textContent = 'Giriş başarılı! Yönlendiriliyorsunuz...';
+                setTimeout(() => {
+                    window.location.href = 'index.html';
+                }, 1000);
+            } else {
+                messageDiv.style.color = 'red';
+                messageDiv.textContent = result.message;
+            }
+        });
+    </script>
+</body>
+</html>

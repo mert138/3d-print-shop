@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D Satış Sitesi</title>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-brand">
+            <h2>3D Market</h2>
+        </div>
+        <div class="nav-links">
+            <a href="index.html">Ana Sayfa</a>
+            <a href="products.html">Ürünler</a>
+            <div class="auth-buttons" id="authButtons">
+                <a href="login.html" class="btn btn-outline">Giriş Yap</a>
+                <a href="register.html" class="btn btn-primary">Kayıt Ol</a>
+            </div>
+            <div class="user-menu" id="userMenu" style="display: none;">
+                <span id="username"></span>
+                <a href="#" id="logoutBtn" class="btn btn-outline">Çıkış</a>
+                <div id="adminMenu" style="display: none;">
+                    <a href="admin/index.html" class="btn btn-admin">Admin Panel</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main>
+        <section class="hero">
+            <div class="hero-content">
+                <h1>3D Ürünler Dünyası</h1>
+                <p>En kaliteli 3D modeller ve tasarımlar</p>
+                <a href="products.html" class="btn btn-primary btn-large">Alışverişe Başla</a>
+            </div>
+            <div class="hero-3d" id="hero3d"></div>
+        </section>
+
+        <section class="featured-products">
+            <h2>Öne Çıkan Ürünler</h2>
+            <div class="products-grid" id="featuredProducts">
+                <!-- Ürünler buraya gelecek -->
+            </div>
+        </section>
+    </main>
+
+    <script src="../js/auth.js"></script>
+    <script src="../js/main.js"></script>
+    <script src="../js/three-app.js"></script>
+</body>
+</html>

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - 3D Market</title>
+    <link rel="stylesheet" href="../../css/style.css">
+    <link rel="stylesheet" href="../../css/admin.css">
+</head>
+<body>
+    <div class="admin-container">
+        <aside class="admin-sidebar">
+            <h3>Admin Panel</h3>
+            <nav>
+                <a href="index.html">Dashboard</a>
+                <a href="products.html">Ürün Yönetimi</a>
+                <a href="reviews.html">Yorum Yönetimi</a>
+                <a href="orders.html">Siparişler</a>
+                <a href="../index.html">Siteye Dön</a>
+            </nav>
+        </aside>
+
+        <main class="admin-content">
+            <header class="admin-header">
+                <h1>Admin Dashboard</h1>
+                <div class="admin-user">
+                    <span id="adminUsername"></span>
+                    <button id="adminLogout" class="btn btn-outline">Çıkış</button>
+                </div>
+            </header>
+
+            <div class="dashboard-stats">
+                <div class="stat-card">
+                    <h3>Toplam Ürün</h3>
+                    <span id="totalProducts">0</span>
+                </div>
+                <div class="stat-card">
+                    <h3>Onay Bekleyen Yorumlar</h3>
+                    <span id="pendingReviews">0</span>
+                </div>
+                <div class="stat-card">
+                    <h3>Toplam Kullanıcı</h3>
+                    <span id="totalUsers">0</span>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="../../js/auth.js"></script>
+    <script src="../../js/admin/admin.js"></script>
+</body>
+</html>

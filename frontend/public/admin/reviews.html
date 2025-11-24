@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yorum Yönetimi - Admin Panel</title>
+    <link rel="stylesheet" href="../../css/style.css">
+    <link rel="stylesheet" href="../../css/admin.css">
+</head>
+<body>
+    <div class="admin-container">
+        <aside class="admin-sidebar">
+            <h3>Admin Panel</h3>
+            <nav>
+                <a href="index.html">Dashboard</a>
+                <a href="products.html">Ürün Yönetimi</a>
+                <a href="reviews.html" class="active">Yorum Yönetimi</a>
+                <a href="orders.html">Siparişler</a>
+                <a href="../index.html">Siteye Dön</a>
+            </nav>
+        </aside>
+
+        <main class="admin-content">
+            <header class="admin-header">
+                <h1>Yorum Yönetimi</h1>
+                <div class="admin-user">
+                    <span id="adminUsername"></span>
+                    <button id="adminLogout" class="btn btn-outline">Çıkış</button>
+                </div>
+            </header>
+
+            <div class="admin-actions">
+                <h3>Onay Bekleyen Yorumlar</h3>
+            </div>
+
+            <div class="table-container">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Kullanıcı</th>
+                            <th>Ürün</th>
+                            <th>Yorum</th>
+                            <th>Puan</th>
+                            <th>İşlemler</th>
+                        </tr>
+                    </thead>
+                    <tbody id="reviewsTable">
+                        <!-- Yorumlar buraya gelecek -->
+                    </tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+
+    <script src="../../js/auth.js"></script>
+    <script src="../../js/admin/reviews-admin.js"></script>
+</body>
+</html>

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ürünler - 3D Market</title>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-brand">
+            <h2>3D Market</h2>
+        </div>
+        <div class="nav-links">
+            <a href="index.html">Ana Sayfa</a>
+            <a href="products.html">Ürünler</a>
+            <div class="auth-buttons" id="authButtons">
+                <a href="login.html" class="btn btn-outline">Giriş Yap</a>
+                <a href="register.html" class="btn btn-primary">Kayıt Ol</a>
+            </div>
+            <div class="user-menu" id="userMenu" style="display: none;">
+                <span id="username"></span>
+                <a href="#" id="logoutBtn" class="btn btn-outline">Çıkış</a>
+                <div id="adminMenu" style="display: none;">
+                    <a href="admin/index.html" class="btn btn-admin">Admin Panel</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main>
+        <section class="products-section">
+            <div class="filters">
+                <input type="text" id="searchInput" placeholder="Ürün ara...">
+                <select id="categoryFilter">
+                    <option value="">Tüm Kategoriler</option>
+                    <option value="mobilya">Mobilya</option>
+                    <option value="aksesuar">Aksesuar</option>
+                    <option value="dekorasyon">Dekorasyon</option>
+                </select>
+            </div>
+            <div class="products-grid" id="productsGrid">
+                <!-- Ürünler buraya gelecek -->
+            </div>
+        </section>
+    </main>
+
+    <script src="../js/auth.js"></script>
+    <script src="../js/products.js"></script>
+</body>
+</html>

@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ürün Detay - 3D Market</title>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-brand">
+            <h2>3D Market</h2>
+        </div>
+        <div class="nav-links">
+            <a href="index.html">Ana Sayfa</a>
+            <a href="products.html">Ürünler</a>
+            <div class="auth-buttons" id="authButtons">
+                <a href="login.html" class="btn btn-outline">Giriş Yap</a>
+                <a href="register.html" class="btn btn-primary">Kayıt Ol</a>
+            </div>
+            <div class="user-menu" id="userMenu" style="display: none;">
+                <span id="username"></span>
+                <a href="#" id="logoutBtn" class="btn btn-outline">Çıkış</a>
+            </div>
+        </div>
+    </nav>
+
+    <main>
+        <section class="product-detail">
+            <div class="product-images">
+                <div class="main-image" id="mainImage">
+                    <!-- 3D model veya ana resim -->
+                </div>
+            </div>
+            <div class="product-info">
+                <h1 id="productName">Ürün Adı</h1>
+                <div class="price-section">
+                    <span class="price" id="productPrice">0 TL</span>
+                    <span class="original-price" id="originalPrice"></span>
+                    <span class="discount" id="discountBadge"></span>
+                </div>
+                <p id="productDescription">Ürün açıklaması</p>
+                <div class="features" id="productFeatures">
+                    <!-- Özellikler -->
+                </div>
+                <button class="btn btn-primary btn-large" id="addToCart">Sepete Ekle</button>
+            </div>
+        </section>
+
+        <section class="reviews-section">
+            <h2>Yorumlar</h2>
+            <div id="reviewsList">
+                <!-- Yorumlar buraya gelecek -->
+            </div>
+            <div class="add-review" id="addReviewForm" style="display: none;">
+                <h3>Yorum Yap</h3>
+                <form id="reviewForm">
+                    <div class="form-group">
+                        <label>Puan</label>
+                        <select id="rating" name="rating" required>
+                            <option value="5">5 Yıldız</option>
+                            <option value="4">4 Yıldız</option>
+                            <option value="3">3 Yıldız</option>
+                            <option value="2">2 Yıldız</option>
+                            <option value="1">1 Yıldız</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Yorum</label>
+                        <textarea id="comment" name="comment" required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Yorum Gönder</button>
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <script src="../js/auth.js"></script>
+    <script src="../js/product-detail.js"></script>
+</body>
+</html>
