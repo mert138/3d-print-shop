@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Giriş Yap - 3D Market</title>
+    <title>Kayıt Ol - 3D Market</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { 
@@ -59,20 +59,28 @@
     <main class="container">
         <div class="auth-container">
             <div class="auth-form">
-                <h2>Giriş Yap</h2>
-                <form id="loginForm">
+                <h2>Kayıt Ol</h2>
+                <form id="registerForm">
                     <div class="form-group">
-                        <label for="loginEmail">E-posta:</label>
-                        <input type="email" id="loginEmail" required placeholder="ornek@email.com">
+                        <label for="userName">Ad Soyad:</label>
+                        <input type="text" id="userName" required placeholder="Adınız ve soyadınız">
                     </div>
                     <div class="form-group">
-                        <label for="loginPassword">Şifre:</label>
-                        <input type="password" id="loginPassword" required placeholder="Şifreniz">
+                        <label for="userEmail">E-posta:</label>
+                        <input type="email" id="userEmail" required placeholder="ornek@email.com">
                     </div>
-                    <button type="submit" class="btn-primary">Giriş Yap</button>
+                    <div class="form-group">
+                        <label for="userPassword">Şifre:</label>
+                        <input type="password" id="userPassword" required placeholder="En az 6 karakter">
+                    </div>
+                    <div class="form-group">
+                        <label for="userConfirmPassword">Şifre Tekrar:</label>
+                        <input type="password" id="userConfirmPassword" required placeholder="Şifrenizi tekrar girin">
+                    </div>
+                    <button type="submit" class="btn-primary">Kayıt Ol</button>
                 </form>
                 <div class="auth-links">
-                    <p>Hesabınız yok mu? <a href="register.html">Kayıt Olun</a></p>
+                    <p>Zaten hesabınız var mı? <a href="login.html">Giriş Yapın</a></p>
                 </div>
                 <div id="authMessage" class="message hidden"></div>
             </div>
@@ -80,40 +88,88 @@
     </main>
 
     <script>
-        // ✅ TÜM LOGIN FONKSİYONLARI BURADA
+        // ✅ TÜM AUTH FONKSİYONLARI BURADA - DIŞARI BAĞIMLILIK YOK!
         
-        function loginUser(email, password) {
-            console.log('🔐 Giriş işlemi başlıyor...', { email });
+        // 1. registerUser fonksiyonu
+        function registerUser(name, email, password) {
+            console.log('🔐 Kayıt işlemi başlıyor...', { name, email });
             
             try {
+                // Kullanıcıları localStorage'dan al
                 const users = JSON.parse(localStorage.getItem('users')) || [];
-                const user = users.find(u => u.email === email && atob(u.password) === password);
                 
-                if (user) {
-                    const userForSession = {
-                        id: user.id,
-                        name: user.name,
-                        email: user.email,
-                        role: user.role
-                    };
-                    
-                    localStorage.setItem('currentUser', JSON.stringify(userForSession));
-                    
-                    console.log('✅ Giriş başarılı:', userForSession);
-                    showMessage('Giriş başarılı! Yönlendiriliyorsunuz...', 'success');
-                    
-                    setTimeout(() => {
-                        window.location.href = 'index.html';
-                    }, 1500);
-                } else {
-                    showMessage('Geçersiz e-posta veya şifre!', 'error');
+                // E-posta kontrolü
+                if (users.find(user => user.email === email)) {
+                    showMessage('Bu e-posta zaten kullanılıyor!', 'error');
+                    return false;
                 }
+
+                // Yeni kullanıcı oluştur
+                const newUser = {
+                    id: Date.now().toString(),
+                    name: name,
+                    email: email,
+                    password: btoa(password), // Basit encoding
+                    role: 'user',
+                    createdAt: new Date().toISOString()
+                };
+
+                users.push(newUser);
+                localStorage.setItem('users', JSON.stringify(users));
+                
+                console.log('✅ Kullanıcı kaydedildi:', newUser);
+
+                // Oturum aç
+                const userForSession = {
+                    id: newUser.id,
+                    name: newUser.name,
+                    email: newUser.email,
+                    role: newUser.role
+                };
+                
+                localStorage.setItem('currentUser', JSON.stringify(userForSession));
+                
+                showMessage('🎉 Kayıt başarılı! Yönlendiriliyorsunuz...', 'success');
+                
+                setTimeout(() => {
+                    window.location.href = 'index.html';
+                }, 1500);
+                
+                return true;
+
             } catch (error) {
-                console.error('❌ Giriş hatası:', error);
-                showMessage('Giriş sırasında hata oluştu!', 'error');
+                console.error('❌ Kayıt hatası:', error);
+                showMessage('Kayıt sırasında hata oluştu!', 'error');
+                return false;
             }
         }
 
+        // 2. Admin kullanıcısını oluştur
+        function createAdminUser() {
+            try {
+                const users = JSON.parse(localStorage.getItem('users')) || [];
+                const adminExists = users.find(user => user.email === 'mert.isik.2012@gmail.com');
+                
+                if (!adminExists) {
+                    const adminUser = {
+                        id: 'admin-' + Date.now(),
+                        name: 'Admin User',
+                        email: 'mert.isik.2012@gmail.com',
+                        password: btoa('imd161626'),
+                        role: 'admin',
+                        createdAt: new Date().toISOString()
+                    };
+                    
+                    users.push(adminUser);
+                    localStorage.setItem('users', JSON.stringify(users));
+                    console.log('✅ Admin kullanıcısı oluşturuldu');
+                }
+            } catch (error) {
+                console.error('Admin oluşturma hatası:', error);
+            }
+        }
+
+        // 3. Mesaj gösterme fonksiyonu
         function showMessage(message, type) {
             console.log(`📢 Mesaj: ${type} - ${message}`);
             const messageDiv = document.getElementById('authMessage');
@@ -130,20 +186,36 @@
             }
         }
 
+        // 4. Email validasyonu
+        function validateEmail(email) {
+            const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return re.test(email);
+        }
+
+        // 5. Sayfa başlatma
         function initializePage() {
-            console.log('🚀 Login sayfası başlatılıyor...');
+            console.log('🚀 Sayfa başlatılıyor...');
             
-            const form = document.getElementById('loginForm');
-            const emailInput = document.getElementById('loginEmail');
-            const passwordInput = document.getElementById('loginPassword');
+            // Admin kullanıcısını oluştur
+            createAdminUser();
+            
+            // Form elementlerini bul
+            const form = document.getElementById('registerForm');
+            const nameInput = document.getElementById('userName');
+            const emailInput = document.getElementById('userEmail');
+            const passwordInput = document.getElementById('userPassword');
+            const confirmInput = document.getElementById('userConfirmPassword');
             
             console.log('🔍 Element kontrolü:', {
                 form: !!form,
+                nameInput: !!nameInput,
                 emailInput: !!emailInput,
-                passwordInput: !!passwordInput
+                passwordInput: !!passwordInput,
+                confirmInput: !!confirmInput
             });
             
-            if (!form || !emailInput || !passwordInput) {
+            // Elementlerin hepsi var mı kontrol et
+            if (!form || !nameInput || !emailInput || !passwordInput || !confirmInput) {
                 console.error('❌ HATA: Form elementleri bulunamadı!');
                 showMessage('Sayfa yüklenirken hata oluştu. Lütfen sayfayı yenileyin.', 'error');
                 return;
@@ -151,33 +223,57 @@
             
             console.log('✅ Tüm form elementleri bulundu!');
             
+            // Form submit eventini ekle
             form.addEventListener('submit', function(e) {
                 e.preventDefault();
-                console.log('📝 Login formu gönderildi!');
+                console.log('📝 Form gönderildi!');
                 
+                // Değerleri al
+                const name = nameInput.value.trim();
                 const email = emailInput.value.trim();
                 const password = passwordInput.value;
+                const confirmPassword = confirmInput.value;
                 
-                console.log('📋 Login verileri alındı');
+                console.log('📋 Form verileri alındı');
                 
-                if (!email || !password) {
+                // Validasyon
+                if (!name || !email || !password || !confirmPassword) {
                     showMessage('Lütfen tüm alanları doldurun!', 'error');
                     return;
                 }
                 
-                console.log('✅ Login validasyonu başarılı!');
-                console.log('🔄 loginUser fonksiyonu çağrılıyor...');
-                loginUser(email, password);
+                if (password !== confirmPassword) {
+                    showMessage('Şifreler eşleşmiyor!', 'error');
+                    return;
+                }
+                
+                if (password.length < 6) {
+                    showMessage('Şifre en az 6 karakter olmalıdır!', 'error');
+                    return;
+                }
+                
+                if (!validateEmail(email)) {
+                    showMessage('Geçerli bir e-posta adresi girin!', 'error');
+                    return;
+                }
+                
+                console.log('✅ Form validasyonu başarılı!');
+                
+                // registerUser fonksiyonunu çağır
+                console.log('🔄 registerUser fonksiyonu çağrılıyor...');
+                registerUser(name, email, password);
             });
             
-            console.log('✅ Login sayfası başarıyla başlatıldı!');
+            console.log('✅ Sayfa başarıyla başlatıldı!');
         }
 
+        // 6. Sayfa yüklendiğinde çalıştır
         document.addEventListener('DOMContentLoaded', function() {
             console.log('📄 DOM yüklendi!');
             initializePage();
         });
 
+        // 7. Sayfa hazır olduğunda çalıştır (fallback)
         if (document.readyState === 'interactive' || document.readyState === 'complete') {
             console.log('⚡ Sayfa zaten hazır!');
             initializePage();
