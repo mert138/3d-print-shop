@@ -1,127 +1,150 @@
-class Auth {
-    constructor() {
-        this.token = localStorage.getItem('token');
-        this.user = JSON.parse(localStorage.getItem('user'));
-        this.init();
+// auth.js - LocalStorage ile çalışan versiyon
+const API_BASE = ''; // Firebase Functions URL'si
+
+// Kullanıcı kayıt (LocalStorage)
+async function registerUser(name, email, password) {
+  try {
+    const users = JSON.parse(localStorage.getItem('users')) || [];
+    
+    if (users.find(user => user.email === email)) {
+      showAuthMessage('Bu e-posta zaten kullanılıyor!', 'error');
+      return;
     }
 
-    init() {
-        this.updateUI();
-    }
+    const newUser = {
+      id: Date.now().toString(),
+      name,
+      email,
+      password: btoa(password), // Basit encoding (gerçek projede kullanmayın)
+      role: 'user',
+      createdAt: new Date().toISOString()
+    };
 
-    async login(email, password) {
-        try {
-            const response = await fetch('/api/auth/login', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ email, password })
-            });
+    users.push(newUser);
+    localStorage.setItem('users', JSON.stringify(users));
 
-            const data = await response.json();
+    // Giriş yap
+    const userForSession = {
+      id: newUser.id,
+      name: newUser.name,
+      email: newUser.email,
+      role: newUser.role
+    };
+    
+    localStorage.setItem('currentUser', JSON.stringify(userForSession));
+    
+    showAuthMessage('Kayıt başarılı! Yönlendiriliyorsunuz...', 'success');
+    setTimeout(() => {
+      window.location.href = 'index.html';
+    }, 1500);
 
-            if (response.ok) {
-                this.token = data.token;
-                this.user = data.user;
-                localStorage.setItem('token', this.token);
-                localStorage.setItem('user', JSON.stringify(this.user));
-                this.updateUI();
-                return { success: true };
-            } else {
-                return { success: false, message: data.message };
-            }
-        } catch (error) {
-            return { success: false, message: 'Sunucu hatası' };
-        }
-    }
-
-    async register(username, email, password) {
-        try {
-            const response = await fetch('/api/auth/register', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ username, email, password })
-            });
-
-            const data = await response.json();
-
-            if (response.ok) {
-                this.token = data.token;
-                this.user = data.user;
-                localStorage.setItem('token', this.token);
-                localStorage.setItem('user', JSON.stringify(this.user));
-                this.updateUI();
-                return { success: true };
-            } else {
-                return { success: false, message: data.message };
-            }
-        } catch (error) {
-            return { success: false, message: 'Sunucu hatası' };
-        }
-    }
-
-    logout() {
-        this.token = null;
-        this.user = null;
-        localStorage.removeItem('token');
-        localStorage.removeItem('user');
-        this.updateUI();
-        window.location.href = 'index.html';
-    }
-
-    updateUI() {
-        const authButtons = document.getElementById('authButtons');
-        const userMenu = document.getElementById('userMenu');
-        const usernameSpan = document.getElementById('username');
-        const adminMenu = document.getElementById('adminMenu');
-
-        if (this.user) {
-            if (authButtons) authButtons.style.display = 'none';
-            if (userMenu) userMenu.style.display = 'flex';
-            if (usernameSpan) usernameSpan.textContent = this.user.username;
-
-            if (this.user.isAdmin && adminMenu) {
-                adminMenu.style.display = 'block';
-            }
-        } else {
-            if (authButtons) authButtons.style.display = 'flex';
-            if (userMenu) userMenu.style.display = 'none';
-        }
-    }
-
-    getAuthHeader() {
-        return this.token ? { 'Authorization': `Bearer ${this.token}` } : {};
-    }
-
-    isAuthenticated() {
-        return !!this.token;
-    }
-
-    isAdmin() {
-        return this.user && this.user.isAdmin;
-    }
+  } catch (error) {
+    showAuthMessage('Kayıt sırasında hata oluştu!', 'error');
+  }
 }
 
-const auth = new Auth();
+// Kullanıcı giriş (LocalStorage)
+async function loginUser(email, password) {
+  try {
+    const users = JSON.parse(localStorage.getItem('users')) || [];
+    const user = users.find(u => u.email === email && atob(u.password) === password);
+    
+    if (user) {
+      const userForSession = {
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        role: user.role
+      };
+      
+      localStorage.setItem('currentUser', JSON.stringify(userForSession));
+      showAuthMessage('Giriş başarılı! Yönlendiriliyorsunuz...', 'success');
+      
+      setTimeout(() => {
+        window.location.href = 'index.html';
+      }, 1500);
+    } else {
+      showAuthMessage('Geçersiz e-posta veya şifre!', 'error');
+    }
+  } catch (error) {
+    showAuthMessage('Giriş sırasında hata oluştu!', 'error');
+  }
+}
 
-// Logout butonu
+// Admin kullanıcısını oluştur
+function createAdminUser() {
+  const users = JSON.parse(localStorage.getItem('users')) || [];
+  const adminExists = users.find(user => user.email === 'mert.isik.2012@gmail.com');
+  
+  if (!adminExists) {
+    const adminUser = {
+      id: 'admin-' + Date.now(),
+      name: 'Admin User',
+      email: 'mert.isik.2012@gmail.com',
+      password: btoa('imd161626'),
+      role: 'admin',
+      createdAt: new Date().toISOString()
+    };
+    
+    users.push(adminUser);
+    localStorage.setItem('users', JSON.stringify(users));
+    console.log('Admin kullanıcısı oluşturuldu');
+  }
+}
+
+// Sayfa yüklendiğinde admin kullanıcısını oluştur
 document.addEventListener('DOMContentLoaded', function() {
-    const logoutBtn = document.getElementById('logoutBtn');
-    if (logoutBtn) {
-        logoutBtn.addEventListener('click', function(e) {
-            e.preventDefault();
-            auth.logout();
-        });
-    }
-
-    const adminLogout = document.getElementById('adminLogout');
-    if (adminLogout) {
-        adminLogout.addEventListener('click', function(e) {
-            e.preventDefault();
-            auth.logout();
-        });
-    }
+  createAdminUser();
+  updateAuthUI();
 });
+
+// Diğer fonksiyonlar aynı kalacak...
+function logout() {
+  localStorage.removeItem('currentUser');
+  updateAuthUI();
+  window.location.href = 'index.html';
+}
+
+function updateAuthUI() {
+  const authButtons = document.getElementById('authButtons');
+  const userMenu = document.getElementById('userMenu');
+  const userName = document.getElementById('userName');
+  const adminMenu = document.getElementById('adminMenu');
+  
+  const currentUser = getCurrentUser();
+  
+  if (currentUser) {
+    if (authButtons) authButtons.classList.add('hidden');
+    if (userMenu) {
+      userMenu.classList.remove('hidden');
+      userName.textContent = currentUser.name;
+      
+      if (adminMenu && currentUser.role === 'admin') {
+        adminMenu.classList.remove('hidden');
+      }
+    }
+  } else {
+    if (authButtons) authButtons.classList.remove('hidden');
+    if (userMenu) userMenu.classList.add('hidden');
+  }
+}
+
+function getCurrentUser() {
+  const userStr = localStorage.getItem('currentUser');
+  return userStr ? JSON.parse(userStr) : null;
+}
+
+function showAuthMessage(message, type) {
+  const messageDiv = document.getElementById('authMessage');
+  if (messageDiv) {
+    messageDiv.textContent = message;
+    messageDiv.className = `message ${type}`;
+    messageDiv.classList.remove('hidden');
+    
+    setTimeout(() => {
+      messageDiv.classList.add('hidden');
+    }, 5000);
+  } else {
+    alert(message);
+  }
+}
