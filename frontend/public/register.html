@@ -3,8 +3,42 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kayıt Ol - 3D Market</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Giriş Yap - 3D Market</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: 'Arial', sans-serif; 
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        .navbar {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 1rem 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+        .nav-content { display: flex; justify-content: space-between; align-items: center; }
+        .nav-brand h2 { color: #007bff; font-size: 1.8rem; }
+        .nav-brand a { text-decoration: none; color: inherit; }
+        .nav-links a { text-decoration: none; color: #333; font-weight: 500; padding: 0.5rem 1rem; }
+        .auth-container { display: flex; justify-content: center; align-items: center; flex: 1; padding: 2rem 0; }
+        .auth-form { background: white; padding: 2rem; border-radius: 10px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); width: 100%; max-width: 400px; }
+        .auth-form h2 { text-align: center; margin-bottom: 2rem; color: #333; }
+        .form-group { margin-bottom: 1.5rem; }
+        .form-group label { display: block; margin-bottom: 0.5rem; font-weight: 500; }
+        .form-group input { width: 100%; padding: 12px; border: 2px solid #e9ecef; border-radius: 5px; font-size: 1rem; }
+        .form-group input:focus { outline: none; border-color: #007bff; }
+        .btn-primary { background: #007bff; color: white; border: none; padding: 12px; border-radius: 5px; width: 100%; font-size: 1rem; cursor: pointer; }
+        .btn-primary:hover { background: #0056b3; }
+        .auth-links { text-align: center; margin-top: 1.5rem; }
+        .auth-links a { color: #007bff; text-decoration: none; }
+        .message { padding: 1rem; border-radius: 5px; margin: 1rem 0; text-align: center; }
+        .message.success { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+        .message.error { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+        .hidden { display: none; }
+    </style>
 </head>
 <body>
     <header>
@@ -25,85 +59,129 @@
     <main class="container">
         <div class="auth-container">
             <div class="auth-form">
-                <h2>Kayıt Ol</h2>
-                <form id="registerForm">
+                <h2>Giriş Yap</h2>
+                <form id="loginForm">
                     <div class="form-group">
-                        <label for="registerName">Ad Soyad:</label>
-                        <input type="text" id="registerName" required>
+                        <label for="loginEmail">E-posta:</label>
+                        <input type="email" id="loginEmail" required placeholder="ornek@email.com">
                     </div>
                     <div class="form-group">
-                        <label for="registerEmail">E-posta:</label>
-                        <input type="email" id="registerEmail" required>
+                        <label for="loginPassword">Şifre:</label>
+                        <input type="password" id="loginPassword" required placeholder="Şifreniz">
                     </div>
-                    <div class="form-group">
-                        <label for="registerPassword">Şifre:</label>
-                        <input type="password" id="registerPassword" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="registerConfirmPassword">Şifre Tekrar:</label>
-                        <input type="password" id="registerConfirmPassword" required>
-                    </div>
-                    <button type="submit" class="btn-primary btn-full">Kayıt Ol</button>
+                    <button type="submit" class="btn-primary">Giriş Yap</button>
                 </form>
                 <div class="auth-links">
-                    <p>Zaten hesabınız var mı? <a href="login.html">Giriş Yapın</a></p>
+                    <p>Hesabınız yok mu? <a href="register.html">Kayıt Olun</a></p>
                 </div>
                 <div id="authMessage" class="message hidden"></div>
             </div>
         </div>
     </main>
 
-    <script src="auth.js"></script>
-    
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const form = document.getElementById('registerForm');
-            const nameInput = document.getElementById('registerName');
-            const emailInput = document.getElementById('registerEmail');
-            const passwordInput = document.getElementById('registerPassword');
-            const confirmInput = document.getElementById('registerConfirmPassword');
+        // ✅ TÜM LOGIN FONKSİYONLARI BURADA
+        
+        function loginUser(email, password) {
+            console.log('🔐 Giriş işlemi başlıyor...', { email });
+            
+            try {
+                const users = JSON.parse(localStorage.getItem('users')) || [];
+                const user = users.find(u => u.email === email && atob(u.password) === password);
+                
+                if (user) {
+                    const userForSession = {
+                        id: user.id,
+                        name: user.name,
+                        email: user.email,
+                        role: user.role
+                    };
+                    
+                    localStorage.setItem('currentUser', JSON.stringify(userForSession));
+                    
+                    console.log('✅ Giriş başarılı:', userForSession);
+                    showMessage('Giriş başarılı! Yönlendiriliyorsunuz...', 'success');
+                    
+                    setTimeout(() => {
+                        window.location.href = 'index.html';
+                    }, 1500);
+                } else {
+                    showMessage('Geçersiz e-posta veya şifre!', 'error');
+                }
+            } catch (error) {
+                console.error('❌ Giriş hatası:', error);
+                showMessage('Giriş sırasında hata oluştu!', 'error');
+            }
+        }
 
-            // Debug: Konsola elementleri yazdır
-            console.log('Form:', form);
-            console.log('Name Input:', nameInput);
-            console.log('Email Input:', emailInput);
-            console.log('Password Input:', passwordInput);
-            console.log('Confirm Input:', confirmInput);
+        function showMessage(message, type) {
+            console.log(`📢 Mesaj: ${type} - ${message}`);
+            const messageDiv = document.getElementById('authMessage');
+            if (messageDiv) {
+                messageDiv.textContent = message;
+                messageDiv.className = `message ${type}`;
+                messageDiv.classList.remove('hidden');
+                
+                setTimeout(() => {
+                    messageDiv.classList.add('hidden');
+                }, 5000);
+            } else {
+                alert(`${type.toUpperCase()}: ${message}`);
+            }
+        }
 
-            if (!form || !nameInput || !emailInput || !passwordInput || !confirmInput) {
-                console.error('Gerekli elementler bulunamadı!');
+        function initializePage() {
+            console.log('🚀 Login sayfası başlatılıyor...');
+            
+            const form = document.getElementById('loginForm');
+            const emailInput = document.getElementById('loginEmail');
+            const passwordInput = document.getElementById('loginPassword');
+            
+            console.log('🔍 Element kontrolü:', {
+                form: !!form,
+                emailInput: !!emailInput,
+                passwordInput: !!passwordInput
+            });
+            
+            if (!form || !emailInput || !passwordInput) {
+                console.error('❌ HATA: Form elementleri bulunamadı!');
+                showMessage('Sayfa yüklenirken hata oluştu. Lütfen sayfayı yenileyin.', 'error');
                 return;
             }
-
+            
+            console.log('✅ Tüm form elementleri bulundu!');
+            
             form.addEventListener('submit', function(e) {
                 e.preventDefault();
-                console.log('Form gönderildi.');
-
-                const name = nameInput.value;
-                const email = emailInput.value;
+                console.log('📝 Login formu gönderildi!');
+                
+                const email = emailInput.value.trim();
                 const password = passwordInput.value;
-                const confirmPassword = confirmInput.value;
-
-                // Validasyon
-                if (password !== confirmPassword) {
-                    alert('Şifreler eşleşmiyor!');
+                
+                console.log('📋 Login verileri alındı');
+                
+                if (!email || !password) {
+                    showMessage('Lütfen tüm alanları doldurun!', 'error');
                     return;
                 }
-
-                if (password.length < 6) {
-                    alert('Şifre en az 6 karakter olmalıdır!');
-                    return;
-                }
-
-                // registerUser fonksiyonunu çağır
-                if (typeof registerUser === 'function') {
-                    registerUser(name, email, password);
-                } else {
-                    console.error('registerUser fonksiyonu tanımlı değil!');
-                    alert('Sistem hatası! Lütfen sayfayı yenileyin.');
-                }
+                
+                console.log('✅ Login validasyonu başarılı!');
+                console.log('🔄 loginUser fonksiyonu çağrılıyor...');
+                loginUser(email, password);
             });
+            
+            console.log('✅ Login sayfası başarıyla başlatıldı!');
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('📄 DOM yüklendi!');
+            initializePage();
         });
+
+        if (document.readyState === 'interactive' || document.readyState === 'complete') {
+            console.log('⚡ Sayfa zaten hazır!');
+            initializePage();
+        }
     </script>
 </body>
 </html>
