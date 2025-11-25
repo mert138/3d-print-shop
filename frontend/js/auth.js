@@ -148,3 +148,28 @@ function showAuthMessage(message, type) {
     alert(message);
   }
 }
+// auth.js dosyasına bu fonksiyonu ekle
+function updateAuthUI() {
+    const authButtons = document.getElementById('authButtons');
+    const userMenu = document.getElementById('userMenu');
+    const userName = document.getElementById('userName');
+    const adminLink = document.getElementById('adminLink');
+    
+    const currentUser = getCurrentUser();
+    
+    if (currentUser) {
+        if (authButtons) authButtons.classList.add('hidden');
+        if (userMenu) {
+            userMenu.classList.remove('hidden');
+            userName.textContent = currentUser.name;
+            
+            // Admin kullanıcısı için admin linkini göster
+            if (adminLink && currentUser.role === 'admin') {
+                adminLink.classList.remove('hidden');
+            }
+        }
+    } else {
+        if (authButtons) authButtons.classList.remove('hidden');
+        if (userMenu) userMenu.classList.add('hidden');
+    }
+}
