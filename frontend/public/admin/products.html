@@ -23,6 +23,8 @@
         .nav-brand h2 { color: #007bff; font-size: 1.8rem; }
         .nav-brand a { text-decoration: none; color: inherit; }
         .nav-links a { text-decoration: none; color: #333; font-weight: 500; padding: 0.5rem 1rem; }
+        
+        /* Admin Paneli Stilleri */
         .admin-container { display: grid; grid-template-columns: 250px 1fr; gap: 2rem; margin: 2rem 0; }
         .admin-sidebar { background: white; border-radius: 10px; padding: 1.5rem; box-shadow: 0 2px 10px rgba(0,0,0,0.1); height: fit-content; }
         .sidebar-menu { display: flex; flex-direction: column; gap: 0.5rem; }
@@ -31,14 +33,35 @@
         .admin-content { background: white; border-radius: 10px; padding: 2rem; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
         .admin-section { display: none; }
         .admin-section.active { display: block; }
+        
+        /* Form Stilleri */
         .form-group { margin-bottom: 1.5rem; }
         .form-group label { display: block; margin-bottom: 0.5rem; font-weight: 500; }
-        .form-group input, .form-group textarea, .form-group select { width: 100%; padding: 12px; border: 2px solid #e9ecef; border-radius: 5px; font-size: 1rem; }
-        .form-group input:focus, .form-group textarea:focus, .form-group select:focus { outline: none; border-color: #007bff; }
-        .btn-primary { background: #007bff; color: white; border: none; padding: 12px 20px; border-radius: 5px; cursor: pointer; font-size: 1rem; }
+        .form-group input, .form-group textarea, .form-group select { 
+            width: 100%; padding: 12px; border: 2px solid #e9ecef; border-radius: 5px; font-size: 1rem; 
+        }
+        .form-group input:focus, .form-group textarea:focus, .form-group select:focus { 
+            outline: none; border-color: #007bff; 
+        }
+        
+        /* Buton Stilleri */
+        .btn-primary { background: #007bff; color: white; border: none; padding: 12px 20px; border-radius: 5px; cursor: pointer; }
         .btn-primary:hover { background: #0056b3; }
-        .products-list, .orders-list { display: flex; flex-direction: column; gap: 1rem; }
-        .product-item, .order-item { background: #f8f9fa; padding: 1rem; border-radius: 5px; border-left: 4px solid #007bff; }
+        .btn-danger { background: #dc3545; color: white; border: none; padding: 10px 15px; border-radius: 5px; cursor: pointer; }
+        .btn-danger:hover { background: #c82333; }
+        .btn-secondary { background: #6c757d; color: white; border: none; padding: 10px 15px; border-radius: 5px; cursor: pointer; }
+        .btn-secondary:hover { background: #545b62; }
+        
+        /* Ürün Listesi */
+        .products-list { display: flex; flex-direction: column; gap: 1rem; }
+        .product-item { 
+            background: #f8f9fa; padding: 1.5rem; border-radius: 10px; border-left: 4px solid #007bff;
+            display: flex; justify-content: space-between; align-items: start;
+        }
+        .product-info { flex: 1; }
+        .product-actions { display: flex; gap: 0.5rem; }
+        
+        /* Mesaj Stilleri */
         .message { padding: 1rem; border-radius: 5px; margin: 1rem 0; text-align: center; }
         .message.success { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
         .message.error { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
@@ -51,10 +74,10 @@
             <div class="container">
                 <div class="nav-content">
                     <div class="nav-brand">
-                        <h2><a href="index.html">3D Market - Admin</a></h2>
+                        <h2><a href="../index.html">3D Market - Admin</a></h2>
                     </div>
                     <div class="nav-links">
-                        <a href="index.html">Siteye Dön</a>
+                        <a href="../index.html">Siteye Dön</a>
                         <a href="#" id="logoutBtn">Çıkış Yap</a>
                     </div>
                 </div>
@@ -64,46 +87,50 @@
 
     <main class="container">
         <div class="admin-container">
+            <!-- Sidebar -->
             <div class="admin-sidebar">
                 <div class="sidebar-menu">
                     <button class="sidebar-btn active" onclick="showSection('addProduct')">Ürün Ekle</button>
                     <button class="sidebar-btn" onclick="showSection('viewProducts')">Ürünleri Yönet</button>
+                    <button class="sidebar-btn" onclick="showSection('viewOrders')">Siparişler</button>
                 </div>
             </div>
 
+            <!-- Ana İçerik -->
             <div class="admin-content">
-                <!-- Ürün Ekleme Section -->
+                <!-- Ürün Ekleme Bölümü -->
                 <div id="addProduct" class="admin-section active">
                     <h2>Yeni Ürün Ekle</h2>
                     <form id="addProductForm">
                         <div class="form-group">
                             <label for="productName">Ürün Adı:</label>
-                            <input type="text" id="productName" required>
+                            <input type="text" id="productName" required placeholder="Örnek: Modern Sandalye">
                         </div>
                         <div class="form-group">
                             <label for="productPrice">Fiyat ($):</label>
-                            <input type="number" id="productPrice" step="0.01" required>
+                            <input type="number" id="productPrice" step="0.01" required placeholder="29.99">
                         </div>
                         <div class="form-group">
                             <label for="productCategory">Kategori:</label>
                             <select id="productCategory" required>
-                                <option value="">Seçiniz</option>
-                                <option value="furniture">Mobilya</option>
-                                <option value="electronics">Elektronik</option>
-                                <option value="characters">Karakterler</option>
-                                <option value="vehicles">Araçlar</option>
+                                <option value="">Kategori Seçin</option>
+                                <option value="mobilya">Mobilya</option>
+                                <option value="elektronik">Elektronik</option>
+                                <option value="karakter">Karakterler</option>
+                                <option value="arac">Araçlar</option>
+                                <option value="mimari">Mimari</option>
                             </select>
                         </div>
                         <div class="form-group">
                             <label for="productDescription">Açıklama:</label>
-                            <textarea id="productDescription" rows="4" required></textarea>
+                            <textarea id="productDescription" rows="4" required placeholder="Ürün açıklamasını yazın..."></textarea>
                         </div>
                         <div class="form-group">
-                            <label for="modelFile">3D Model Dosyası (URL):</label>
-                            <input type="text" id="modelFile" placeholder="https://example.com/model.glb">
+                            <label for="modelUrl">3D Model URL:</label>
+                            <input type="text" id="modelUrl" placeholder="https://example.com/model.glb">
                         </div>
                         <div class="form-group">
-                            <label for="productImage">Ürün Görseli (URL):</label>
+                            <label for="productImage">Ürün Görsel URL:</label>
                             <input type="text" id="productImage" placeholder="https://example.com/image.jpg">
                         </div>
                         <button type="submit" class="btn-primary">Ürünü Ekle</button>
@@ -111,11 +138,19 @@
                     <div id="productMessage" class="message hidden"></div>
                 </div>
 
-                <!-- Ürünleri Görüntüleme Section -->
+                <!-- Ürün Yönetimi Bölümü -->
                 <div id="viewProducts" class="admin-section">
                     <h2>Ürün Yönetimi</h2>
                     <div id="productsList" class="products-list">
-                        <!-- Ürünler buraya gelecek -->
+                        <!-- Ürünler buraya dinamik olarak eklenecek -->
+                    </div>
+                </div>
+
+                <!-- Siparişler Bölümü -->
+                <div id="viewOrders" class="admin-section">
+                    <h2>Sipariş Yönetimi</h2>
+                    <div id="ordersList" class="products-list">
+                        <!-- Siparişler buraya eklenecek -->
                     </div>
                 </div>
             </div>
@@ -123,44 +158,58 @@
     </main>
 
     <script>
-        // ✅ Tüm admin fonksiyonları burada
+        // ✅ TÜM ADMIN FONKSİYONLARI BURADA
 
         // 1. Sayfa yüklendiğinde çalışacak
         document.addEventListener('DOMContentLoaded', function() {
             console.log('🚀 Admin sayfası yüklendi');
-
+            
             // Admin kontrolü yap
             checkAdminAccess();
-
-            // Ürün listesini yükle
-            loadProducts();
-
-            // Form olay dinleyicisini ekle
-            document.getElementById('addProductForm').addEventListener('submit', function(e) {
-                e.preventDefault();
-                addProduct();
-            });
-
+            
+            // Form event listener ekle
+            const addProductForm = document.getElementById('addProductForm');
+            if (addProductForm) {
+                addProductForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    addProduct();
+                });
+            }
+            
             // Çıkış butonunu ekle
-            document.getElementById('logoutBtn').addEventListener('click', function(e) {
-                e.preventDefault();
-                logout();
-            });
+            const logoutBtn = document.getElementById('logoutBtn');
+            if (logoutBtn) {
+                logoutBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    logout();
+                });
+            }
+            
+            // İlk ürün listesini yükle
+            loadProducts();
+            loadOrders();
         });
 
         // 2. Admin erişim kontrolü
         function checkAdminAccess() {
             const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+            console.log('🔐 Mevcut kullanıcı:', currentUser);
+            
             if (!currentUser || currentUser.role !== 'admin') {
-                alert('Bu sayfaya erişim izniniz yok!');
-                window.location.href = 'index.html';
-                return;
+                console.error('❌ Admin erişimi reddedildi!');
+                alert('Bu sayfaya sadece admin kullanıcılar erişebilir!');
+                window.location.href = '../index.html';
+                return false;
             }
+            
             console.log('✅ Admin erişimi onaylandı:', currentUser.name);
+            return true;
         }
 
-        // 3. Bölüm gösterme
+        // 3. Bölüm değiştirme
         function showSection(sectionId) {
+            console.log('🔄 Bölüm değiştiriliyor:', sectionId);
+            
             // Tüm bölümleri gizle
             document.querySelectorAll('.admin-section').forEach(section => {
                 section.classList.remove('active');
@@ -170,127 +219,252 @@
             document.querySelectorAll('.sidebar-btn').forEach(btn => {
                 btn.classList.remove('active');
             });
-
+            
             // Aktif bölümü göster
-            document.getElementById(sectionId).classList.add('active');
+            const activeSection = document.getElementById(sectionId);
+            if (activeSection) {
+                activeSection.classList.add('active');
+            }
             
             // Aktif butonu işaretle
             event.target.classList.add('active');
-
-            // Eğer ürün listesi bölümüyse, ürünleri yenile
+            
+            // Eğer ürün listesi bölümüyse, listeyi yenile
             if (sectionId === 'viewProducts') {
                 loadProducts();
+            } else if (sectionId === 'viewOrders') {
+                loadOrders();
             }
         }
 
-        // 4. Ürün ekleme
+        // 4. Ürün ekleme fonksiyonu
         function addProduct() {
             console.log('📦 Ürün ekleme başlatılıyor...');
-
+            
+            // Form değerlerini al
             const productName = document.getElementById('productName').value;
             const productPrice = document.getElementById('productPrice').value;
             const productCategory = document.getElementById('productCategory').value;
             const productDescription = document.getElementById('productDescription').value;
-            const modelFile = document.getElementById('modelFile').value;
+            const modelUrl = document.getElementById('modelUrl').value;
             const productImage = document.getElementById('productImage').value;
-
+            
+            console.log('📋 Form verileri:', {
+                productName, productPrice, productCategory, productDescription, modelUrl, productImage
+            });
+            
             // Validasyon
             if (!productName || !productPrice || !productCategory || !productDescription) {
                 showProductMessage('Lütfen zorunlu alanları doldurun!', 'error');
                 return;
             }
-
-            // Ürünleri localStorage'dan al
-            const products = JSON.parse(localStorage.getItem('products')) || [];
-
-            // Yeni ürün oluştur
-            const newProduct = {
-                id: Date.now().toString(),
-                name: productName,
-                price: parseFloat(productPrice),
-                category: productCategory,
-                description: productDescription,
-                modelFile: modelFile || '/models/default.glb',
-                image: productImage || '/images/default.jpg',
-                createdAt: new Date().toISOString(),
-                reviews: []
-            };
-
-            // Ürünleri kaydet
-            products.push(newProduct);
-            localStorage.setItem('products', JSON.stringify(products));
-
-            console.log('✅ Ürün eklendi:', newProduct);
-
-            // Başarı mesajı göster
-            showProductMessage('Ürün başarıyla eklendi!', 'success');
-
-            // Formu temizle
-            document.getElementById('addProductForm').reset();
-
-            // Ürün listesini yenile
-            loadProducts();
-        }
-
-        // 5. Ürünleri yükle
-        function loadProducts() {
-            const products = JSON.parse(localStorage.getItem('products')) || [];
-            const container = document.getElementById('productsList');
-
-            if (products.length === 0) {
-                container.innerHTML = '<p>Henüz ürün bulunmuyor.</p>';
+            
+            if (isNaN(productPrice) || parseFloat(productPrice) <= 0) {
+                showProductMessage('Geçerli bir fiyat girin!', 'error');
                 return;
             }
+            
+            try {
+                // Ürünleri localStorage'dan al
+                const products = JSON.parse(localStorage.getItem('products')) || [];
+                
+                // Yeni ürün oluştur
+                const newProduct = {
+                    id: Date.now().toString(),
+                    name: productName,
+                    price: parseFloat(productPrice),
+                    category: productCategory,
+                    description: productDescription,
+                    modelUrl: modelUrl || '/models/default.glb',
+                    image: productImage || '/images/default-product.jpg',
+                    createdAt: new Date().toISOString(),
+                    reviews: []
+                };
+                
+                console.log('🆕 Yeni ürün:', newProduct);
+                
+                // Ürünleri güncelle
+                products.push(newProduct);
+                localStorage.setItem('products', JSON.stringify(products));
+                
+                console.log('✅ Ürün başarıyla eklendi!');
+                
+                // Başarı mesajı göster
+                showProductMessage('🎉 Ürün başarıyla eklendi!', 'success');
+                
+                // Formu temizle
+                document.getElementById('addProductForm').reset();
+                
+                // Ürün listesini yenile
+                loadProducts();
+                
+            } catch (error) {
+                console.error('❌ Ürün ekleme hatası:', error);
+                showProductMessage('Ürün eklenirken hata oluştu!', 'error');
+            }
+        }
 
-            container.innerHTML = products.map(product => `
-                <div class="product-item">
-                    <div style="display: flex; justify-content: space-between; align-items: start;">
-                        <div>
+        // 5. Ürünleri yükleme
+        function loadProducts() {
+            console.log('📥 Ürünler yükleniyor...');
+            
+            try {
+                const products = JSON.parse(localStorage.getItem('products')) || [];
+                const container = document.getElementById('productsList');
+                
+                console.log('📊 Toplam ürün sayısı:', products.length);
+                
+                if (products.length === 0) {
+                    container.innerHTML = '<p>Henüz ürün bulunmuyor.</p>';
+                    return;
+                }
+                
+                // Ürünleri listele
+                container.innerHTML = products.map(product => `
+                    <div class="product-item">
+                        <div class="product-info">
                             <h3>${product.name}</h3>
                             <p><strong>Fiyat:</strong> $${product.price}</p>
                             <p><strong>Kategori:</strong> ${product.category}</p>
-                            <p>${product.description}</p>
-                            <p><strong>Yorumlar:</strong> ${product.reviews.length}</p>
+                            <p><strong>Açıklama:</strong> ${product.description}</p>
+                            <p><strong>Oluşturulma:</strong> ${new Date(product.createdAt).toLocaleDateString()}</p>
+                            <p><strong>Yorumlar:</strong> ${product.reviews ? product.reviews.length : 0}</p>
                         </div>
-                        <div>
-                            <button onclick="editProduct('${product.id}')" class="btn-primary">Düzenle</button>
-                            <button onclick="deleteProduct('${product.id}')" class="btn-primary" style="background: #dc3545;">Sil</button>
+                        <div class="product-actions">
+                            <button class="btn-primary" onclick="editProduct('${product.id}')">Düzenle</button>
+                            <button class="btn-danger" onclick="deleteProduct('${product.id}')">Sil</button>
                         </div>
                     </div>
-                </div>
-            `).join('');
+                `).join('');
+                
+                console.log('✅ Ürünler başarıyla yüklendi!');
+                
+            } catch (error) {
+                console.error('❌ Ürün yükleme hatası:', error);
+                document.getElementById('productsList').innerHTML = '<p>Ürünler yüklenirken hata oluştu.</p>';
+            }
         }
 
         // 6. Ürün silme
         function deleteProduct(productId) {
+            console.log('🗑️ Ürün siliniyor:', productId);
+            
             if (!confirm('Bu ürünü silmek istediğinizden emin misiniz?')) {
                 return;
             }
-
-            const products = JSON.parse(localStorage.getItem('products')) || [];
-            const updatedProducts = products.filter(p => p.id !== productId);
-            localStorage.setItem('products', JSON.stringify(updatedProducts));
-
-            showProductMessage('Ürün silindi!', 'success');
-            loadProducts();
+            
+            try {
+                const products = JSON.parse(localStorage.getItem('products')) || [];
+                const updatedProducts = products.filter(p => p.id !== productId);
+                
+                localStorage.setItem('products', JSON.stringify(updatedProducts));
+                
+                console.log('✅ Ürün silindi!');
+                showProductMessage('Ürün başarıyla silindi!', 'success');
+                
+                // Listeyi yenile
+                loadProducts();
+                
+            } catch (error) {
+                console.error('❌ Ürün silme hatası:', error);
+                showProductMessage('Ürün silinirken hata oluştu!', 'error');
+            }
         }
 
-        // 7. Mesaj gösterme
+        // 7. Ürün düzenleme (basit versiyon)
+        function editProduct(productId) {
+            console.log('✏️ Ürün düzenleniyor:', productId);
+            alert('Ürün düzenleme özelliği yakında eklenecek! Şu an için lütfen ürünü silip yeniden ekleyin.');
+        }
+
+        // 8. Siparişleri yükleme
+        function loadOrders() {
+            console.log('📦 Siparişler yükleniyor...');
+            
+            try {
+                const orders = JSON.parse(localStorage.getItem('orders')) || [];
+                const container = document.getElementById('ordersList');
+                
+                console.log('📊 Toplam sipariş sayısı:', orders.length);
+                
+                if (orders.length === 0) {
+                    container.innerHTML = '<p>Henüz sipariş bulunmuyor.</p>';
+                    return;
+                }
+                
+                // Siparişleri listele
+                container.innerHTML = orders.map(order => `
+                    <div class="product-item">
+                        <div class="product-info">
+                            <h3>Sipariş #${order.id.slice(-6)}</h3>
+                            <p><strong>Toplam:</strong> $${order.total}</p>
+                            <p><strong>Durum:</strong> ${order.status}</p>
+                            <p><strong>Tarih:</strong> ${new Date(order.createdAt).toLocaleDateString()}</p>
+                            <div>
+                                <strong>Ürünler:</strong>
+                                ${order.items ? order.items.map(item => 
+                                    `<div>${item.name} - ${item.quantity} x $${item.price}</div>`
+                                ).join('') : 'Ürün bilgisi yok'}
+                            </div>
+                        </div>
+                        <div class="product-actions">
+                            <button class="btn-primary" onclick="updateOrderStatus('${order.id}', 'completed')">Tamamlandı</button>
+                            <button class="btn-secondary" onclick="updateOrderStatus('${order.id}', 'cancelled')">İptal</button>
+                        </div>
+                    </div>
+                `).join('');
+                
+            } catch (error) {
+                console.error('❌ Sipariş yükleme hatası:', error);
+                document.getElementById('ordersList').innerHTML = '<p>Siparişler yüklenirken hata oluştu.</p>';
+            }
+        }
+
+        // 9. Sipariş durumu güncelleme
+        function updateOrderStatus(orderId, status) {
+            console.log('🔄 Sipariş durumu güncelleniyor:', orderId, status);
+            
+            try {
+                const orders = JSON.parse(localStorage.getItem('orders')) || [];
+                const orderIndex = orders.findIndex(o => o.id === orderId);
+                
+                if (orderIndex !== -1) {
+                    orders[orderIndex].status = status;
+                    localStorage.setItem('orders', JSON.stringify(orders));
+                    
+                    showProductMessage(`Sipariş durumu "${status}" olarak güncellendi!`, 'success');
+                    loadOrders();
+                }
+                
+            } catch (error) {
+                console.error('❌ Sipariş güncelleme hatası:', error);
+                showProductMessage('Sipariş güncellenirken hata oluştu!', 'error');
+            }
+        }
+
+        // 10. Mesaj gösterme
         function showProductMessage(message, type) {
+            console.log(`📢 Ürün mesajı: ${type} - ${message}`);
+            
             const messageDiv = document.getElementById('productMessage');
-            messageDiv.textContent = message;
-            messageDiv.className = `message ${type}`;
-            messageDiv.classList.remove('hidden');
-
-            setTimeout(() => {
-                messageDiv.classList.add('hidden');
-            }, 5000);
+            if (messageDiv) {
+                messageDiv.textContent = message;
+                messageDiv.className = `message ${type}`;
+                messageDiv.classList.remove('hidden');
+                
+                setTimeout(() => {
+                    messageDiv.classList.add('hidden');
+                }, 5000);
+            } else {
+                alert(`${type.toUpperCase()}: ${message}`);
+            }
         }
 
-        // 8. Çıkış
+        // 11. Çıkış
         function logout() {
+            console.log('🚪 Çıkış yapılıyor...');
             localStorage.removeItem('currentUser');
-            window.location.href = 'index.html';
+            window.location.href = '../index.html';
         }
     </script>
 </body>
