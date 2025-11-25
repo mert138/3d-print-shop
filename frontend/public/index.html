@@ -4,432 +4,566 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>3D Market - Ana Sayfa</title>
-    
-    <!-- CSS dosyalarını mutlak yol ile çağır -->
-    <link rel="stylesheet" href="/css/style.css">
-    
-    <!-- CDN'ler -->
+    <link rel="stylesheet" href="style.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
-
-<style>
-   * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-body {
-    font-family: 'Arial', sans-serif;
-    line-height: 1.6;
-    color: #333;
-    background-color: #f8f9fa;
-}
-
-.navbar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 1rem 5%;
-    background: #fff;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-    position: sticky;
-    top: 0;
-    z-index: 100;
-}
-
-.nav-brand h2 {
-    color: #4a90e2;
-}
-
-.nav-links {
-    display: flex;
-    align-items: center;
-    gap: 1.5rem;
-}
-
-.nav-links a {
-    text-decoration: none;
-    color: #333;
-    font-weight: 500;
-    transition: color 0.3s ease;
-}
-
-.nav-links a:hover {
-    color: #4a90e2;
-}
-
-.auth-buttons, .user-menu {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-}
-
-.btn {
-    padding: 0.5rem 1rem;
-    border: none;
-    border-radius: 5px;
-    text-decoration: none;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    font-size: 0.9rem;
-    display: inline-block;
-    text-align: center;
-}
-
-.btn-primary {
-    background: #4a90e2;
-    color: white;
-}
-
-.btn-primary:hover {
-    background: #357abd;
-}
-
-.btn-outline {
-    border: 2px solid #4a90e2;
-    color: #4a90e2;
-    background: transparent;
-}
-
-.btn-outline:hover {
-    background: #4a90e2;
-    color: white;
-}
-
-.btn-admin {
-    background: #e74c3c;
-    color: white;
-}
-
-.btn-admin:hover {
-    background: #c0392b;
-}
-
-.btn-large {
-    padding: 1rem 2rem;
-    font-size: 1.1rem;
-}
-
-.btn-block {
-    display: block;
-    width: 100%;
-}
-
-.hero {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 2rem;
-    padding: 4rem 5%;
-    align-items: center;
-    min-height: 80vh;
-}
-
-.hero-content h1 {
-    font-size: 3rem;
-    margin-bottom: 1rem;
-    color: #2c3e50;
-}
-
-.hero-content p {
-    font-size: 1.2rem;
-    margin-bottom: 2rem;
-    color: #7f8c8d;
-}
-
-.hero-3d {
-    width: 100%;
-    height: 400px;
-    background: #ecf0f1;
-    border-radius: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #7f8c8d;
-}
-
-.products-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 2rem;
-    padding: 2rem 5%;
-}
-
-.product-card {
-    background: white;
-    border-radius: 10px;
-    padding: 1.5rem;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.product-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 25px rgba(0,0,0,0.15);
-}
-
-.product-image {
-    width: 100%;
-    height: 200px;
-    background: #f8f9fa;
-    border-radius: 5px;
-    margin-bottom: 1rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #bdc3c7;
-}
-
-.product-info h3 {
-    margin-bottom: 0.5rem;
-    color: #2c3e50;
-}
-
-.product-info p {
-    color: #7f8c8d;
-    margin-bottom: 1rem;
-}
-
-.price-section {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    margin-bottom: 1rem;
-}
-
-.product-price {
-    font-size: 1.5rem;
-    font-weight: bold;
-    color: #e74c3c;
-}
-
-.original-price {
-    text-decoration: line-through;
-    color: #999;
-    font-size: 1rem;
-}
-
-.discount {
-    background: #e74c3c;
-    color: white;
-    padding: 0.2rem 0.5rem;
-    border-radius: 3px;
-    font-size: 0.8rem;
-}
-
-/* Auth sayfaları */
-.auth-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 80vh;
-    padding: 2rem;
-}
-
-.auth-form {
-    background: white;
-    padding: 2rem;
-    border-radius: 10px;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-    width: 100%;
-    max-width: 400px;
-}
-
-.auth-form h2 {
-    text-align: center;
-    margin-bottom: 2rem;
-    color: #2c3e50;
-}
-
-.form-group {
-    margin-bottom: 1.5rem;
-}
-
-.form-group label {
-    display: block;
-    margin-bottom: 0.5rem;
-    font-weight: bold;
-    color: #2c3e50;
-}
-
-.form-group input,
-.form-group textarea,
-.form-group select {
-    width: 100%;
-    padding: 0.75rem;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    font-size: 1rem;
-    transition: border-color 0.3s ease;
-}
-
-.form-group input:focus,
-.form-group textarea:focus,
-.form-group select:focus {
-    outline: none;
-    border-color: #4a90e2;
-}
-
-.message {
-    margin-top: 1rem;
-    padding: 0.75rem;
-    border-radius: 5px;
-    text-align: center;
-}
-
-/* Ürün detay sayfası */
-.product-detail {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 3rem;
-    padding: 2rem 5%;
-}
-
-.product-images .main-image {
-    width: 100%;
-    height: 400px;
-    background: #f8f9fa;
-    border-radius: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #bdc3c7;
-}
-
-.product-info h1 {
-    font-size: 2.5rem;
-    margin-bottom: 1rem;
-    color: #2c3e50;
-}
-
-.features {
-    margin: 1.5rem 0;
-}
-
-.features ul {
-    list-style: none;
-    padding: 0;
-}
-
-.features li {
-    padding: 0.5rem 0;
-    border-bottom: 1px solid #ecf0f1;
-}
-
-.features li:before {
-    content: "✓";
-    color: #27ae60;
-    margin-right: 0.5rem;
-}
-
-.reviews-section {
-    padding: 2rem 5%;
-    max-width: 800px;
-    margin: 0 auto;
-}
-
-.review-item {
-    background: white;
-    padding: 1.5rem;
-    border-radius: 5px;
-    margin-bottom: 1rem;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-}
-
-.review-header {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 0.5rem;
-}
-
-.review-author {
-    font-weight: bold;
-}
-
-.review-rating {
-    color: #f39c12;
-}
-
-/* Filtreler */
-.filters {
-    padding: 1rem 5%;
-    background: white;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-    display: flex;
-    gap: 1rem;
-    align-items: center;
-}
-
-.filters input, .filters select {
-    padding: 0.5rem;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-}
-
-/* Responsive */
-@media (max-width: 768px) {
-    .hero {
-        grid-template-columns: 1fr;
-        text-align: center;
-    }
     
-    .product-detail {
-        grid-template-columns: 1fr;
-    }
-    
-    .nav-links {
-        flex-direction: column;
-        gap: 1rem;
-    }
-    
-    .hero-content h1 {
-        font-size: 2rem;
-    }
-}
-</style>
+    <!-- Inline CSS for critical styles -->
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+            padding-top: 80px; /* Navbar yüksekliği için */
+        }
+        
+        .navbar {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 1rem 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        .nav-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .nav-brand h2 {
+            color: #007bff;
+            font-size: 1.8rem;
+        }
+        
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+        }
+        
+        .nav-links a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+            transition: color 0.3s;
+            padding: 0.5rem 1rem;
+        }
+        
+        .nav-links a:hover {
+            color: #007bff;
+        }
+        
+        .btn-primary {
+            background: #007bff;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            text-decoration: none;
+            display: inline-block;
+            transition: background 0.3s;
+            font-weight: 500;
+        }
+        
+        .btn-primary:hover {
+            background: #0056b3;
+        }
+        
+        .btn-outline {
+            background: transparent;
+            color: #007bff;
+            border: 2px solid #007bff;
+            padding: 8px 18px;
+            border-radius: 5px;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.3s;
+            font-weight: 500;
+        }
+        
+        .btn-outline:hover {
+            background: #007bff;
+            color: white;
+        }
+        
+        .hero {
+            text-align: center;
+            color: white;
+            padding: 4rem 0;
+        }
+        
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .hero p {
+            font-size: 1.3rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+        
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+        
+        .product-card {
+            background: white;
+            border-radius: 10px;
+            padding: 1.5rem;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+        }
+        
+        .product-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .product-image {
+            height: 200px;
+            background: #f8f9fa;
+            border-radius: 5px;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #666;
+        }
+        
+        .product-price {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #007bff;
+            margin: 0.5rem 0;
+        }
+        
+        .user-menu {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .user-name {
+            font-weight: 500;
+        }
+        
+        .hidden {
+            display: none !important;
+        }
+
+        /* User Avatar Styles */
+        .user-avatar {
+            position: relative;
+            cursor: pointer;
+        }
+
+        .user-avatar img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 2px solid #007bff;
+            object-fit: cover;
+        }
+
+        .user-dropdown {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            min-width: 200px;
+            z-index: 1000;
+            display: none;
+        }
+
+        .user-avatar:hover .user-dropdown {
+            display: block;
+        }
+
+        .dropdown-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1rem;
+            text-decoration: none;
+            color: #333;
+            border-bottom: 1px solid #f0f0f0;
+            transition: background 0.3s;
+        }
+
+        .dropdown-item:hover {
+            background: #f8f9fa;
+        }
+
+        .dropdown-item.logout {
+            color: #dc3545;
+        }
+
+        .dropdown-divider {
+            height: 1px;
+            background: #f0f0f0;
+            margin: 0.5rem 0;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-links {
+                gap: 1rem;
+            }
+            
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .products-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .user-dropdown {
+                right: -50px;
+            }
+        }
+    </style>
 </head>
 <body>
-    <nav class="navbar">
-        <div class="nav-brand">
-            <h2>3D Market</h2>
-        </div>
-        <div class="nav-links">
-            <a href="index.html">Ana Sayfa</a>
-            <a href="products.html">Ürünler</a>
-            <div class="auth-buttons" id="authButtons">
-                <a href="login.html" class="btn btn-outline">Giriş Yap</a>
-                <a href="register.html" class="btn btn-primary">Kayıt Ol</a>
-            </div>
-            <div class="user-menu" id="userMenu" style="display: none;">
-                <span id="username"></span>
-                <a href="#" id="logoutBtn" class="btn btn-outline">Çıkış</a>
-                <div id="adminMenu" style="display: none;">
-                    <a href="admin/index.html" class="btn btn-admin">Admin Panel</a>
+    <header>
+        <nav class="navbar">
+            <div class="container">
+                <div class="nav-content">
+                    <div class="nav-brand">
+                        <h2>3D Market</h2>
+                    </div>
+                    <div class="nav-links">
+                        <a href="index.html">Ana Sayfa</a>
+                        <a href="cart.html">Sepet (<span id="cartCount">0</span>)</a>
+                        <div id="authButtons">
+                            <a href="login.html" class="btn-outline">Giriş</a>
+                            <a href="register.html" class="btn-primary">Kayıt</a>
+                        </div>
+                        <div id="userMenu" class="user-menu hidden">
+                            <div class="user-avatar">
+                                <img id="userAvatar" src="" alt="Profil" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHZpZXdCb3g9IjAgMCA0MCA0MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGNpcmNsZSBjeD0iMjAiIGN5PSIyMCIgcj0iMjAiIGZpbGw9IiMwMDdiZmYiLz4KPHBhdGggZD0iTTIwIDIyQzIzLjMxMzcgMjIgMjYgMTkuMzEzNyAyNiAxNkMyNiAxMi42ODYzIDIzLjMxMzcgMTAgMjAgMTBDMTYuNjg2MyAxMCAxNCAxMi42ODYzIDE0IDE2QzE0IDE5LjMxMzcgMTYuNjg2MyAyMiAyMCAyMloiIGZpbGw9IndoaXRlIi8+CjxwYXRoIGQ9Ik0yOCAzMEMyOCAyNy43OTAyIDI2LjIwOTggMjYgMjQgMjZIMTZDMTMuNzkwMiAyNiAxMiAyNy43OTAyIDEyIDMwVjMxQzEyIDMyLjEwNDYgMTIuODk1NCAzMyAxNCAzM0gyNkMyNy4xMDQ2IDMzIDI4IDMyLjEwNDYgMjggMzFWMzBaIiBmaWxsPSJ3aGl0ZSIvPgo8L3N2Zz4K'">
+                                <div class="user-dropdown" id="userDropdown">
+                                    <a href="user-profile.html" class="dropdown-item">
+                                        <span style="font-size: 1.2em;">👤</span> Profil
+                                    </a>
+                                    <a href="#" class="dropdown-item" onclick="viewMyOrders()">
+                                        <span style="font-size: 1.2em;">📦</span> Siparişlerim
+                                    </a>
+                                    <div id="adminMenu" class="hidden">
+                                        <a href="admin/products.html" class="dropdown-item">
+                                            <span style="font-size: 1.2em;">⚙️</span> Admin Panel
+                                        </a>
+                                        <a href="#" class="dropdown-item" onclick="viewAllOrders()">
+                                            <span style="font-size: 1.2em;">📋</span> Tüm Siparişler
+                                        </a>
+                                    </div>
+                                    <div class="dropdown-divider"></div>
+                                    <a href="#" class="dropdown-item logout" onclick="logout()">
+                                        <span style="font-size: 1.2em;">🚪</span> Çıkış
+                                    </a>
+                                </div>
+                            </div>
+                            <span id="userName" class="user-name"></span>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
-    </nav>
+        </nav>
+    </header>
 
-    <main>
+    <main class="container">
         <section class="hero">
-            <div class="hero-content">
-                <h1>3D Ürünler Dünyası</h1>
-                <p>En kaliteli 3D modeller ve tasarımlar</p>
-                <a href="products.html" class="btn btn-primary btn-large">Alışverişe Başla</a>
-            </div>
-            <div class="hero-3d" id="hero3d"></div>
+            <h1>3D Ürünler Dünyası</h1>
+            <p>En kaliteli 3D modeller ve tasarımlar</p>
+            <a href="#products" class="btn-primary">Alışverişe Başla</a>
         </section>
 
-        <section class="featured-products">
-            <h2>Öne Çıkan Ürünler</h2>
-            <div class="products-grid" id="featuredProducts">
-                <!-- Ürünler buraya gelecek -->
+        <section id="products" class="products-grid">
+            <!-- Ürün 1 -->
+            <div class="product-card">
+                <div class="product-image">
+                    3D Model Önizleme
+                </div>
+                <h3>Modern Sandalye</h3>
+                <p class="product-price">$29.99</p>
+                <p>Modern tasarım 3D sandalye modeli</p>
+                <div style="margin-top: 1rem; display: flex; gap: 0.5rem; justify-content: center;">
+                    <button class="btn-primary" onclick="viewProduct(1)">İncele</button>
+                    <button class="btn-outline" onclick="addToCart(1)">Sepete Ekle</button>
+                </div>
+            </div>
+
+            <!-- Ürün 2 -->
+            <div class="product-card">
+                <div class="product-image">
+                    3D Model Önizleme
+                </div>
+                <h3>Gaming Mouse</h3>
+                <p class="product-price">$19.99</p>
+                <p>Oyuncu mouse 3D modeli</p>
+                <div style="margin-top: 1rem; display: flex; gap: 0.5rem; justify-content: center;">
+                    <button class="btn-primary" onclick="viewProduct(2)">İncele</button>
+                    <button class="btn-outline" onclick="addToCart(2)">Sepete Ekle</button>
+                </div>
+            </div>
+
+            <!-- Ürün 3 -->
+            <div class="product-card">
+                <div class="product-image">
+                    3D Model Önizleme
+                </div>
+                <h3>Robot Model</h3>
+                <p class="product-price">$49.99</p>
+                <p>Detaylı robot karakter modeli</p>
+                <div style="margin-top: 1rem; display: flex; gap: 0.5rem; justify-content: center;">
+                    <button class="btn-primary" onclick="viewProduct(3)">İncele</button>
+                    <button class="btn-outline" onclick="addToCart(3)">Sepete Ekle</button>
+                </div>
             </div>
         </section>
     </main>
 
-    <script src="../js/auth.js"></script>
-    <script src="../js/main.js"></script>
-    <script src="../js/three-app.js"></script>
+    <script src="auth.js"></script>
+    <script>
+        // Sayfa yüklendiğinde çalışacak
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('🚀 Ana sayfa yüklendi');
+            updateAuthUI();
+            updateCartCount();
+            loadProductsFromStorage();
+        });
+
+        // Ürün detay sayfasına yönlendirme
+        function viewProduct(productId) {
+            window.location.href = `product-detail.html?id=${productId}`;
+        }
+
+        // Sepete ürün ekleme
+        function addToCart(productId) {
+            console.log('🛒 Sepete ekleniyor:', productId);
+            
+            try {
+                let cart = JSON.parse(localStorage.getItem('cart')) || [];
+                const product = getProductById(productId);
+                
+                if (product) {
+                    const existingItem = cart.find(item => item.id === productId);
+                    if (existingItem) {
+                        existingItem.quantity += 1;
+                    } else {
+                        cart.push({
+                            id: productId,
+                            name: product.name,
+                            price: product.price,
+                            quantity: 1,
+                            image: product.image
+                        });
+                    }
+                    localStorage.setItem('cart', JSON.stringify(cart));
+                    updateCartCount();
+                    alert('✅ Ürün sepete eklendi!');
+                } else {
+                    console.error('❌ Ürün bulunamadı:', productId);
+                }
+            } catch (error) {
+                console.error('❌ Sepete ekleme hatası:', error);
+                alert('❌ Ürün sepete eklenirken hata oluştu!');
+            }
+        }
+
+        // Sepet sayısını güncelle
+        function updateCartCount() {
+            try {
+                const cart = JSON.parse(localStorage.getItem('cart')) || [];
+                const totalItems = cart.reduce((total, item) => total + item.quantity, 0);
+                const cartCountElement = document.getElementById('cartCount');
+                
+                if (cartCountElement) {
+                    cartCountElement.textContent = totalItems;
+                }
+            } catch (error) {
+                console.error('❌ Sepet sayısı güncelleme hatası:', error);
+            }
+        }
+
+        // Ürün bilgilerini getir
+        function getProductById(productId) {
+            try {
+                const products = JSON.parse(localStorage.getItem('products')) || [];
+                const product = products.find(p => p.id === productId.toString());
+                
+                if (product) {
+                    return product;
+                }
+                
+                // Eğer localStorage'da ürün yoksa, fallback ürünler
+                const fallbackProducts = {
+                    '1': { id: '1', name: "Modern Sandalye", price: 29.99, image: "/images/product1.jpg" },
+                    '2': { id: '2', name: "Gaming Mouse", price: 19.99, image: "/images/product2.jpg" },
+                    '3': { id: '3', name: "Robot Model", price: 49.99, image: "/images/product3.jpg" }
+                };
+                
+                return fallbackProducts[productId];
+            } catch (error) {
+                console.error('❌ Ürün getirme hatası:', error);
+                return null;
+            }
+        }
+
+        // LocalStorage'dan ürünleri yükle ve göster
+        function loadProductsFromStorage() {
+            try {
+                const products = JSON.parse(localStorage.getItem('products')) || [];
+                console.log('📥 Storage\'dan ürünler yüklendi:', products.length);
+                
+                // Eğer ürün yoksa, örnek ürünler oluştur
+                if (products.length === 0) {
+                    console.log('📝 Örnek ürünler oluşturuluyor...');
+                    const sampleProducts = [
+                        {
+                            id: '1',
+                            name: "Modern Sandalye",
+                            price: 29.99,
+                            description: "Modern tasarım 3D sandalye modeli",
+                            category: "mobilya",
+                            image: "/images/product1.jpg",
+                            modelUrl: "/models/chair.glb",
+                            createdAt: new Date().toISOString(),
+                            reviews: []
+                        },
+                        {
+                            id: '2',
+                            name: "Gaming Mouse",
+                            price: 19.99,
+                            description: "Oyuncu mouse 3D modeli",
+                            category: "elektronik",
+                            image: "/images/product2.jpg",
+                            modelUrl: "/models/mouse.glb",
+                            createdAt: new Date().toISOString(),
+                            reviews: []
+                        },
+                        {
+                            id: '3',
+                            name: "Robot Model",
+                            price: 49.99,
+                            description: "Detaylı robot karakter modeli",
+                            category: "karakter",
+                            image: "/images/product3.jpg",
+                            modelUrl: "/models/robot.glb",
+                            createdAt: new Date().toISOString(),
+                            reviews: []
+                        }
+                    ];
+                    
+                    localStorage.setItem('products', JSON.stringify(sampleProducts));
+                    console.log('✅ Örnek ürünler oluşturuldu');
+                }
+            } catch (error) {
+                console.error('❌ Ürün yükleme hatası:', error);
+            }
+        }
+
+        // Siparişlerimi görüntüle
+        function viewMyOrders() {
+            const currentUser = getCurrentUser();
+            if (currentUser) {
+                // user-profile.html sayfasına yönlendir
+                window.location.href = 'user-profile.html';
+            } else {
+                alert('❌ Lütfen önce giriş yapın!');
+                window.location.href = 'login.html';
+            }
+        }
+
+        // Tüm siparişleri görüntüle (Admin)
+        function viewAllOrders() {
+            window.location.href = 'admin/products.html#viewOrders';
+        }
+
+        // Mevcut kullanıcıyı getir
+        function getCurrentUser() {
+            try {
+                const userStr = localStorage.getItem('currentUser');
+                return userStr ? JSON.parse(userStr) : null;
+            } catch (error) {
+                return null;
+            }
+        }
+
+        // Auth UI güncelleme (auth.js'den alınmış)
+        function updateAuthUI() {
+            console.log('🔐 Auth UI güncelleniyor...');
+            
+            const authButtons = document.getElementById('authButtons');
+            const userMenu = document.getElementById('userMenu');
+            const userName = document.getElementById('userName');
+            const userAvatar = document.getElementById('userAvatar');
+            const adminMenu = document.getElementById('adminMenu');
+            
+            const currentUser = getCurrentUser();
+            
+            console.log('👤 Mevcut kullanıcı:', currentUser);
+            
+            if (currentUser) {
+                // Kullanıcı giriş yapmış
+                if (authButtons) authButtons.classList.add('hidden');
+                if (userMenu) {
+                    userMenu.classList.remove('hidden');
+                    if (userName) userName.textContent = currentUser.name;
+                    
+                    // Avatar'ı güncelle
+                    if (userAvatar && currentUser.avatar) {
+                        userAvatar.src = currentUser.avatar;
+                    }
+                    
+                    // Admin menüsünü kontrol et
+                    if (adminMenu) {
+                        if (currentUser.role === 'admin') {
+                            adminMenu.classList.remove('hidden');
+                            console.log('✅ Admin menüsü gösteriliyor');
+                        } else {
+                            adminMenu.classList.add('hidden');
+                        }
+                    }
+                }
+            } else {
+                // Kullanıcı giriş yapmamış
+                if (authButtons) authButtons.classList.remove('hidden');
+                if (userMenu) userMenu.classList.add('hidden');
+            }
+        }
+
+        // Çıkış fonksiyonu
+        function logout() {
+            console.log('🚪 Çıkış yapılıyor...');
+            localStorage.removeItem('currentUser');
+            updateAuthUI();
+            window.location.href = 'index.html';
+        }
+    </script>
 </body>
 </html>
