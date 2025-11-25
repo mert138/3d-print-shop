@@ -4,60 +4,184 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Giriş Yap - 3D Market</title>
-    <link rel="stylesheet" href="style.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: 'Arial', sans-serif; 
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        .navbar {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 1rem 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+        .nav-content { display: flex; justify-content: space-between; align-items: center; }
+        .nav-brand h2 { color: #007bff; font-size: 1.8rem; }
+        .nav-brand a { text-decoration: none; color: inherit; }
+        .nav-links a { text-decoration: none; color: #333; font-weight: 500; padding: 0.5rem 1rem; }
+        .auth-container { display: flex; justify-content: center; align-items: center; flex: 1; padding: 2rem 0; }
+        .auth-form { background: white; padding: 2rem; border-radius: 10px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); width: 100%; max-width: 400px; }
+        .auth-form h2 { text-align: center; margin-bottom: 2rem; color: #333; }
+        .form-group { margin-bottom: 1.5rem; }
+        .form-group label { display: block; margin-bottom: 0.5rem; font-weight: 500; }
+        .form-group input { width: 100%; padding: 12px; border: 2px solid #e9ecef; border-radius: 5px; font-size: 1rem; }
+        .form-group input:focus { outline: none; border-color: #007bff; }
+        .btn-primary { background: #007bff; color: white; border: none; padding: 12px; border-radius: 5px; width: 100%; font-size: 1rem; cursor: pointer; }
+        .btn-primary:hover { background: #0056b3; }
+        .auth-links { text-align: center; margin-top: 1.5rem; }
+        .auth-links a { color: #007bff; text-decoration: none; }
+        .message { padding: 1rem; border-radius: 5px; margin: 1rem 0; text-align: center; }
+        .message.success { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+        .message.error { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+        .hidden { display: none; }
+    </style>
 </head>
 <body>
-    <nav class="navbar">
-        <div class="nav-brand">
-            <h2>3D Market</h2>
-        </div>
-        <div class="nav-links">
-            <a href="index.html">Ana Sayfa</a>
-            <a href="products.html">Ürünler</a>
-        </div>
-    </nav>
+    <header>
+        <nav class="navbar">
+            <div class="container">
+                <div class="nav-content">
+                    <div class="nav-brand">
+                        <h2><a href="index.html">3D Market</a></h2>
+                    </div>
+                    <div class="nav-links">
+                        <a href="index.html">← Ana Sayfaya Dön</a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
 
-    <main class="auth-container">
-        <div class="auth-form">
-            <h2>Giriş Yap</h2>
-            <form id="loginForm">
-                <div class="form-group">
-                    <label for="email">Email</label>
-                    <input type="email" id="email" name="email" required>
+    <main class="container">
+        <div class="auth-container">
+            <div class="auth-form">
+                <h2>Giriş Yap</h2>
+                <form id="loginForm">
+                    <div class="form-group">
+                        <label for="loginEmail">E-posta:</label>
+                        <input type="email" id="loginEmail" required placeholder="ornek@email.com">
+                    </div>
+                    <div class="form-group">
+                        <label for="loginPassword">Şifre:</label>
+                        <input type="password" id="loginPassword" required placeholder="Şifreniz">
+                    </div>
+                    <button type="submit" class="btn-primary">Giriş Yap</button>
+                </form>
+                <div class="auth-links">
+                    <p>Hesabınız yok mu? <a href="register.html">Kayıt Olun</a></p>
                 </div>
-                <div class="form-group">
-                    <label for="password">Şifre</label>
-                    <input type="password" id="password" name="password" required>
-                </div>
-                <button type="submit" class="btn btn-primary btn-block">Giriş Yap</button>
-            </form>
-            <p>Hesabınız yok mu? <a href="register.html">Kayıt Olun</a></p>
-            <div id="message" class="message"></div>
+                <div id="authMessage" class="message hidden"></div>
+            </div>
         </div>
     </main>
 
-    <script src="../js/auth.js"></script>
     <script>
-        document.getElementById('loginForm').addEventListener('submit', async (e) => {
-            e.preventDefault();
+        // ✅ TÜM LOGIN FONKSİYONLARI BURADA
+        
+        function loginUser(email, password) {
+            console.log('🔐 Giriş işlemi başlıyor...', { email });
             
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
-            const messageDiv = document.getElementById('message');
-
-            const result = await auth.login(email, password);
-            
-            if (result.success) {
-                messageDiv.style.color = 'green';
-                messageDiv.textContent = 'Giriş başarılı! Yönlendiriliyorsunuz...';
-                setTimeout(() => {
-                    window.location.href = 'index.html';
-                }, 1000);
-            } else {
-                messageDiv.style.color = 'red';
-                messageDiv.textContent = result.message;
+            try {
+                const users = JSON.parse(localStorage.getItem('users')) || [];
+                const user = users.find(u => u.email === email && atob(u.password) === password);
+                
+                if (user) {
+                    const userForSession = {
+                        id: user.id,
+                        name: user.name,
+                        email: user.email,
+                        role: user.role
+                    };
+                    
+                    localStorage.setItem('currentUser', JSON.stringify(userForSession));
+                    
+                    console.log('✅ Giriş başarılı:', userForSession);
+                    showMessage('Giriş başarılı! Yönlendiriliyorsunuz...', 'success');
+                    
+                    setTimeout(() => {
+                        window.location.href = 'index.html';
+                    }, 1500);
+                } else {
+                    showMessage('Geçersiz e-posta veya şifre!', 'error');
+                }
+            } catch (error) {
+                console.error('❌ Giriş hatası:', error);
+                showMessage('Giriş sırasında hata oluştu!', 'error');
             }
+        }
+
+        function showMessage(message, type) {
+            console.log(`📢 Mesaj: ${type} - ${message}`);
+            const messageDiv = document.getElementById('authMessage');
+            if (messageDiv) {
+                messageDiv.textContent = message;
+                messageDiv.className = `message ${type}`;
+                messageDiv.classList.remove('hidden');
+                
+                setTimeout(() => {
+                    messageDiv.classList.add('hidden');
+                }, 5000);
+            } else {
+                alert(`${type.toUpperCase()}: ${message}`);
+            }
+        }
+
+        function initializePage() {
+            console.log('🚀 Login sayfası başlatılıyor...');
+            
+            const form = document.getElementById('loginForm');
+            const emailInput = document.getElementById('loginEmail');
+            const passwordInput = document.getElementById('loginPassword');
+            
+            console.log('🔍 Element kontrolü:', {
+                form: !!form,
+                emailInput: !!emailInput,
+                passwordInput: !!passwordInput
+            });
+            
+            if (!form || !emailInput || !passwordInput) {
+                console.error('❌ HATA: Form elementleri bulunamadı!');
+                showMessage('Sayfa yüklenirken hata oluştu. Lütfen sayfayı yenileyin.', 'error');
+                return;
+            }
+            
+            console.log('✅ Tüm form elementleri bulundu!');
+            
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                console.log('📝 Login formu gönderildi!');
+                
+                const email = emailInput.value.trim();
+                const password = passwordInput.value;
+                
+                console.log('📋 Login verileri alındı');
+                
+                if (!email || !password) {
+                    showMessage('Lütfen tüm alanları doldurun!', 'error');
+                    return;
+                }
+                
+                console.log('✅ Login validasyonu başarılı!');
+                console.log('🔄 loginUser fonksiyonu çağrılıyor...');
+                loginUser(email, password);
+            });
+            
+            console.log('✅ Login sayfası başarıyla başlatıldı!');
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('📄 DOM yüklendi!');
+            initializePage();
         });
+
+        if (document.readyState === 'interactive' || document.readyState === 'complete') {
+            console.log('⚡ Sayfa zaten hazır!');
+            initializePage();
+        }
     </script>
 </body>
 </html>
