@@ -3,97 +3,295 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ürün Yönetimi - Admin Panel</title>
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="admin.css">
+    <title>Ürün Yönetimi - 3D Market</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: 'Arial', sans-serif; 
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        .navbar {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 1rem 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+        .nav-content { display: flex; justify-content: space-between; align-items: center; }
+        .nav-brand h2 { color: #007bff; font-size: 1.8rem; }
+        .nav-brand a { text-decoration: none; color: inherit; }
+        .nav-links a { text-decoration: none; color: #333; font-weight: 500; padding: 0.5rem 1rem; }
+        .admin-container { display: grid; grid-template-columns: 250px 1fr; gap: 2rem; margin: 2rem 0; }
+        .admin-sidebar { background: white; border-radius: 10px; padding: 1.5rem; box-shadow: 0 2px 10px rgba(0,0,0,0.1); height: fit-content; }
+        .sidebar-menu { display: flex; flex-direction: column; gap: 0.5rem; }
+        .sidebar-btn { background: none; border: none; padding: 1rem; text-align: left; border-radius: 5px; cursor: pointer; transition: background 0.3s; }
+        .sidebar-btn:hover, .sidebar-btn.active { background: #007bff; color: white; }
+        .admin-content { background: white; border-radius: 10px; padding: 2rem; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .admin-section { display: none; }
+        .admin-section.active { display: block; }
+        .form-group { margin-bottom: 1.5rem; }
+        .form-group label { display: block; margin-bottom: 0.5rem; font-weight: 500; }
+        .form-group input, .form-group textarea, .form-group select { width: 100%; padding: 12px; border: 2px solid #e9ecef; border-radius: 5px; font-size: 1rem; }
+        .form-group input:focus, .form-group textarea:focus, .form-group select:focus { outline: none; border-color: #007bff; }
+        .btn-primary { background: #007bff; color: white; border: none; padding: 12px 20px; border-radius: 5px; cursor: pointer; font-size: 1rem; }
+        .btn-primary:hover { background: #0056b3; }
+        .products-list, .orders-list { display: flex; flex-direction: column; gap: 1rem; }
+        .product-item, .order-item { background: #f8f9fa; padding: 1rem; border-radius: 5px; border-left: 4px solid #007bff; }
+        .message { padding: 1rem; border-radius: 5px; margin: 1rem 0; text-align: center; }
+        .message.success { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+        .message.error { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+        .hidden { display: none; }
+    </style>
 </head>
 <body>
-    <div class="admin-container">
-        <aside class="admin-sidebar">
-            <h3>Admin Panel</h3>
-            <nav>
-                <a href="index.html">Dashboard</a>
-                <a href="products.html">Ürün Yönetimi</a>
-                <a href="reviews.html">Yorum Yönetimi</a>
-                <a href="orders.html">Siparişler</a>
-                <a href="../index.html">Siteye Dön</a>
-            </nav>
-        </aside>
-
-        <main class="admin-content">
-            <header class="admin-header">
-                <h1>Ürün Yönetimi</h1>
-                <div class="admin-user">
-                    <span id="adminUsername"></span>
-                    <button id="adminLogout" class="btn btn-outline">Çıkış</button>
-                </div>
-            </header>
-
-            <div class="admin-actions">
-                <button class="btn btn-primary" onclick="showProductForm()">Yeni Ürün Ekle</button>
-            </div>
-
-            <!-- Ürün Ekleme Formu -->
-            <div id="productFormModal" style="display: none;">
-                <div class="modal">
-                    <div class="modal-content">
-                        <h2>Yeni Ürün Ekle</h2>
-                        <form id="productForm">
-                            <div class="form-group">
-                                <label>Ürün Adı</label>
-                                <input type="text" name="name" required>
-                            </div>
-                            <div class="form-group">
-                                <label>Açıklama</label>
-                                <textarea name="description" required></textarea>
-                            </div>
-                            <div class="form-group">
-                                <label>Fiyat</label>
-                                <input type="number" name="price" step="0.01" required>
-                            </div>
-                            <div class="form-group">
-                                <label>İndirim (%)</label>
-                                <input type="number" name="discount" min="0" max="100" value="0">
-                            </div>
-                            <div class="form-group">
-                                <label>Kategori</label>
-                                <input type="text" name="category" required>
-                            </div>
-                            <div class="form-group">
-                                <label>Stok</label>
-                                <input type="number" name="stock" required>
-                            </div>
-                            <div class="form-actions">
-                                <button type="submit" class="btn btn-primary">Kaydet</button>
-                                <button type="button" class="btn btn-outline" onclick="hideProductForm()">İptal</button>
-                            </div>
-                        </form>
+    <header>
+        <nav class="navbar">
+            <div class="container">
+                <div class="nav-content">
+                    <div class="nav-brand">
+                        <h2><a href="index.html">3D Market - Admin</a></h2>
+                    </div>
+                    <div class="nav-links">
+                        <a href="index.html">Siteye Dön</a>
+                        <a href="#" id="logoutBtn">Çıkış Yap</a>
                     </div>
                 </div>
             </div>
+        </nav>
+    </header>
 
-            <!-- Ürün Listesi -->
-            <div class="table-container">
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th>Ürün Adı</th>
-                            <th>Kategori</th>
-                            <th>Fiyat</th>
-                            <th>İndirim</th>
-                            <th>Stok</th>
-                            <th>İşlemler</th>
-                        </tr>
-                    </thead>
-                    <tbody id="productsTable">
-                        <!-- Ürünler buraya gelecek -->
-                    </tbody>
-                </table>
+    <main class="container">
+        <div class="admin-container">
+            <div class="admin-sidebar">
+                <div class="sidebar-menu">
+                    <button class="sidebar-btn active" onclick="showSection('addProduct')">Ürün Ekle</button>
+                    <button class="sidebar-btn" onclick="showSection('viewProducts')">Ürünleri Yönet</button>
+                </div>
             </div>
-        </main>
-    </div>
 
-    <script src="../../js/auth.js"></script>
-    <script src="../../js/admin/products-admin.js"></script>
+            <div class="admin-content">
+                <!-- Ürün Ekleme Section -->
+                <div id="addProduct" class="admin-section active">
+                    <h2>Yeni Ürün Ekle</h2>
+                    <form id="addProductForm">
+                        <div class="form-group">
+                            <label for="productName">Ürün Adı:</label>
+                            <input type="text" id="productName" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="productPrice">Fiyat ($):</label>
+                            <input type="number" id="productPrice" step="0.01" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="productCategory">Kategori:</label>
+                            <select id="productCategory" required>
+                                <option value="">Seçiniz</option>
+                                <option value="furniture">Mobilya</option>
+                                <option value="electronics">Elektronik</option>
+                                <option value="characters">Karakterler</option>
+                                <option value="vehicles">Araçlar</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="productDescription">Açıklama:</label>
+                            <textarea id="productDescription" rows="4" required></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="modelFile">3D Model Dosyası (URL):</label>
+                            <input type="text" id="modelFile" placeholder="https://example.com/model.glb">
+                        </div>
+                        <div class="form-group">
+                            <label for="productImage">Ürün Görseli (URL):</label>
+                            <input type="text" id="productImage" placeholder="https://example.com/image.jpg">
+                        </div>
+                        <button type="submit" class="btn-primary">Ürünü Ekle</button>
+                    </form>
+                    <div id="productMessage" class="message hidden"></div>
+                </div>
+
+                <!-- Ürünleri Görüntüleme Section -->
+                <div id="viewProducts" class="admin-section">
+                    <h2>Ürün Yönetimi</h2>
+                    <div id="productsList" class="products-list">
+                        <!-- Ürünler buraya gelecek -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // ✅ Tüm admin fonksiyonları burada
+
+        // 1. Sayfa yüklendiğinde çalışacak
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('🚀 Admin sayfası yüklendi');
+
+            // Admin kontrolü yap
+            checkAdminAccess();
+
+            // Ürün listesini yükle
+            loadProducts();
+
+            // Form olay dinleyicisini ekle
+            document.getElementById('addProductForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                addProduct();
+            });
+
+            // Çıkış butonunu ekle
+            document.getElementById('logoutBtn').addEventListener('click', function(e) {
+                e.preventDefault();
+                logout();
+            });
+        });
+
+        // 2. Admin erişim kontrolü
+        function checkAdminAccess() {
+            const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+            if (!currentUser || currentUser.role !== 'admin') {
+                alert('Bu sayfaya erişim izniniz yok!');
+                window.location.href = 'index.html';
+                return;
+            }
+            console.log('✅ Admin erişimi onaylandı:', currentUser.name);
+        }
+
+        // 3. Bölüm gösterme
+        function showSection(sectionId) {
+            // Tüm bölümleri gizle
+            document.querySelectorAll('.admin-section').forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            // Tüm butonları pasif yap
+            document.querySelectorAll('.sidebar-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+
+            // Aktif bölümü göster
+            document.getElementById(sectionId).classList.add('active');
+            
+            // Aktif butonu işaretle
+            event.target.classList.add('active');
+
+            // Eğer ürün listesi bölümüyse, ürünleri yenile
+            if (sectionId === 'viewProducts') {
+                loadProducts();
+            }
+        }
+
+        // 4. Ürün ekleme
+        function addProduct() {
+            console.log('📦 Ürün ekleme başlatılıyor...');
+
+            const productName = document.getElementById('productName').value;
+            const productPrice = document.getElementById('productPrice').value;
+            const productCategory = document.getElementById('productCategory').value;
+            const productDescription = document.getElementById('productDescription').value;
+            const modelFile = document.getElementById('modelFile').value;
+            const productImage = document.getElementById('productImage').value;
+
+            // Validasyon
+            if (!productName || !productPrice || !productCategory || !productDescription) {
+                showProductMessage('Lütfen zorunlu alanları doldurun!', 'error');
+                return;
+            }
+
+            // Ürünleri localStorage'dan al
+            const products = JSON.parse(localStorage.getItem('products')) || [];
+
+            // Yeni ürün oluştur
+            const newProduct = {
+                id: Date.now().toString(),
+                name: productName,
+                price: parseFloat(productPrice),
+                category: productCategory,
+                description: productDescription,
+                modelFile: modelFile || '/models/default.glb',
+                image: productImage || '/images/default.jpg',
+                createdAt: new Date().toISOString(),
+                reviews: []
+            };
+
+            // Ürünleri kaydet
+            products.push(newProduct);
+            localStorage.setItem('products', JSON.stringify(products));
+
+            console.log('✅ Ürün eklendi:', newProduct);
+
+            // Başarı mesajı göster
+            showProductMessage('Ürün başarıyla eklendi!', 'success');
+
+            // Formu temizle
+            document.getElementById('addProductForm').reset();
+
+            // Ürün listesini yenile
+            loadProducts();
+        }
+
+        // 5. Ürünleri yükle
+        function loadProducts() {
+            const products = JSON.parse(localStorage.getItem('products')) || [];
+            const container = document.getElementById('productsList');
+
+            if (products.length === 0) {
+                container.innerHTML = '<p>Henüz ürün bulunmuyor.</p>';
+                return;
+            }
+
+            container.innerHTML = products.map(product => `
+                <div class="product-item">
+                    <div style="display: flex; justify-content: space-between; align-items: start;">
+                        <div>
+                            <h3>${product.name}</h3>
+                            <p><strong>Fiyat:</strong> $${product.price}</p>
+                            <p><strong>Kategori:</strong> ${product.category}</p>
+                            <p>${product.description}</p>
+                            <p><strong>Yorumlar:</strong> ${product.reviews.length}</p>
+                        </div>
+                        <div>
+                            <button onclick="editProduct('${product.id}')" class="btn-primary">Düzenle</button>
+                            <button onclick="deleteProduct('${product.id}')" class="btn-primary" style="background: #dc3545;">Sil</button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // 6. Ürün silme
+        function deleteProduct(productId) {
+            if (!confirm('Bu ürünü silmek istediğinizden emin misiniz?')) {
+                return;
+            }
+
+            const products = JSON.parse(localStorage.getItem('products')) || [];
+            const updatedProducts = products.filter(p => p.id !== productId);
+            localStorage.setItem('products', JSON.stringify(updatedProducts));
+
+            showProductMessage('Ürün silindi!', 'success');
+            loadProducts();
+        }
+
+        // 7. Mesaj gösterme
+        function showProductMessage(message, type) {
+            const messageDiv = document.getElementById('productMessage');
+            messageDiv.textContent = message;
+            messageDiv.className = `message ${type}`;
+            messageDiv.classList.remove('hidden');
+
+            setTimeout(() => {
+                messageDiv.classList.add('hidden');
+            }, 5000);
+        }
+
+        // 8. Çıkış
+        function logout() {
+            localStorage.removeItem('currentUser');
+            window.location.href = 'index.html';
+        }
+    </script>
 </body>
 </html>
