@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sepetim - 3D Market</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+            padding-top: 80px;
+        }
+        
+        .navbar {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 1rem 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        .nav-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .nav-brand h2 {
+            color: #007bff;
+            font-size: 1.8rem;
+        }
+        
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+        }
+        
+        .nav-links a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+            transition: color 0.3s;
+            padding: 0.5rem 1rem;
+        }
+        
+        .nav-links a:hover {
+            color: #007bff;
+        }
+        
+        .btn-primary {
+            background: #007bff;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            text-decoration: none;
+            display: inline-block;
+            transition: background 0.3s;
+            font-weight: 500;
+            cursor: pointer;
+        }
+        
+        .btn-primary:hover {
+            background: #0056b3;
+        }
+        
+        .btn-outline {
+            background: transparent;
+            color: #007bff;
+            border: 2px solid #007bff;
+            padding: 8px 18px;
+            border-radius: 5px;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.3s;
+            font-weight: 500;
+            cursor: pointer;
+        }
+        
+        .btn-outline:hover {
+            background: #007bff;
+            color: white;
+        }
+        
+        .btn-danger {
+            background: #dc3545;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+        
+        .btn-danger:hover {
+            background: #c82333;
+        }
+        
+        .user-menu {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .user-name {
+            font-weight: 500;
+        }
+        
+        .hidden {
+            display: none !important;
+        }
+
+        .user-avatar {
+            position: relative;
+            cursor: pointer;
+        }
+
+        .user-avatar img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 2px solid #007bff;
+            object-fit: cover;
+        }
+
+        .user-dropdown {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            min-width: 200px;
+            z-index: 1000;
+            display: none;
+        }
+
+        .user-avatar:hover .user-dropdown {
+            display: block;
+        }
+
+        .dropdown-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1rem;
+            text-decoration: none;
+            color: #333;
+            border-bottom: 1px solid #f0f0f0;
+            transition: background 0.3s;
+        }
+
+        .dropdown-item:hover {
+            background: #f8f9fa;
+        }
+
+        .dropdown-item.logout {
+            color: #dc3545;
+        }
+
+        .dropdown-divider {
+            height: 1px;
+            background: #f0f0f0;
+            margin: 0.5rem 0;
+        }
+
+        /* Sepet İçeriği Stilleri */
+        .cart-container {
+            display: grid;
+            grid-template-columns: 1fr 350px;
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+        
+        .cart-title {
+            color: white;
+            margin-bottom: 2rem;
+            text-align: center;
+            font-size: 2.5rem;
+        }
+        
+        .cart-items {
+            background: white;
+            border-radius: 10px;
+            padding: 2rem;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .cart-item {
+            display: grid;
+            grid-template-columns: 100px 1fr auto;
+            gap: 1rem;
+            padding: 1.5rem;
+            border-bottom: 1px solid #e9ecef;
+            align-items: center;
+        }
+        
+        .cart-item:last-child {
+            border-bottom: none;
+        }
+        
+        .cart-item-image {
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+        
+        .cart-item-info {
+            flex: 1;
+        }
+        
+        .cart-item-name {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+        
+        .cart-item-price {
+            color: #007bff;
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+        
+        .cart-item-actions {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .quantity-controls {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .quantity-btn {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            border: 1px solid #ddd;
+            background: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
+        
+        .quantity-btn:hover {
+            background: #f8f9fa;
+        }
+        
+        .quantity-input {
+            width: 50px;
+            text-align: center;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 5px;
+        }
+        
+        .cart-summary {
+            background: white;
+            border-radius: 10px;
+            padding: 2rem;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            height: fit-content;
+            position: sticky;
+            top: 100px;
+        }
+        
+        .summary-title {
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid #007bff;
+        }
+        
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid #e9ecef;
+        }
+        
+        .summary-row.total {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #007bff;
+            border-bottom: none;
+            padding-top: 1rem;
+        }
+        
+        .empty-cart {
+            text-align: center;
+            padding: 3rem;
+            color: #666;
+        }
+        
+        .empty-cart h3 {
+            margin-bottom: 1rem;
+            color: #333;
+        }
+        
+        .checkout-btn {
+            width: 100%;
+            margin-top: 1.5rem;
+            padding: 15px;
+            font-size: 1.1rem;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .cart-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .cart-item {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+            
+            .cart-item-image {
+                margin: 0 auto;
+            }
+            
+            .nav-links {
+                gap: 1rem;
+            }
+            
+            .user-dropdown {
+                right: -50px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="container">
+                <div class="nav-content">
+                    <div class="nav-brand">
+                        <h2><a href="index.html" style="text-decoration: none; color: inherit;">3D Market</a></h2>
+                    </div>
+                    <div class="nav-links">
+                        <a href="index.html">Ana Sayfa</a>
+                        <a href="cart.html" style="color: #007bff; font-weight: bold;">Sepet (<span id="cartCount">0</span>)</a>
+                        <div id="authButtons">
+                            <a href="login.html" class="btn-outline">Giriş</a>
+                            <a href="register.html" class="btn-primary">Kayıt</a>
+                        </div>
+                        <div id="userMenu" class="user-menu hidden">
+                            <div class="user-avatar">
+                                <img id="userAvatar" src="" alt="Profil" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHZpZXdCb3g9IjAgMCA0MCA0MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGNpcmNsZSBjeD0iMjAiIGN5PSIyMCIgcj0iMjAiIGZpbGw9IiMwMDdiZmYiLz4KPHBhdGggZD0iTTIwIDIyQzIzLjMxMzcgMjIgMjYgMTkuMzEzNyAyNiAxNkMyNiAxMi42ODYzIDIzLjMxMzcgMTAgMjAgMTBDMTYuNjg2MyAxMCAxNCAxMi42ODYzIDE0IDE2QzE0IDE5LjMxMzcgMTYuNjg2MyAyMiAyMCAyMloiIGZpbGw9IndoaXRlIi8+CjxwYXRoIGQ9Ik0yOCAzMEMyOCAyNy43OTAyIDI2LjIwOTggMjYgMjQgMjZIMTZDMTMuNzkwMiAyNiAxMiAyNy43OTAyIDEyIDMwVjMxQzEyIDMyLjEwNDYgMTIuODk1NCAzMyAxNCAzM0gyNkMyNy4xMDQ2IDMzIDI4IDMyLjEhMDQ2IDI4IDMxVjMwWiIgZmlsbD0id2hpdGUiLz4KPC9zdmc+Cg=='">
+                                <div class="user-dropdown" id="userDropdown">
+                                    <a href="user-profile.html" class="dropdown-item">
+                                        <span style="font-size: 1.2em;">👤</span> Profil
+                                    </a>
+                                    <a href="#" class="dropdown-item" onclick="viewMyOrders()">
+                                        <span style="font-size: 1.2em;">📦</span> Siparişlerim
+                                    </a>
+                                    <div id="adminMenu" class="hidden">
+                                        <a href="admin/products.html" class="dropdown-item">
+                                            <span style="font-size: 1.2em;">⚙️</span> Admin Panel
+                                        </a>
+                                        <a href="#" class="dropdown-item" onclick="viewAllOrders()">
+                                            <span style="font-size: 1.2em;">📋</span> Tüm Siparişler
+                                        </a>
+                                    </div>
+                                    <div class="dropdown-divider"></div>
+                                    <a href="#" class="dropdown-item logout" onclick="logout()">
+                                        <span style="font-size: 1.2em;">🚪</span> Çıkış
+                                    </a>
+                                </div>
+                            </div>
+                            <span id="userName" class="user-name"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container">
+        <h1 class="cart-title">🛒 Alışveriş Sepetim</h1>
+        
+        <div class="cart-container">
+            <!-- Sepet Öğeleri -->
+            <div class="cart-items">
+                <div id="cartItemsContainer">
+                    <!-- Sepet öğeleri buraya dinamik olarak eklenecek -->
+                </div>
+            </div>
+            
+            <!-- Sepet Özeti -->
+            <div class="cart-summary">
+                <h2 class="summary-title">Sipariş Özeti</h2>
+                
+                <div class="summary-row">
+                    <span>Ara Toplam:</span>
+                    <span id="subtotal">$0.00</span>
+                </div>
+                
+                <div class="summary-row">
+                    <span>Kargo Ücreti:</span>
+                    <span>Ücretsiz</span>
+                </div>
+                
+                <div class="summary-row">
+                    <span>Vergi (KDV %18):</span>
+                    <span id="tax">$0.00</span>
+                </div>
+                
+                <div class="summary-row total">
+                    <span>Toplam:</span>
+                    <span id="total">$0.00</span>
+                </div>
+                
+                <button id="checkoutBtn" class="btn-primary checkout-btn" onclick="checkout()">
+                    🛍️ Ödemeye Geç
+                </button>
+                
+                <div style="text-align: center; margin-top: 1rem;">
+                    <a href="index.html" style="color: #007bff; text-decoration: none;">
+                        ← Alışverişe Devam Et
+                    </a>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="auth.js"></script>
+    <script>
+        // Sepet verilerini yükleme ve gösterme
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('🛒 Sepet sayfası yüklendi');
+            updateAuthUI();
+            loadCartItems();
+            updateCartCount();
+        });
+
+        // Sepet öğelerini yükle
+        function loadCartItems() {
+            try {
+                const cart = JSON.parse(localStorage.getItem('cart')) || [];
+                const container = document.getElementById('cartItemsContainer');
+                
+                console.log('📦 Sepet öğeleri:', cart);
+                
+                if (cart.length === 0) {
+                    container.innerHTML = `
+                        <div class="empty-cart">
+                            <h3>Sepetiniz boş</h3>
+                            <p>Henüz sepete ürün eklemediniz.</p>
+                            <a href="index.html" class="btn-primary" style="margin-top: 1rem; display: inline-block;">
+                                Alışverişe Başla
+                            </a>
+                        </div>
+                    `;
+                    updateSummary(0);
+                    return;
+                }
+                
+                // Sepet öğelerini göster
+                container.innerHTML = cart.map(item => `
+                    <div class="cart-item" data-id="${item.id}">
+                        <div class="cart-item-image">
+                            <div style="text-align: center;">
+                                <div style="font-size: 1.5rem;">3D</div>
+                                <div>${item.name.substring(0, 10)}...</div>
+                            </div>
+                        </div>
+                        
+                        <div class="cart-item-info">
+                            <h3 class="cart-item-name">${item.name}</h3>
+                            <p class="cart-item-price">$${item.price.toFixed(2)}</p>
+                            <p>Toplam: <strong>$${(item.price * item.quantity).toFixed(2)}</strong></p>
+                        </div>
+                        
+                        <div class="cart-item-actions">
+                            <div class="quantity-controls">
+                                <button class="quantity-btn" onclick="updateQuantity('${item.id}', ${item.quantity - 1})">-</button>
+                                <input type="text" class="quantity-input" value="${item.quantity}" readonly>
+                                <button class="quantity-btn" onclick="updateQuantity('${item.id}', ${item.quantity + 1})">+</button>
+                            </div>
+                            <button class="btn-danger" onclick="removeFromCart('${item.id}')">Kaldır</button>
+                        </div>
+                    </div>
+                `).join('');
+                
+                // Toplamı güncelle
+                updateSummary(calculateTotal(cart));
+                
+            } catch (error) {
+                console.error('❌ Sepet yükleme hatası:', error);
+                document.getElementById('cartItemsContainer').innerHTML = `
+                    <div class="empty-cart">
+                        <h3>Hata oluştu</h3>
+                        <p>Sepet yüklenirken bir hata oluştu.</p>
+                    </div>
+                `;
+            }
+        }
+
+        // Miktarı güncelle
+        function updateQuantity(productId, newQuantity) {
+            if (newQuantity < 1) {
+                removeFromCart(productId);
+                return;
+            }
+            
+            try {
+                const cart = JSON.parse(localStorage.getItem('cart')) || [];
+                const itemIndex = cart.findIndex(item => item.id === productId);
+                
+                if (itemIndex !== -1) {
+                    cart[itemIndex].quantity = newQuantity;
+                    localStorage.setItem('cart', JSON.stringify(cart));
+                    
+                    // Sepeti yenile
+                    loadCartItems();
+                    updateCartCount();
+                    
+                    console.log(`✅ Miktar güncellendi: ${productId} -> ${newQuantity}`);
+                }
+            } catch (error) {
+                console.error('❌ Miktar güncelleme hatası:', error);
+            }
+        }
+
+        // Sepetten kaldır
+        function removeFromCart(productId) {
+            if (!confirm('Bu ürünü sepetinizden kaldırmak istediğinizden emin misiniz?')) {
+                return;
+            }
+            
+            try {
+                const cart = JSON.parse(localStorage.getItem('cart')) || [];
+                const updatedCart = cart.filter(item => item.id !== productId);
+                
+                localStorage.setItem('cart', JSON.stringify(updatedCart));
+                
+                // Sepeti yenile
+                loadCartItems();
+                updateCartCount();
+                
+                console.log(`✅ Ürün sepetten kaldırıldı: ${productId}`);
+                alert('Ürün sepetinizden kaldırıldı!');
+                
+            } catch (error) {
+                console.error('❌ Ürün kaldırma hatası:', error);
+                alert('Ürün kaldırılırken hata oluştu!');
+            }
+        }
+
+        // Toplamı hesapla
+        function calculateTotal(cart) {
+            return cart.reduce((total, item) => total + (item.price * item.quantity), 0);
+        }
+
+        // Özeti güncelle
+        function updateSummary(subtotal) {
+            const tax = subtotal * 0.18; // %18 KDV
+            const total = subtotal + tax;
+            
+            document.getElementById('subtotal').textContent = `$${subtotal.toFixed(2)}`;
+            document.getElementById('tax').textContent = `$${tax.toFixed(2)}`;
+            document.getElementById('total').textContent = `$${total.toFixed(2)}`;
+            
+            console.log('💰 Özet güncellendi:', { subtotal, tax, total });
+        }
+
+        // Sepet sayısını güncelle
+        function updateCartCount() {
+            try {
+                const cart = JSON.parse(localStorage.getItem('cart')) || [];
+                const totalItems = cart.reduce((total, item) => total + item.quantity, 0);
+                const cartCountElement = document.getElementById('cartCount');
+                
+                if (cartCountElement) {
+                    cartCountElement.textContent = totalItems;
+                }
+            } catch (error) {
+                console.error('❌ Sepet sayısı güncelleme hatası:', error);
+            }
+        }
+
+        // Ödeme işlemi
+        function checkout() {
+            try {
+                const cart = JSON.parse(localStorage.getItem('cart')) || [];
+                const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+                
+                if (cart.length === 0) {
+                    alert('❌ Sepetiniz boş!');
+                    return;
+                }
+                
+                if (!currentUser) {
+                    alert('💰 Ödeme için lütfen giriş yapın!');
+                    setTimeout(() => {
+                        window.location.href = 'login.html';
+                    }, 1000);
+                    return;
+                }
+                
+                const subtotal = calculateTotal(cart);
+                const tax = subtotal * 0.18;
+                const total = subtotal + tax;
+                
+                // Sipariş oluştur
+                const order = {
+                    id: Date.now().toString(),
+                    userId: currentUser.id,
+                    userName: currentUser.name,
+                    items: cart,
+                    subtotal: subtotal,
+                    tax: tax,
+                    total: total,
+                    status: 'pending',
+                    createdAt: new Date().toISOString()
+                };
+                
+                // Siparişleri localStorage'a kaydet
+                const orders = JSON.parse(localStorage.getItem('orders')) || [];
+                orders.push(order);
+                localStorage.setItem('orders', JSON.stringify(orders));
+                
+                // Sepeti temizle
+                localStorage.removeItem('cart');
+                
+                // UI'ı güncelle
+                loadCartItems();
+                updateCartCount();
+                
+                // Başarı mesajı
+                alert(`✅ Siparişiniz alındı!\n\nSipariş No: #${order.id}\nToplam: $${total.toFixed(2)}\n\nTeşekkür ederiz!`);
+                
+                // Ana sayfaya yönlendir
+                setTimeout(() => {
+                    window.location.href = 'index.html';
+                }, 2000);
+                
+            } catch (error) {
+                console.error('❌ Ödeme hatası:', error);
+                alert('Ödeme işlemi sırasında hata oluştu!');
+            }
+        }
+
+        // Auth UI fonksiyonları (auth.js'den)
+        function getCurrentUser() {
+            try {
+                const userStr = localStorage.getItem('currentUser');
+                return userStr ? JSON.parse(userStr) : null;
+            } catch (error) {
+                return null;
+            }
+        }
+
+        function updateAuthUI() {
+            const authButtons = document.getElementById('authButtons');
+            const userMenu = document.getElementById('userMenu');
+            const userName = document.getElementById('userName');
+            const userAvatar = document.getElementById('userAvatar');
+            const adminMenu = document.getElementById('adminMenu');
+            
+            const currentUser = getCurrentUser();
+            
+            if (currentUser) {
+                if (authButtons) authButtons.classList.add('hidden');
+                if (userMenu) {
+                    userMenu.classList.remove('hidden');
+                    if (userName) userName.textContent = currentUser.name;
+                    
+                    if (userAvatar && currentUser.avatar) {
+                        userAvatar.src = currentUser.avatar;
+                    }
+                    
+                    if (adminMenu) {
+                        if (currentUser.role === 'admin') {
+                            adminMenu.classList.remove('hidden');
+                        } else {
+                            adminMenu.classList.add('hidden');
+                        }
+                    }
+                }
+            } else {
+                if (authButtons) authButtons.classList.remove('hidden');
+                if (userMenu) userMenu.classList.add('hidden');
+            }
+        }
+
+        function viewMyOrders() {
+            const currentUser = getCurrentUser();
+            if (currentUser) {
+                window.location.href = 'user-profile.html';
+            } else {
+                alert('❌ Lütfen önce giriş yapın!');
+                window.location.href = 'login.html';
+            }
+        }
+
+        function viewAllOrders() {
+            window.location.href = 'admin/products.html#viewOrders';
+        }
+
+        function logout() {
+            localStorage.removeItem('currentUser');
+            updateAuthUI();
+            window.location.href = 'index.html';
+        }
+    </script>
+</body>
+</html>
